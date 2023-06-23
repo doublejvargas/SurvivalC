@@ -1,0 +1,6 @@
+# visual studio files
+.vs/
+# binary files (vs output)
+bin/
+# binary intermediate files (translation units)
+bin-int/
