@@ -1,9 +1,20 @@
 #pragma once
 
 #include "GameOBject.h"
+#include "Interfaces.h"
 
-// Boilerplate until implemented.
-class StationaryObject : public GameObject
+// Stationary objects are a single step away from GameObject in the class hierarchy. They do not contain any methods
+// which allow them to move, and contain only a small bit of new information. Whether or not they are passable by
+// animal entities, and that they are guaranteed to implement the IInteractable interface.
+class StationaryObject : protected GameObject, public Interfaces::IInteractable
 {
-	StationaryObject();
+public:
+	StationaryObject(Game* game, Vector2 pos, bool passable);
+
+	inline bool isPassable() { return m_isPassable; }
+	inline void setPassable(bool val) { m_isPassable = val; }
+
+protected:
+	// Determines whether animals may walk through object
+	bool m_isPassable;
 };

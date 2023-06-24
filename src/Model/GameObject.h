@@ -17,6 +17,7 @@ public:
 	inline Vector2 getPosition()						{ return m_Pos; }
 	inline void setPosition(const Vector2& position)	{ m_Pos = position; }
 
+	// Protected as derived classes will need to have access to these member variables
 protected:
 	// All objects in the game hold two important references: their position and a pointer to the game
 	Game* m_Game;

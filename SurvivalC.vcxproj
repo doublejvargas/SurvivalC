@@ -145,17 +145,24 @@
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Map\Map.cpp" />
+    <ClCompile Include="src\Map\Noise.cpp" />
     <ClCompile Include="src\Map\TerrainTile.cpp" />
     <ClCompile Include="src\Model\Game.cpp" />
     <ClCompile Include="src\Model\GameObject.cpp" />
+    <ClCompile Include="src\Model\MobileObject.cpp" />
+    <ClCompile Include="src\Model\Player.cpp" />
     <ClCompile Include="src\Model\StationaryObject.cpp" />
     <ClCompile Include="src\Toolbox\Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Map\Map.h" />
+    <ClInclude Include="src\Map\Noise.h" />
     <ClInclude Include="src\Map\TerrainTile.h" />
     <ClInclude Include="src\Model\Game.h" />
     <ClInclude Include="src\Model\GameObject.h" />
+    <ClInclude Include="src\Model\Interfaces.h" />
+    <ClInclude Include="src\Model\MobileObject.h" />
+    <ClInclude Include="src\Model\Player.h" />
     <ClInclude Include="src\Model\StationaryObject.h" />
     <ClInclude Include="src\Toolbox\Vector2.h" />
   </ItemGroup>
