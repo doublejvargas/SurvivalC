@@ -1,7 +1,10 @@
-#include <iostream>
+#include "ApplicationManager.h"
 
+// Application's entry point
 int main(void)
 {
-	std::cout << "Hello world!" << std::endl;
+	ApplicationManager app;
+	app.Start();
+
 	return 0;
 }
