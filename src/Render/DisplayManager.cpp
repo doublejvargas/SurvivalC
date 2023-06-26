@@ -7,13 +7,6 @@ DisplayManager::DisplayManager(int width /*= 1280*/, int height /*= 720*/, const
 	m_Title = title;
 	m_AspectRatio = (float)width / (float)height;
 
-	// Set minimum OpenGL version and context options
-
-	/*glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);*/
-
 	// Create window using GLFW
 	m_Window = glfwCreateWindow(width, height, m_Title.c_str(), NULL, NULL);
 
@@ -52,6 +45,7 @@ void DisplayManager::UpdateDisplay() const
 	glfwPollEvents();
 }
 
+// Computes frames
 void DisplayManager::ShowFPS(double& prevTime, int& frameCount)
 {
 	double currentTime = glfwGetTime();

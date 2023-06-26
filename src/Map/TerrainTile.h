@@ -37,6 +37,7 @@ private:
 	StationaryObject* m_StatObj;
 	bool m_hasStatObj;
 	bool m_isRevealedOnMiniMap;
+	// add Entity - will contain textured model + transformation
 
 	void grasslandSetup();
 	void desertSetup();

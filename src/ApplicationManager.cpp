@@ -3,6 +3,9 @@
 #include <cstdlib>
 #include <ctime>
 #include "ApplicationManager.h"
+#include "Loader.h"
+#include "Renderer.h" //includes Shader and Entity
+#include "glm/glm.hpp"
 #include "Log.h"
 
 ApplicationManager::ApplicationManager()
@@ -15,7 +18,7 @@ ApplicationManager::ApplicationManager()
 
 		//Create Display Manager (don't forget to delete the pointer in destructor)
 		// This dynamic creation of a DisplayManager object creates a context, sets the context current, and creates a window with a title. See DisplayManager constructor.
-		m_DisplayManager = new DisplayManager(640, 480, "SURVIVAL");
+		m_DisplayManager = new DisplayManager(1280, 720, "SURVIVAL");
 
 		//Initialize GLEW after GLFW and window
 		GLenum status = glewInit();
@@ -48,19 +51,46 @@ void ApplicationManager::Start()
 	printf("C++ Standard: %i\n", __cplusplus);
 
 
-	float positions[6] = {
-		-0.5f, -0.5f,
-		 0.0f,  0.5f,
-		 0.5f, -0.5f
+	//float positions[6] = {
+	//	-0.5f, -0.5f,
+	//	 0.0f,  0.5f,
+	//	 0.5f, -0.5f
+	//};
+
+	//unsigned int buffer;
+	//glGenBuffers(1, &buffer); // vertex buffer
+	//glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	//glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
+
+	//glEnableVertexAttribArray(0); //index buffer
+	//glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0); //vertex buffer specification
+
+	Loader loader;
+	Shader shader("res/shaders/Shader2D");
+	Renderer renderer(shader);
+	
+	float positions[] = {
+		 0.0f,   0.0f,
+		 100.0f, 0.0f,
+		 100.0f, 100.0f,
+		 0.0f,   100.0f
 	};
 
-	unsigned int buffer;
-	glGenBuffers(1, &buffer); // vertex buffer
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
+	float texcoords[] = {
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f
+	};
 
-	glEnableVertexAttribArray(0); //index buffer
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0); //vertex buffer specification
+
+	unsigned int indices[] = {
+		0, 1, 2,
+		2, 3, 0
+	};
+
+	Model model = loader.LoadToVAO(positions, 8, texcoords, 8, indices, 6, "res/textures/yuzu.png");
+	Entity entity(model, glm::vec2(200, 200), glm::vec2(0, 0), glm::vec2(1, 1));
 
 	printf("Running game loop...\n");
 
@@ -71,13 +101,16 @@ void ApplicationManager::Start()
 	while (m_DisplayManager->IsWindowOpen())
 	{
 		/* Render here */
-		glClear(GL_COLOR_BUFFER_BIT);
+		renderer.Clear();
+		shader.Bind();
 
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		renderer.Render(entity, shader);
+		shader.Unbind();
+
 		m_DisplayManager->UpdateDisplay();
 		m_DisplayManager->ShowFPS(prevTime, frameCount);
 	}
-	// we may need to do some opengl cleanup here. eg. shaders, renderers, unbindings, etc..
+	// We may need to do some opengl cleanup here. eg. shaders, renderers, unbindings, etc..
 	
 	printf("Game loop terminated\n");
 }

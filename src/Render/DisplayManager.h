@@ -21,6 +21,4 @@ private:
 	GLFWwindow* m_Window;
 	float m_AspectRatio;
 	std::string m_Title;
-
-
 };
