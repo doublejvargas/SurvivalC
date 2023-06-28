@@ -2,9 +2,15 @@
 
 #include "GameObject.h"
 #include "StationaryObject.h"
+#include "Entity.h"
+#include "Loader.h"
 
 class TerrainTile : protected GameObject
 {
+//private:
+//	const float m_SIZE = 100;
+//	const float m_VERTEX_COUNT = 128;
+
 public:
 	enum StatObjType { ROCK, BUSH, TREE, BASE, NONE };
 	enum TerrainType { WATER, GRASSLAND, DESERT };
@@ -37,7 +43,6 @@ private:
 	StationaryObject* m_StatObj;
 	bool m_hasStatObj;
 	bool m_isRevealedOnMiniMap;
-	// add Entity - will contain textured model + transformation
 
 	void grasslandSetup();
 	void desertSetup();

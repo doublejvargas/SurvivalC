@@ -46,7 +46,7 @@ double Vector2::distance(const Vector2& from, const Vector2& target)
 
 Vector2 Vector2::getDisplacementVector(Vector2 vec, int yBound, int xBound)
 {
-	srand((unsigned int) time(0));
+	srand((unsigned int)time(0));
 	int yDisplacement = (rand() % (yBound - 1)) + 1;
 	int xDisplacement = (rand() % (xBound - 1)) + 1;
 

@@ -1,32 +1,32 @@
 #include <math.h>
 #include "Noise.h"
 
-Noise::Noise(unsigned int game_map_y, unsigned int game_map_x)
+Noise::Noise(unsigned int num_tiles_y, unsigned int num_tiles_x)
 {
-	GAME_MAP_Y = game_map_y;
-	GAME_MAP_X = game_map_x;
-	int grid_dim_y = (int)ceil(GAME_MAP_Y / 5.0f);
-	int grid_dim_x = (int)ceil(GAME_MAP_X / 5.0f);
+	NUM_TILES_Y = num_tiles_y;
+	NUM_TILES_X = num_tiles_x;
+	int grid_dim_y = (int)ceil(NUM_TILES_Y / 5.0f);
+	int grid_dim_x = (int)ceil(NUM_TILES_X / 5.0f);
 	m_Grid = std::vector< std::vector<Vector2> >(grid_dim_y, std::vector<Vector2>(grid_dim_x, Vector2(0.0f, 0.0f))); // yucky syntax for 2D vector initialization!
 
 	for (int y = 0; y < m_Grid.size(); y++)
 	{
-		for (int x = 0; x < m_Grid[0].size(); x++)
+		for (int x = 0; x < m_Grid[y].size(); x++)
 			// This step populates the grid with random, 2-dimensional unit-length gradient vectors that will be used in the Perlin Function
 			m_Grid[y][x] = Vector2(true); 
 	}
 
-	m_Indexes = std::vector< std::vector<Vector2> >(GAME_MAP_Y, std::vector<Vector2>(GAME_MAP_X, Vector2(0.0f, 0.0f)));
+	m_Indexes = std::vector< std::vector<Vector2> >(NUM_TILES_Y, std::vector<Vector2>(NUM_TILES_X, Vector2(0.0f, 0.0f)));
 	for (int y = 0; y < m_Indexes.size(); y++)
 	{
-		for (int x = 0; x < m_Indexes[0].size(); x++)
+		for (int x = 0; x < m_Indexes[y].size(); x++)
 			m_Indexes[y][x] = Vector2(y / 20.0f, x / 20.0f);
 	}
 
-	m_NoiseArray = std::vector< std::vector<float> >(GAME_MAP_Y, std::vector<float>(GAME_MAP_X, 0.0f));
+	m_NoiseArray = std::vector< std::vector<float> >(NUM_TILES_Y, std::vector<float>(NUM_TILES_X, 0.0f));
 	for (int y = 0; y < m_NoiseArray.size(); y++)
 	{
-		for (int x = 0; x < m_NoiseArray[0].size(); x++)
+		for (int x = 0; x < m_NoiseArray[y].size(); x++)
 			// This step generates noise based on the Perlin Function for a 2-Dimensional grid.
 			m_NoiseArray[y][x] = PerlinFunction(m_Indexes[y][x].data[0], m_Indexes[y][x].data[1]);
 	}

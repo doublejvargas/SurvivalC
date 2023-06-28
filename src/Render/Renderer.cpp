@@ -37,9 +37,33 @@ void Renderer::Render(Entity& entity, Shader& shader)
 	GLCall(glEnableVertexAttribArray(1)); // texture coordinates
 	// Load transformation matrix for this entity into the shader
 	shader.LoadTransformMatrix(Shader::CreateTransformationMatrix(entity.GetPosition(), entity.GetRotation(), entity.GetScale()));
-	// Load shine variables from texture
-	Texture texture = model.GetTexture();
 	// Activate an OpenGL texture and tell it where the texture is
+	Texture texture = model.GetTexture();
+	GLCall(glActiveTexture(GL_TEXTURE0));
+	GLCall(glBindTexture(GL_TEXTURE_2D, texture.TextureID()));
+	// Draw the model
+	GLCall(glDrawElements(GL_TRIANGLES, model.VertexCount(), GL_UNSIGNED_INT, 0));
+	// Disable attrib arrays / layout locations
+	GLCall(glDisableVertexAttribArray(0));
+	GLCall(glDisableVertexAttribArray(1));
+	// Unbind VAO
+	GLCall(glBindVertexArray(0));
+}
+
+//Tentative
+void Renderer::TerrainRender(Model& model, Shader& shader, const glm::vec2& pos, const std::string& texturefile)
+{
+	// Bind the model's VAO
+	GLCall(glBindVertexArray(model.VaoID()));
+	// Enable the attrib arrays / layout locations
+	GLCall(glEnableVertexAttribArray(0)); // positions
+	GLCall(glEnableVertexAttribArray(1)); // texture coordinates
+	// Load transformation matrix for this entity into the shader
+	shader.LoadTransformMatrix(Shader::CreateTransformationMatrix(pos, glm::vec2(0,0), glm::vec2(1, 1)));
+	//// Load shine variables from texture
+	//Texture texture = model.GetTexture();
+	// Activate an OpenGL texture and tell it where the texture is
+	Texture texture = model.GetTexture();
 	GLCall(glActiveTexture(GL_TEXTURE0));
 	GLCall(glBindTexture(GL_TEXTURE_2D, texture.TextureID()));
 	// Draw the model

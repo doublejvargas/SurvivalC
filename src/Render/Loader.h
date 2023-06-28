@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include "Model.h"
-#include <glm\glm.hpp>
+#include "glm\glm.hpp"
 
 // This class will help set up the models from the POV of OpenGL for rendering, in contrast to my other model classes that contain the game information and logic.
 // Game classes containing game-info and logic will contain in addition these visual model information so that OpenGL can render them.
@@ -13,8 +13,8 @@ public:
 	Loader();
 	~Loader();
 
-	Model LoadToVAO(const float* positions, unsigned int pos_count, const float* texCoords, unsigned int tex_count, 
-		const unsigned int* indices, unsigned int idx_count, const std::string& filename);
+	Model LoadToVAO(const std::vector<float>& positions, const std::vector<float>& texCoords, 
+		const std::vector<unsigned int>& indices, const std::string& filename);
 
 	GLuint LoadTexture(const std::string& filename);
 	void UnbindVAO() const;

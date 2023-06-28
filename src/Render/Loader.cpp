@@ -40,21 +40,20 @@ Loader::~Loader()
 	printf("Cleared array objects, buffers and textures\n");
 }
 
-Model Loader::LoadToVAO(const float* positions, unsigned int pos_count, const float* texCoords, unsigned int tex_count,
-	const unsigned int* indices, unsigned int idx_count, const std::string& filename)
+Model Loader::LoadToVAO(const std::vector<float>& positions, const std::vector<float>& texCoords,
+	const std::vector<unsigned int>& indices, const std::string& filename)
 {
 	// Create a new VAO
 	GLuint vaoID = CreateVAO();
-	BindIndicesBuffer(indices, idx_count);
+	BindIndicesBuffer(indices.data(), indices.size());
 	// positions in layout location/attrib location 0
-	StoreDataInAttributeList(0, 2, pos_count * sizeof(float), GL_FLOAT, positions);
+	StoreDataInAttributeList(0, 2, positions.size() * sizeof(float), GL_FLOAT, positions.data());
 	// texture coordinates in layout location/attrib location 1
-	StoreDataInAttributeList(1, 2, tex_count * sizeof(float), GL_FLOAT, texCoords);
+	StoreDataInAttributeList(1, 2, texCoords.size() * sizeof(float), GL_FLOAT, texCoords.data());
 
 	UnbindVAO();
-
 	// Look at console for any errors loading texture! That or Assert texture.
-	return Model(vaoID, pos_count, LoadTexture(filename));
+	return Model(vaoID, indices.size(), LoadTexture(filename));
 }
 
 GLuint Loader::LoadTexture(const std::string& path)
@@ -74,9 +73,9 @@ GLuint Loader::LoadTexture(const std::string& path)
 	// Tell OpenGL how to fill an area that's too big or too small
 	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-	// Tell OpenGL to clamp textures to edge (so you don't get transparent gaps)
-	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+	// Tell OpenGL to clamp textures to edge (so you don't get transparent gaps) OR we can use GL_REPEAT for tiling
+	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
+	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
 	// Store the OpenGL texture data
 	GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, databuffer));
 	// Unbind texture

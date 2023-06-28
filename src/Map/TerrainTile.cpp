@@ -6,6 +6,7 @@ TerrainTile::TerrainTile(float perlinVal, Game* game, const Vector2& pos)
 	: GameObject(game, pos)
 {
 	m_isRevealedOnMiniMap = false;
+
 	// Depending the Perlin Value, the terrain tile is given a specific terrain type, which in turn determines which routine function will be called to set up the tile
 	if (perlinVal <= -0.25f)
 	{

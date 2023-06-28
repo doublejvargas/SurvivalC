@@ -12,18 +12,21 @@ public:
 	Entity(Model model, const glm::vec2& position, const glm::vec2& rotation, const glm::vec2& scale)
 		: m_Model(model), m_Position(position), m_Rotation(rotation), m_Scale(scale) {}
 
+	/*Entity(const Entity& e)
+		: m_Model(e.GetModel()), m_Position(e.GetPosition()), m_Rotation(e.GetRotation()), m_Scale(e.GetScale()) {}*/
+
 	inline void ChangePosition(const glm::vec2& position) { m_Position += position; }
 	inline void ChangeRotation(const glm::vec2& rotation) { m_Rotation += rotation; }
-	inline void ChangeScale(const glm::vec2& scale) { m_Scale += scale; }
+	inline void ChangeScale(const glm::vec2& scale)		  { m_Scale += scale; }
 
-	inline Model GetModel()		{ return m_Model; }
-	inline glm::vec2 GetPosition() { return m_Position; }
-	inline glm::vec2 GetRotation() { return m_Rotation; }
-	inline glm::vec2 GetScale() { return m_Scale; }
+	inline Model GetModel()	const		 { return m_Model; }
+	inline glm::vec2 GetPosition() const { return m_Position; }
+	inline glm::vec2 GetRotation() const { return m_Rotation; }
+	inline glm::vec2 GetScale() const	 { return m_Scale; }
 
 	inline void SetPosition(const glm::vec2& position) { m_Position = position; }
 	inline void SetRotation(const glm::vec2& rotation) { m_Rotation = rotation; }
-	inline void SetScale(const glm::vec2& scale) { m_Scale = scale; }
+	inline void SetScale(const glm::vec2& scale)	   { m_Scale = scale; }
 
 private:
 	Model m_Model;

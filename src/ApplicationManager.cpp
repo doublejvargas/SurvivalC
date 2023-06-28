@@ -5,6 +5,7 @@
 #include "ApplicationManager.h"
 #include "Loader.h"
 #include "Renderer.h" //includes Shader and Entity
+#include "Map.h "
 #include "glm/glm.hpp"
 #include "Log.h"
 
@@ -69,14 +70,15 @@ void ApplicationManager::Start()
 	Shader shader("res/shaders/Shader2D");
 	Renderer renderer(shader);
 	
-	float positions[] = {
+	std::vector<float> positions = {
 		 0.0f,   0.0f,
-		 100.0f, 0.0f,
-		 100.0f, 100.0f,
-		 0.0f,   100.0f
+		 400.0f, 0.0f,
+		 400.0f, 400.0f,
+		 0.0f,   400.0f
 	};
 
-	float texcoords[] = {
+	// clock wise ordering of vertices
+	std::vector<float> texcoords= {
 		0.0f, 0.0f,
 		1.0f, 0.0f,
 		1.0f, 1.0f,
@@ -84,15 +86,29 @@ void ApplicationManager::Start()
 	};
 
 
-	unsigned int indices[] = {
+	std::vector<unsigned int> indices = {
 		0, 1, 2,
 		2, 3, 0
 	};
 
-	Model model = loader.LoadToVAO(positions, 8, texcoords, 8, indices, 6, "res/textures/yuzu.png");
+	Model model = loader.LoadToVAO(positions,texcoords, indices, "res/textures/yuzu.png");
 	Entity entity(model, glm::vec2(200, 200), glm::vec2(0, 0), glm::vec2(1, 1));
 
+	Game game;
+
+	Map map(&game, &loader);
+
+	Model* mdl = map.GetTerrainMapModel();
+	/*std::vector<std::vector<Entity>> entities(100, std::vector<Entity>(100, Entity(mdl, glm::vec2(0, 0), glm::vec2(0, 0), glm::vec2(1, 1))));
+	for (int j = 0; j < 100; j++) {
+		for (int i = 0; i < 100; i++) {
+			entities[j][i] = Entity(mdl, glm::vec2(i * 10, j * 10), glm::vec2(0, 0), glm::vec2(1, 1));
+		}
+	}*/
+	Entity mapinstance = Entity(*mdl, glm::vec2(0, 0), glm::vec2(0, 0), glm::vec2(1, 1));
+
 	printf("Running game loop...\n");
+	printf("Vertex count: %i", mdl->VertexCount()); // I noticed that for some reason the model2 variable changes value constantly throughout the program, including this part here.
 
 	double prevTime = glfwGetTime();
 	int frameCount = 0;
@@ -104,7 +120,14 @@ void ApplicationManager::Start()
 		renderer.Clear();
 		shader.Bind();
 
-		renderer.Render(entity, shader);
+		/*for (int j = 0; j < 100; j++) {
+			for (int i = 0; i < 100; i++) {
+				renderer.Render(entities[j][i], shader);
+			}
+		}*/
+
+		renderer.Render(mapinstance, shader);
+
 		shader.Unbind();
 
 		m_DisplayManager->UpdateDisplay();

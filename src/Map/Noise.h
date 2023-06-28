@@ -6,18 +6,18 @@
 class Noise
 {
 public:
-	Noise(unsigned int game_map_y, unsigned int game_map_x);
+	Noise(unsigned int num_tiles_y, unsigned int num_tiles_x);
 
 	float PerlinFunction(float y, float x);
 
 	void printNoise() const;
 
-	inline std::vector< std::vector<float> > noiseArray() { return m_NoiseArray; }
+	inline std::vector< std::vector<float> > NoiseArray() { return m_NoiseArray; }
 
 private:
 	// Represent the dimensions of the 2D grid in units of tiles
-	unsigned int GAME_MAP_Y;
-	unsigned int GAME_MAP_X;
+	unsigned int NUM_TILES_Y;
+	unsigned int NUM_TILES_X;
 
 	// 2-Dimensional Grid of random, unit-length gradient vectors that will be used in Perlin function
 	std::vector< std::vector<Vector2> > m_Grid;
