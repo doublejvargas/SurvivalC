@@ -41,7 +41,7 @@ Loader::~Loader()
 }
 
 Model Loader::LoadToVAO(const std::vector<float>& positions, const std::vector<float>& texCoords,
-	const std::vector<unsigned int>& indices, const std::string& filename)
+	const std::vector<unsigned int>& indices, const std::vector<float>& texIndices, const std::string& filename)
 {
 	// Create a new VAO
 	GLuint vaoID = CreateVAO();
@@ -50,6 +50,8 @@ Model Loader::LoadToVAO(const std::vector<float>& positions, const std::vector<f
 	StoreDataInAttributeList(0, 2, positions.size() * sizeof(float), GL_FLOAT, positions.data());
 	// texture coordinates in layout location/attrib location 1
 	StoreDataInAttributeList(1, 2, texCoords.size() * sizeof(float), GL_FLOAT, texCoords.data());
+	// texture index in layout location/attrib location 2
+	StoreDataInAttributeList(2, 1, texIndices.size() * sizeof(float), GL_FLOAT, texIndices.data());
 
 	UnbindVAO();
 	// Look at console for any errors loading texture! That or Assert texture.

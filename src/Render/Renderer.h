@@ -14,7 +14,7 @@ public:
 	
 	void Render(Entity& entity, Shader& shader);
 	//Tentative
-	void TerrainRender(Model& model, Shader& shader, const glm::vec2& pos, const std::string& texturefile);
+	void TerrainRender(Model& model, Shader& shader, const glm::vec2& pos, std::vector<Texture>& textures);
 	
 
 private:

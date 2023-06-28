@@ -4,7 +4,7 @@
 
 Map::Map(Game* game, Loader* loader)
 {
-	Noise noise(m_NUM_TILES_Y, m_NUM_TILES_X);
+	Noise noise(m_NUM_TILES_X, m_NUM_TILES_Y);
 	std::vector<std::vector<float>> perlinVals = noise.NoiseArray();
 
 	SetUpTerrainMap(perlinVals, game);
@@ -22,7 +22,7 @@ void Map::SetUpTerrainMap(std::vector<std::vector<float>> perVal, Game* game)
 		{
 			//KEY: this position is stored as (y,x) for vector/array purposes. For actual
 			// use of this data, it should be used/read traditionally as (x,y), especially for openGl.
-			m_TerrainTiles[y][x] = TerrainTile(perVal[y][x], game, Vector2(y, x));
+			m_TerrainTiles[y][x] = TerrainTile(perVal[y][x], game, Vector2((float)y, (float)x));
 		}
 	}
 }
@@ -35,9 +35,11 @@ Model Map::GenerateOglTerrain(Loader* loader)
 	std::vector<float> positions(numVertices * 2, 0.0f);
 	std::vector<float> texCoords(numVertices * 2, 0.0f);
 	std::vector<unsigned int> indices(6 * GRID_SIZE,  0);
+	std::vector<float> texIndices(numVertices, 0.0f);
 
 	//std::unordered_map<std::pair<int, int>, float> cache;
 
+	// Model positions
 	uint32_t idx = 0;
 	for (uint32_t y = 0; y < m_N; y++)
 	{
@@ -63,6 +65,7 @@ Model Map::GenerateOglTerrain(Loader* loader)
 		}
 	}
 
+	// Model texcoords 
 	for (uint32_t i = 0; i < texCoords.size(); i+=8)
 	{
 		texCoords[i]	 = 0.0f;		texCoords[i + 1] = 0.0f;
@@ -71,7 +74,7 @@ Model Map::GenerateOglTerrain(Loader* loader)
 		texCoords[i + 6] = 0.0f;		texCoords[i + 7] = 1.0f;
 	}
 
-
+	// Model indices
 	uint32_t offset = 0;
 	for (uint32_t i = 0; i < indices.size(); i+=6)
 	{
@@ -86,6 +89,39 @@ Model Map::GenerateOglTerrain(Loader* loader)
 		offset += 4;
 	}
 
+	// Model texture indices
+	idx = 0;
+	for (int y = 0; y < m_N; y++)
+	{
+		for (int x = 0; x < m_N; x++)
+		{
+			TerrainTile t = m_TerrainTiles[y][x];
+			if (t.getTerrainType() == TerrainTile::WATER)
+			{
+				texIndices[idx + 0] = 0.0f;
+				texIndices[idx + 1] = 0.0f;
+				texIndices[idx + 2] = 0.0f;
+				texIndices[idx + 3] = 0.0f;
+			}
+			else if (t.getTerrainType() == TerrainTile::GRASSLAND)
+			{
+				texIndices[idx + 0] = 1.0f;
+				texIndices[idx + 1] = 1.0f;
+				texIndices[idx + 2] = 1.0f;
+				texIndices[idx + 3] = 1.0f;
+			}
+			else // TerrainTile::DESERT
+			{
+				texIndices[idx + 0] = 2.0f;
+				texIndices[idx + 1] = 2.0f;
+				texIndices[idx + 2] = 2.0f;
+				texIndices[idx + 3] = 2.0f;
+			}
+
+			idx += 4;
+		}
+	}
+
 	// TODO: By default I'm loading in a water texture because I just wanna test terrain generation... in future ill base texture on terrain tile type.
-	return loader->LoadToVAO(positions, texCoords, indices, "res/textures/yuzu.png");
+	return /*loader->LoadToVAO(positions, texCoords, indices, "res/textures/yuzu.png")*/ Model(0, 0, Texture(0));
 }

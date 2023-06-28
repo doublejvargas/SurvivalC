@@ -148,6 +148,7 @@
     <ClCompile Include="src\Log.cpp" />
     <ClCompile Include="src\Map\Map.cpp" />
     <ClCompile Include="src\Map\Noise.cpp" />
+    <ClCompile Include="src\Map\PerlinNoise2D.cpp" />
     <ClCompile Include="src\Map\TerrainTile.cpp" />
     <ClCompile Include="src\Model\Game.cpp" />
     <ClCompile Include="src\Model\GameObject.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\Map\Map.h" />
     <ClInclude Include="src\Map\Noise.h" />
+    <ClInclude Include="src\Map\PerlinNoise2D.h" />
     <ClInclude Include="src\Map\TerrainTile.h" />
     <ClInclude Include="src\Model\Entity.h" />
     <ClInclude Include="src\Model\Game.h" />

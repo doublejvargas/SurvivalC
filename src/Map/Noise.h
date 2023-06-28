@@ -8,7 +8,7 @@ class Noise
 public:
 	Noise(unsigned int num_tiles_y, unsigned int num_tiles_x);
 
-	float PerlinFunction(float y, float x);
+	float PerlinFunction(float x, float y);
 
 	void printNoise() const;
 
@@ -27,8 +27,8 @@ private:
 	std::vector< std::vector<float> > m_NoiseArray;
 
 	// Routines that will be used in the main Perlin function
-	float dotProduct(float gridy, float gridx, float y, float x);
-	Vector2 computeOffsetVector(float gridy, float gridx, float y, float x);
+	float dotProduct(float gridx, float gridy, float x, float y);
+	Vector2 computeOffsetVector(float gridx, float gridy, float x, float y);
 	float linearInterpolation(float n0, float n1, float weight);
 	float fadeFunction(float preFade);
 }; 

@@ -60,13 +60,15 @@ void Shader::BindAttributes()
 {
 	BindAttribute(0, "a_Position");
 	BindAttribute(1, "a_TexCoord");
+	BindAttribute(2, "a_TexIndex");
 }
 
 void Shader::GetAllUniformLocations()
 {
 	m_TransformMatrixLoc = GetUniformLocation("u_TransformationMatrix");
 	m_OrthoMatrixLoc = GetUniformLocation("u_ProjectionMatrix");
-	m_OrthoMatrixLoc = GetUniformLocation("u_ViewMatrix");
+	m_ViewMatrixLoc = GetUniformLocation("u_ViewMatrix");
+	m_TexturesLoc = GetUniformLocation("u_Textures");
 }
 
 GLuint Shader::GetUniformLocation(const std::string& name)
@@ -100,6 +102,16 @@ void Shader::LoadProjectionMatrix(const glm::mat4& matrix)
 void Shader::LoadViewMatrix(Camera& camera)
 {
 	SetUniformMat4f(m_ViewMatrixLoc, CreateOrthoViewMatrix(camera));
+}
+
+void Shader::LoadTextureSampler(const GLint* vec, uint32_t size)
+{
+	SetUniformVec1iv(m_TexturesLoc, size, vec);
+}
+
+void Shader::SetUniformVec1iv(GLuint location, uint32_t size, const GLint* vec)
+{
+	GLCall(glUniform1iv(location, size, vec));
 }
 
 void Shader::SetUniformVec3f(GLuint location, const glm::vec3& value)

@@ -19,6 +19,7 @@ private:
 	GLuint m_TransformMatrixLoc;
 	GLuint m_OrthoMatrixLoc;
 	GLuint m_ViewMatrixLoc;
+	GLuint m_TexturesLoc;
 
 	// Uniform locations cache
 	std::unordered_map<std::string, int> m_UniformLocationCache;
@@ -42,10 +43,12 @@ public:
 	void LoadTransformMatrix(const glm::mat4& matrix);
 	void LoadProjectionMatrix(const glm::mat4& matrix);
 	void LoadViewMatrix(Camera& camera);
+	void LoadTextureSampler(const GLint* vec, uint32_t size);
 
+	void SetUniformVec1iv(GLuint location, uint32_t size, const GLint* vec);
 	// May be useful for loading colors into shader
 	void SetUniformVec3f(GLuint location, const glm::vec3& value);
-	// Useful for loading othrographic (projection) matrix and transformation matrices into shader
+	// Useful for loading orthographic (projection) matrix and transformation matrices into shader
 	void SetUniformMat4f(GLuint location, const glm::mat4& matrix);
 
 	//Helper methods

@@ -14,7 +14,7 @@ public:
 	~Loader();
 
 	Model LoadToVAO(const std::vector<float>& positions, const std::vector<float>& texCoords, 
-		const std::vector<unsigned int>& indices, const std::string& filename);
+		const std::vector<unsigned int>& indices, const std::vector<float>& texIndices, const std::string& filename);
 
 	GLuint LoadTexture(const std::string& filename);
 	void UnbindVAO() const;

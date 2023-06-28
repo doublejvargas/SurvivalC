@@ -6,6 +6,7 @@
 #include "Loader.h"
 #include "Renderer.h" //includes Shader and Entity
 #include "Map.h "
+#include "PerlinNoise2D.h"
 #include "glm/glm.hpp"
 #include "Log.h"
 
@@ -73,13 +74,23 @@ void ApplicationManager::Start()
 	
 	std::vector<float> positions = {
 		 0.0f,   0.0f,
-		 400.0f, 0.0f,
-		 400.0f, 400.0f,
-		 0.0f,   400.0f
+		 300.0f, 0.0f,
+		 300.0f, 300.0,
+		 0.0f,   300.0,
+
+		 600.0f, 0.0f,
+		 900.0f, 0.0f,
+		 900.0f, 300.0f,
+		 600.0f, 300.0f
 	};
 
 	// clock wise ordering of vertices
 	std::vector<float> texcoords= {
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+
 		0.0f, 0.0f,
 		1.0f, 0.0f,
 		1.0f, 1.0f,
@@ -88,12 +99,17 @@ void ApplicationManager::Start()
 
 
 	std::vector<unsigned int> indices = {
-		0, 1, 2,
-		2, 3, 0
+		0, 1, 2, 2, 3, 0,
+		4, 5, 6, 6, 7, 4
 	};
 
-	Model model = loader.LoadToVAO(positions,texcoords, indices, "res/textures/yuzu.png");
-	Entity entity(model, glm::vec2(200, 200), glm::vec2(0, 0), glm::vec2(1, 1));
+	std::vector<float> texindices = {
+		0, 0, 0, 0,
+		2, 2, 2, 2
+	};
+
+// 	Model model = loader.LoadToVAO(positions,texcoords, indices, "res/textures/yuzu.png");
+// 	Entity entity(model, glm::vec2(200, 200), glm::vec2(0, 0), glm::vec2(1, 1));
 
 	Game game;
 
@@ -107,6 +123,31 @@ void ApplicationManager::Start()
 		}
 	}*/
 	Entity mapinstance = Entity(*mdl, glm::vec2(0, 0), glm::vec2(0, 0), glm::vec2(1, 1));
+
+	Model test = loader.LoadToVAO(positions, texcoords, indices, texindices, "res/textures/desert.png");
+
+	PerlinNoise2D noise(100, 100);
+	float scale = 2.0f;
+	noise.Init();
+	for (int y = 0; y < 9; y++)
+	{
+		for (int x = 0; x < 9; x++)
+		{
+			float x1 = x * scale / 9;
+			float y1 = y * scale / 9;
+			float val = noise.Value(x1, y1);
+			printf("perlin val at (%i, %i): %.5f\n", x, y, val);
+		}
+	}
+
+	shader.Bind();
+	int sampler[3] = { 0, 1, 2 };
+	shader.LoadTextureSampler(sampler, 3);
+
+	std::vector<Texture> textures;
+	textures.push_back(loader.LoadTexture("res/textures/yuzu.png"));
+	textures.push_back(loader.LoadTexture("res/textures/water.png"));
+	textures.push_back(loader.LoadTexture("res/textures/grass2.png"));
 
 	printf("Running game loop...\n");
 	printf("Vertex count: %i", mdl->VertexCount()); // I noticed that for some reason the model2 variable changes value constantly throughout the program, including this part here.
@@ -128,7 +169,8 @@ void ApplicationManager::Start()
 			}
 		}*/
 		shader.LoadViewMatrix(camera);
-		renderer.Render(mapinstance, shader);
+		//renderer.Render(mapinstance, shader);
+		renderer.TerrainRender(test, shader, glm::vec2(0, 0), textures);
 
 		shader.Unbind();
 

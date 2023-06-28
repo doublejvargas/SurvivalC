@@ -9,8 +9,8 @@ class Map
 private:
 	static const uint32_t m_TILE_SIZE = 30;
 	static const uint32_t m_N = 20;
-	static const uint32_t m_NUM_TILES_Y = 10;
-	static const uint32_t m_NUM_TILES_X = 10;
+	static const uint32_t m_NUM_TILES_Y = 100;
+	static const uint32_t m_NUM_TILES_X = 100;
 
 	std::vector<std::vector<TerrainTile>> m_TerrainTiles;
 

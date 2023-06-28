@@ -69,6 +69,9 @@
     <ClCompile Include="src\Controller\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Map\PerlinNoise2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Toolbox\Vector2.h">
@@ -132,6 +135,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Controller\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Map\PerlinNoise2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
