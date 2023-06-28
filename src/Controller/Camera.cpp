@@ -13,7 +13,7 @@ Camera::Camera()
 
 void Camera::Move()
 {
-	float sens = 0.005f;
+	float sens = 5.0f;
 
 	if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_W) == GLFW_PRESS)
 		m_Position.y += sens;

@@ -1,28 +1,34 @@
 #include "Map.h"
-#include "Noise.h"
+#include "PerlinNoise2D.h"
 #include <unordered_map>
 
 Map::Map(Game* game, Loader* loader)
 {
-	Noise noise(m_NUM_TILES_X, m_NUM_TILES_Y);
-	std::vector<std::vector<float>> perlinVals = noise.NoiseArray();
-
-	SetUpTerrainMap(perlinVals, game);
-
-	Model m = GenerateOglTerrain(loader);
-	m_TerrainMapModel = &m;
+	SetUpTerrainMap(game);
+	m_TerrainMapModel = new Model(GenerateOglTerrain(loader));
 }
 
-void Map::SetUpTerrainMap(std::vector<std::vector<float>> perVal, Game* game)
+Map::~Map()
+{
+	delete m_TerrainMapModel;
+}
+
+void Map::SetUpTerrainMap(Game* game)
 {
 	m_TerrainTiles = std::vector<std::vector<TerrainTile>>(m_NUM_TILES_Y, std::vector<TerrainTile>(m_NUM_TILES_X, TerrainTile(0.0f, game, Vector2(0, 0))));
+
+	PerlinNoise2D noise;
+	noise.init();
+	float scale = 2.0f;
 	for (int y = 0; y < m_NUM_TILES_Y; y++)
 	{
 		for (int x = 0; x < m_NUM_TILES_X; x++)
 		{
+			float x1 = x * scale / m_NUM_TILES_X;
+			float y1 = y * scale / m_NUM_TILES_Y;
 			//KEY: this position is stored as (y,x) for vector/array purposes. For actual
 			// use of this data, it should be used/read traditionally as (x,y), especially for openGl.
-			m_TerrainTiles[y][x] = TerrainTile(perVal[y][x], game, Vector2((float)y, (float)x));
+			m_TerrainTiles[y][x] = TerrainTile(noise.value(x1, y1), game, Vector2((float)y, (float)x));
 		}
 	}
 }
@@ -36,8 +42,6 @@ Model Map::GenerateOglTerrain(Loader* loader)
 	std::vector<float> texCoords(numVertices * 2, 0.0f);
 	std::vector<unsigned int> indices(6 * GRID_SIZE,  0);
 	std::vector<float> texIndices(numVertices, 0.0f);
-
-	//std::unordered_map<std::pair<int, int>, float> cache;
 
 	// Model positions
 	uint32_t idx = 0;
@@ -65,7 +69,7 @@ Model Map::GenerateOglTerrain(Loader* loader)
 		}
 	}
 
-	// Model texcoords 
+	// Model texture coordinates 
 	for (uint32_t i = 0; i < texCoords.size(); i+=8)
 	{
 		texCoords[i]	 = 0.0f;		texCoords[i + 1] = 0.0f;
@@ -123,5 +127,5 @@ Model Map::GenerateOglTerrain(Loader* loader)
 	}
 
 	// TODO: By default I'm loading in a water texture because I just wanna test terrain generation... in future ill base texture on terrain tile type.
-	return /*loader->LoadToVAO(positions, texCoords, indices, "res/textures/yuzu.png")*/ Model(0, 0, Texture(0));
+	return loader->LoadToVAO(positions, texCoords, indices, texIndices);
 }

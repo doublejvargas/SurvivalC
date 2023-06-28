@@ -51,23 +51,9 @@ ApplicationManager::~ApplicationManager()
 void ApplicationManager::Start()
 {
 	printf("C++ Standard: %i\n", __cplusplus);
-
-
-	//float positions[6] = {
-	//	-0.5f, -0.5f,
-	//	 0.0f,  0.5f,
-	//	 0.5f, -0.5f
-	//};
-
-	//unsigned int buffer;
-	//glGenBuffers(1, &buffer); // vertex buffer
-	//glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	//glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
-
-	//glEnableVertexAttribArray(0); //index buffer
-	//glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0); //vertex buffer specification
-
+	Game game;
 	Loader loader;
+	Map map(&game, &loader);
 	Shader shader("res/shaders/Shader2D");
 	Renderer renderer(shader);
 	Camera camera;
@@ -108,54 +94,28 @@ void ApplicationManager::Start()
 		2, 2, 2, 2
 	};
 
-// 	Model model = loader.LoadToVAO(positions,texcoords, indices, "res/textures/yuzu.png");
-// 	Entity entity(model, glm::vec2(200, 200), glm::vec2(0, 0), glm::vec2(1, 1));
+	//Model test = loader.LoadToVAO(positions, texcoords, indices, texindices, "res/textures/desert.png");
 
-	Game game;
+	Model mapModel = map.GetTerrainMapModel();
+	Entity mapInstance(mapModel, glm::vec2(0, 0), glm::vec2(0, 0), glm::vec2(1, 1));
 
-	Map map(&game, &loader);
-
-	Model* mdl = map.GetTerrainMapModel();
-	/*std::vector<std::vector<Entity>> entities(100, std::vector<Entity>(100, Entity(mdl, glm::vec2(0, 0), glm::vec2(0, 0), glm::vec2(1, 1))));
-	for (int j = 0; j < 100; j++) {
-		for (int i = 0; i < 100; i++) {
-			entities[j][i] = Entity(mdl, glm::vec2(i * 10, j * 10), glm::vec2(0, 0), glm::vec2(1, 1));
-		}
-	}*/
-	Entity mapinstance = Entity(*mdl, glm::vec2(0, 0), glm::vec2(0, 0), glm::vec2(1, 1));
-
-	Model test = loader.LoadToVAO(positions, texcoords, indices, texindices, "res/textures/desert.png");
-
-	PerlinNoise2D noise(100, 100);
-	float scale = 2.0f;
-	noise.Init();
-	for (int y = 0; y < 9; y++)
-	{
-		for (int x = 0; x < 9; x++)
-		{
-			float x1 = x * scale / 9;
-			float y1 = y * scale / 9;
-			float val = noise.Value(x1, y1);
-			printf("perlin val at (%i, %i): %.5f\n", x, y, val);
-		}
-	}
-
+	// Texture batching TODO: abstract this into shader class
 	shader.Bind();
-	int sampler[3] = { 0, 1, 2 };
-	shader.LoadTextureSampler(sampler, 3);
+	int terrain_sampler[3] = { 0, 1, 2 };
+	shader.LoadTextureSampler(terrain_sampler, 3);
 
 	std::vector<Texture> textures;
-	textures.push_back(loader.LoadTexture("res/textures/yuzu.png"));
 	textures.push_back(loader.LoadTexture("res/textures/water.png"));
-	textures.push_back(loader.LoadTexture("res/textures/grass2.png"));
+	textures.push_back(loader.LoadTexture("res/textures/grass.png"));
+	textures.push_back(loader.LoadTexture("res/textures/desert.png"));
 
 	printf("Running game loop...\n");
-	printf("Vertex count: %i", mdl->VertexCount()); // I noticed that for some reason the model2 variable changes value constantly throughout the program, including this part here.
+	printf("Vertex count: %i\n", mapModel.VertexCount());
 
 	double prevTime = glfwGetTime();
 	int frameCount = 0;
 
-	// Game loop! We might need to create an actual game loop function so that we don't write everything here.
+	// TODO: Game loop! We might need to create an actual game loop function so that we don't write everything here.
 	while (m_DisplayManager->IsWindowOpen())
 	{
 		/* Render here */
@@ -163,21 +123,15 @@ void ApplicationManager::Start()
 		camera.Move();
 		shader.Bind();
 
-		/*for (int j = 0; j < 100; j++) {
-			for (int i = 0; i < 100; i++) {
-				renderer.Render(entities[j][i], shader);
-			}
-		}*/
 		shader.LoadViewMatrix(camera);
 		//renderer.Render(mapinstance, shader);
-		renderer.TerrainRender(test, shader, glm::vec2(0, 0), textures);
+		renderer.TerrainRender(mapModel, shader, glm::vec2(0,0), textures);
 
 		shader.Unbind();
 
 		m_DisplayManager->UpdateDisplay();
 		m_DisplayManager->ShowFPS(prevTime, frameCount);
 	}
-	// We may need to do some opengl cleanup here. eg. shaders, renderers, unbindings, etc..
-	
+
 	printf("Game loop terminated\n");
 }

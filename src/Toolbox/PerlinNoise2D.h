@@ -4,18 +4,15 @@
 #include <vector>
 #include "cstdlib"
 
+#define WRAP_SIZE 256
+
 class PerlinNoise2D
 {
 public:
-	PerlinNoise2D(int w, int h);
-	void Init();
+	void init();
 
-	float Value(float x, float y);
+	float value(float x, float y);
 private:
 	float DotProduct(const Vector2& v1, const Vector2& v2);
 	std::vector<Vector2> m_Gradients;
-	//std::vector<Vector2> m_Indices;
-	int m_WIDTH;
-	int m_HEIGHT;
-	int WRAP_SIZE = 256;
 };

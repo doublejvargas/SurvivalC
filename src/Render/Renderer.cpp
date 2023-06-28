@@ -32,10 +32,12 @@ void Renderer::Render(Entity& entity, Shader& shader)
 
 	// Bind the model's VAO
 	GLCall(glBindVertexArray(model.VaoID()));
+
 	// Enable the attrib arrays / layout locations
 	GLCall(glEnableVertexAttribArray(0)); // positions
 	GLCall(glEnableVertexAttribArray(1)); // texture coordinates
 	GLCall(glEnableVertexAttribArray(2)); // texture index
+
 	// Load transformation matrix for this entity into the shader
 	shader.LoadTransformMatrix(Shader::CreateTransformationMatrix(entity.GetPosition(), entity.GetRotation(), entity.GetScale()));
 
@@ -43,12 +45,15 @@ void Renderer::Render(Entity& entity, Shader& shader)
 	Texture texture = model.GetTexture();
 	GLCall(glActiveTexture(GL_TEXTURE0));
 	GLCall(glBindTexture(GL_TEXTURE_2D, texture.TextureID()));
+
 	// Draw the model
 	GLCall(glDrawElements(GL_TRIANGLES, model.VertexCount(), GL_UNSIGNED_INT, 0));
+
 	// Disable attrib arrays / layout locations
 	GLCall(glDisableVertexAttribArray(0));
 	GLCall(glDisableVertexAttribArray(1));
 	GLCall(glDisableVertexAttribArray(2));
+
 	// Unbind VAO
 	GLCall(glBindVertexArray(0));
 }
@@ -58,25 +63,28 @@ void Renderer::TerrainRender(Model& model, Shader& shader, const glm::vec2& pos,
 {
 	// Bind the model's VAO
 	GLCall(glBindVertexArray(model.VaoID()));
+
 	// Enable the attrib arrays / layout locations
 	GLCall(glEnableVertexAttribArray(0)); // positions
 	GLCall(glEnableVertexAttribArray(1)); // texture coordinates
 	GLCall(glEnableVertexAttribArray(2)); // texture index
+
 	// Load transformation matrix for this entity into the shader
 	shader.LoadTransformMatrix(Shader::CreateTransformationMatrix(pos, glm::vec2(0,0), glm::vec2(1, 1)));
-	//Texture texture = model.GetTexture();
+
 	// Activate an OpenGL texture and tell it where the texture is
 	GLCall(glBindTextureUnit(0, textures[0].TextureID()));
 	GLCall(glBindTextureUnit(1, textures[1].TextureID()));
 	GLCall(glBindTextureUnit(2, textures[2].TextureID()));
-	//GLCall(glActiveTexture(GL_TEXTURE0));
-	//GLCall(glBindTexture(GL_TEXTURE_2D, texture.TextureID()));
+
 	// Draw the model
 	GLCall(glDrawElements(GL_TRIANGLES, model.VertexCount(), GL_UNSIGNED_INT, 0));
+
 	// Disable attrib arrays / layout locations
 	GLCall(glDisableVertexAttribArray(0));
 	GLCall(glDisableVertexAttribArray(1));
 	GLCall(glDisableVertexAttribArray(2));
+
 	// Unbind VAO
 	GLCall(glBindVertexArray(0));
 }

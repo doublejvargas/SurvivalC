@@ -60,16 +60,13 @@
     <ClCompile Include="src\Map\TerrainTile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Map\Noise.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Map\Map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Controller\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Map\PerlinNoise2D.cpp">
+    <ClCompile Include="src\Toolbox\PerlinNoise2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -128,16 +125,13 @@
     <ClInclude Include="src\Map\TerrainTile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Map\Noise.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Map\Map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Controller\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Map\PerlinNoise2D.h">
+    <ClInclude Include="src\Toolbox\PerlinNoise2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

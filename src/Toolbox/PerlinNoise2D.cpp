@@ -2,15 +2,7 @@
 #include <random>
 #include <math.h>
 
-PerlinNoise2D::PerlinNoise2D(int w, int h)
-	: m_WIDTH(w), m_HEIGHT(h)
-{
-	//WRAP_SIZE = (int)ceil(m_WIDTH / 5.0f);
-	//Init();
-
-}
-
-void PerlinNoise2D::Init()
+void PerlinNoise2D::init()
 {
 	Vector2 grad[4] = {
 		{1,	 0},
@@ -29,22 +21,9 @@ void PerlinNoise2D::Init()
 		m_Gradients[i] = grad[dis(gen) % 4];
 	}
 
-	/*m_Indices = std::vector< std::vector<Vector2> >(m_WIDTH, std::vector<Vector2>(m_HEIGHT, Vector2(0.0f, 0.0f)));
-	for (uint32_t y = 0; y < m_WIDTH; y++)
-	{
-		for (uint32_t x = 0; x < m_HEIGHT; x++)
-		{
-			int iX = (int)x;
-			int iY = (int)y;
-			float facX = (float)(iX / 20);
-			float facY = (float)(iY / 20);
-			m_Indices[y][x] = Vector2(facY, facX);
-		}
-
-	}*/
 }
 
-float PerlinNoise2D::Value(float x, float y)
+float PerlinNoise2D::value(float x, float y)
 {
 	// integer part
 	int ix = (int)x;
