@@ -11,7 +11,7 @@ Renderer::Renderer(Shader& shader)
 	m_OrthoMatrix = glm::ortho(0.0f, 1280.0f, 720.0f, 0.0f, -1.0f, 1.0f);
 
 	shader.Bind();
-	shader.LoadOrthoMatrix(m_OrthoMatrix);
+	shader.LoadProjectionMatrix(m_OrthoMatrix);
 	shader.Unbind();
 }
 

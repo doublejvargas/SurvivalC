@@ -5,11 +5,9 @@
 #include "Entity.h"
 #include "Loader.h"
 
+// NOTE: this object's position is stored as (y, x), but should be used/read traditionally in this program as (x,y), especially for OpenGl.
 class TerrainTile : protected GameObject
 {
-//private:
-//	const float m_SIZE = 100;
-//	const float m_VERTEX_COUNT = 128;
 
 public:
 	enum StatObjType { ROCK, BUSH, TREE, BASE, NONE };

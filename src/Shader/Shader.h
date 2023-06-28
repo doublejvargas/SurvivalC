@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include <unordered_map>
 #include "glm/glm.hpp"
+#include "Camera.h"
 
 
 class Shader
@@ -17,6 +18,7 @@ private:
 	//Uniform locations
 	GLuint m_TransformMatrixLoc;
 	GLuint m_OrthoMatrixLoc;
+	GLuint m_ViewMatrixLoc;
 
 	// Uniform locations cache
 	std::unordered_map<std::string, int> m_UniformLocationCache;
@@ -38,7 +40,8 @@ public:
 	void BindAttribute(unsigned int layout_location, const std::string& name);
 
 	void LoadTransformMatrix(const glm::mat4& matrix);
-	void LoadOrthoMatrix(const glm::mat4& matrix);
+	void LoadProjectionMatrix(const glm::mat4& matrix);
+	void LoadViewMatrix(Camera& camera);
 
 	// May be useful for loading colors into shader
 	void SetUniformVec3f(GLuint location, const glm::vec3& value);
@@ -47,6 +50,7 @@ public:
 
 	//Helper methods
 	static glm::mat4 CreateTransformationMatrix(const glm::vec2& translation, const glm::vec2& rotation, const glm::vec2& scale);
+	static glm::mat4 CreateOrthoViewMatrix(Camera& camera);
 
 private:
 	GLuint LoadShader(const std::string& filename, GLenum type);

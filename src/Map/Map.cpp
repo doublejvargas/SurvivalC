@@ -20,6 +20,8 @@ void Map::SetUpTerrainMap(std::vector<std::vector<float>> perVal, Game* game)
 	{
 		for (int x = 0; x < m_NUM_TILES_X; x++)
 		{
+			//KEY: this position is stored as (y,x) for vector/array purposes. For actual
+			// use of this data, it should be used/read traditionally as (x,y), especially for openGl.
 			m_TerrainTiles[y][x] = TerrainTile(perVal[y][x], game, Vector2(y, x));
 		}
 	}
@@ -41,21 +43,21 @@ Model Map::GenerateOglTerrain(Loader* loader)
 	{
 		for (uint32_t x = 0; x < m_N; x++)
 		{
-			//Top left x
+			//Top left vertex x
 			positions[idx + 0] = (float)x * m_TILE_SIZE;
-			// Top left y
+			// Top left vertex y
 			positions[idx + 1] = (float)y * m_TILE_SIZE;
-			// Top right x
+			// Top right vertex x
 			positions[idx + 2] = (float)(x + 1) * m_TILE_SIZE;
-			// Top right y
+			// Top right vertex y
 			positions[idx + 3] = (float)y * m_TILE_SIZE;
-			// Bottom right x
+			// Bottom right vertex x
 			positions[idx + 4] = (float)(x + 1) * m_TILE_SIZE;
-			// Bottom right y
+			// Bottom right vertex y
 			positions[idx + 5] = (float)(y + 1) * m_TILE_SIZE;
-			// Bottom left x
+			// Bottom left vertex x
 			positions[idx + 6] = (float)x * m_TILE_SIZE;
-			// Bottom left y
+			// Bottom left vertex y
 			positions[idx + 7] = (float)(y + 1) * m_TILE_SIZE;
 			idx += 8;
 		}

@@ -65,6 +65,7 @@ void Shader::BindAttributes()
 void Shader::GetAllUniformLocations()
 {
 	m_TransformMatrixLoc = GetUniformLocation("u_TransformationMatrix");
+	m_OrthoMatrixLoc = GetUniformLocation("u_ProjectionMatrix");
 	m_OrthoMatrixLoc = GetUniformLocation("u_ViewMatrix");
 }
 
@@ -91,9 +92,14 @@ void Shader::LoadTransformMatrix(const glm::mat4& matrix)
 	SetUniformMat4f(m_TransformMatrixLoc, matrix);
 }
 
-void Shader::LoadOrthoMatrix(const glm::mat4& matrix)
+void Shader::LoadProjectionMatrix(const glm::mat4& matrix)
 {
 	SetUniformMat4f(m_OrthoMatrixLoc, matrix);
+}
+
+void Shader::LoadViewMatrix(Camera& camera)
+{
+	SetUniformMat4f(m_ViewMatrixLoc, CreateOrthoViewMatrix(camera));
 }
 
 void Shader::SetUniformVec3f(GLuint location, const glm::vec3& value)
@@ -120,6 +126,11 @@ glm::mat4 Shader::CreateTransformationMatrix(const glm::vec2& translation, const
 	
 	// the transformation matrix is the product of the three matrices above. Order matters: scale, rotate & translate (matrix multiplication is read from right to left!)
 	return translationMatrix * rotationMatrix * scaleMatrix;
+}
+
+glm::mat4 Shader::CreateOrthoViewMatrix(Camera& camera)
+{
+	return glm::lookAt(camera.GetPosition(), camera.GetPosition() + glm::vec3(0, 0, -1), glm::vec3(0, 1, 0));
 }
 
 GLuint Shader::LoadShader(const std::string& filename, GLenum type)

@@ -7,8 +7,8 @@
 class Map
 {
 private:
-	static const uint32_t m_TILE_SIZE = 60;
-	static const uint32_t m_N = 10;
+	static const uint32_t m_TILE_SIZE = 30;
+	static const uint32_t m_N = 20;
 	static const uint32_t m_NUM_TILES_Y = 10;
 	static const uint32_t m_NUM_TILES_X = 10;
 

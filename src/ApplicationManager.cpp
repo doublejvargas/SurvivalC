@@ -19,7 +19,7 @@ ApplicationManager::ApplicationManager()
 
 		//Create Display Manager (don't forget to delete the pointer in destructor)
 		// This dynamic creation of a DisplayManager object creates a context, sets the context current, and creates a window with a title. See DisplayManager constructor.
-		m_DisplayManager = new DisplayManager(1280, 720, "SURVIVAL");
+		m_DisplayManager = new DisplayManager(1920, 1080, "SURVIVAL");
 
 		//Initialize GLEW after GLFW and window
 		GLenum status = glewInit();
@@ -69,6 +69,7 @@ void ApplicationManager::Start()
 	Loader loader;
 	Shader shader("res/shaders/Shader2D");
 	Renderer renderer(shader);
+	Camera camera;
 	
 	std::vector<float> positions = {
 		 0.0f,   0.0f,
@@ -118,6 +119,7 @@ void ApplicationManager::Start()
 	{
 		/* Render here */
 		renderer.Clear();
+		camera.Move();
 		shader.Bind();
 
 		/*for (int j = 0; j < 100; j++) {
@@ -125,7 +127,7 @@ void ApplicationManager::Start()
 				renderer.Render(entities[j][i], shader);
 			}
 		}*/
-
+		shader.LoadViewMatrix(camera);
 		renderer.Render(mapinstance, shader);
 
 		shader.Unbind();
