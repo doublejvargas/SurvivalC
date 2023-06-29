@@ -1,6 +1,7 @@
 #pragma once
-#include "Game.h"
 #include "Vector2.h"
+
+class Game;
 
 // Base class from which StationaryObject and MobileObject derive
 class GameObject
@@ -13,8 +14,8 @@ public:
 	GameObject(Game* game, const Vector2& position);
 
 	// Getters and setters
-	inline Game* getGame()								{ return m_Game; }
-	inline Vector2 Position()							{ return m_Pos; }
+	inline Game* getGame() const						{ return m_Game; }
+	inline Vector2 getPosition() const					{ return m_Pos; }
 	inline void setPosition(const Vector2& position)	{ m_Pos = position; }
 
 	// Protected as derived classes will need to have access to these member variables

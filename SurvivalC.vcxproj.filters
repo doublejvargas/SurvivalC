@@ -140,6 +140,9 @@
     <ClInclude Include="src\Model\Tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Model\Food.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\res\Shader2D.frag" />

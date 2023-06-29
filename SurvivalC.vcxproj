@@ -166,6 +166,7 @@
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\Map\Map.h" />
     <ClInclude Include="src\Model\Bush.h" />
+    <ClInclude Include="src\Model\Food.h" />
     <ClInclude Include="src\Model\Rock.h" />
     <ClInclude Include="src\Model\Tree.h" />
     <ClInclude Include="src\Toolbox\PerlinNoise2D.h" />

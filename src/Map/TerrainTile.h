@@ -1,10 +1,7 @@
 #pragma once
-
 #include "GameObject.h"
-#include "StationaryObject.h"
-#include "Entity.h"
-#include "Loader.h"
 
+class StationaryObject;
 // NOTE: this object's position is stored as (y, x), but should be used/read traditionally in this program as (x,y), especially for OpenGl.
 class TerrainTile : protected GameObject
 {
@@ -15,7 +12,7 @@ public:
 
 	TerrainTile(float perlinVal, Game* game, const Vector2& pos);
 
-	inline StationaryObject* StatObj()	const { return m_StatObj; }
+	inline StationaryObject* getStatObj()	const { return m_StatObj; }
 	inline StatObjType getStatObjType()	const { return m_StatObjType; }
 	inline TerrainType getTerrainType()	const { return m_TerrainType; }
 	inline bool hasStatObj()			const { return m_hasStatObj; }
@@ -44,5 +41,4 @@ private:
 
 	void grasslandSetup();
 	void desertSetup();
-
 };

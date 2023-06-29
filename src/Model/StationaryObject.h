@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameOBject.h"
+#include "GameObject.h"
 #include "Interfaces.h"
 
 // Stationary objects are a single step away from GameObject in the class hierarchy. They do not contain any methods

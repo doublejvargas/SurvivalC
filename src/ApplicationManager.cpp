@@ -3,8 +3,9 @@
 #include <cstdlib>
 #include <ctime>
 #include "ApplicationManager.h"
+#include "Game.h"
 #include "Loader.h"
-#include "Renderer.h" //includes Shader and Entity
+#include "Renderer.h"
 #include "Map.h "
 #include "PerlinNoise2D.h"
 #include "glm/glm.hpp"

@@ -1,7 +1,9 @@
 #pragma once
-
 #include "StationaryObject.h"
 #include <random>
+
+class Game;
+class StationaryObject;
 
 class Bush : protected StationaryObject
 {

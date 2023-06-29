@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Player.h"
-#include "MobileObject.h"
+class Player;
+class MobileObject;
 
 // This header file contains a namespace that holds all the interfaces that some derived classes will make use of
 namespace Interfaces

@@ -1,5 +1,6 @@
 #pragma once
-
+#include "Model.h"
+#include "Loader.h"
 #include "TerrainTile.h"
 #include <vector>
 
