@@ -27,5 +27,8 @@ void Camera::Move()
 		m_Position.z -= sens;
 	if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_E) == GLFW_PRESS)
 		m_Position.z += sens;
+
+	if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_R) == GLFW_PRESS)
+		m_Position = glm::vec3(0, 0, -1);
 }
 

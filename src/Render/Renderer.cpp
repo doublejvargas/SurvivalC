@@ -15,10 +15,6 @@ Renderer::Renderer(Shader& shader)
 	shader.Unbind();
 }
 
-Renderer::~Renderer()
-{
-}
-
 void Renderer::Clear() const
 {
 	// Clear

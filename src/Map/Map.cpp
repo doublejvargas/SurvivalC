@@ -15,17 +15,17 @@ Map::~Map()
 
 void Map::SetUpTerrainMap(Game* game)
 {
-	m_TerrainTiles = std::vector<std::vector<TerrainTile>>(m_NUM_TILES_Y, std::vector<TerrainTile>(m_NUM_TILES_X, TerrainTile(0.0f, game, Vector2(0, 0))));
+	m_TerrainTiles = std::vector<std::vector<TerrainTile>>(m_N, std::vector<TerrainTile>(m_N, TerrainTile(0.0f, game, Vector2(0, 0))));
 
 	PerlinNoise2D noise;
 	noise.init();
 	float scale = 2.0f;
-	for (int y = 0; y < m_NUM_TILES_Y; y++)
+	for (int y = 0; y < m_N; y++)
 	{
-		for (int x = 0; x < m_NUM_TILES_X; x++)
+		for (int x = 0; x < m_N; x++)
 		{
-			float x1 = x * scale / m_NUM_TILES_X;
-			float y1 = y * scale / m_NUM_TILES_Y;
+			float x1 = x * scale / m_N;
+			float y1 = y * scale / m_N;
 			//KEY: this position is stored as (y,x) for vector/array purposes. For actual
 			// use of this data, it should be used/read traditionally as (x,y), especially for openGl.
 			m_TerrainTiles[y][x] = TerrainTile(noise.value(x1, y1), game, Vector2((float)y, (float)x));

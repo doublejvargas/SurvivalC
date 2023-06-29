@@ -27,9 +27,6 @@
     <ClCompile Include="src\Model\GameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Model\StationaryObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Model\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -132,6 +129,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Toolbox\PerlinNoise2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Model\Bush.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Model\Rock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Model\Tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

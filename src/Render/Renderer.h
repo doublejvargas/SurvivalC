@@ -8,7 +8,6 @@ class Renderer
 public:
 
 	Renderer(Shader& shader);
-	~Renderer();
 
 	void Clear() const;
 	

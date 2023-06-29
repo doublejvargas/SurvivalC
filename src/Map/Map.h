@@ -7,13 +7,13 @@
 class Map
 {
 private:
-	static const uint32_t m_TILE_SIZE = 30;
-	static const uint32_t m_N = 50;
-	static const uint32_t m_NUM_TILES_Y = 50; //these must be the same as m_N!!
-	static const uint32_t m_NUM_TILES_X = 50;
-
+	//Pixel size of a terrain tile
+	static const uint32_t m_TILE_SIZE	= 30;
+	//Dimension of terrain grid, to be interpreted as m_N x m_N (square)
+	static const uint32_t m_N			= 30;
+	//2D vector of terrain tile objects. Corresponds to what is drawn by OpenGL.
 	std::vector<std::vector<TerrainTile>> m_TerrainTiles;
-
+	//OpenGL model for the terrain tiles.
 	Model* m_TerrainMapModel = nullptr;
 
 public:
@@ -23,11 +23,12 @@ public:
 
 	inline std::vector<std::vector<TerrainTile>> GetTerrainTiles() const { return m_TerrainTiles; }
 	inline Model& GetTerrainMapModel() const { return *m_TerrainMapModel; }
-	inline uint32_t GetNumTilesX() const { return m_NUM_TILES_X; }
-	inline uint32_t GetNumTilesY() const { return m_NUM_TILES_Y; }
+	inline uint32_t GridDimensionX() const { return m_N; }
+	inline uint32_t GridDimensionY() const { return m_N; }
 
 private:
+	// Sets up terrain objects on game logic side
 	void SetUpTerrainMap(Game* game);
-	// Function creates the model for the terrain based on the terrain tiles. This is for OpenGL rendering.
+	// Sets up terrain model on OpenGL side.
 	Model GenerateOglTerrain(Loader* loader);
 };

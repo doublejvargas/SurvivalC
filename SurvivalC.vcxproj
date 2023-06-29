@@ -153,7 +153,6 @@
     <ClCompile Include="src\Model\GameObject.cpp" />
     <ClCompile Include="src\Model\MobileObject.cpp" />
     <ClCompile Include="src\Model\Player.cpp" />
-    <ClCompile Include="src\Model\StationaryObject.cpp" />
     <ClCompile Include="src\ApplicationManager.cpp" />
     <ClCompile Include="src\Render\DisplayManager.cpp" />
     <ClCompile Include="src\Render\Loader.cpp" />
@@ -166,6 +165,9 @@
     <ClInclude Include="src\Controller\Camera.h" />
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\Map\Map.h" />
+    <ClInclude Include="src\Model\Bush.h" />
+    <ClInclude Include="src\Model\Rock.h" />
+    <ClInclude Include="src\Model\Tree.h" />
     <ClInclude Include="src\Toolbox\PerlinNoise2D.h" />
     <ClInclude Include="src\Map\TerrainTile.h" />
     <ClInclude Include="src\Model\Entity.h" />
