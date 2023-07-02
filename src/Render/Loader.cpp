@@ -58,9 +58,6 @@ Model Loader::LoadToVAO(const std::vector<float>& positions, const std::vector<f
 	UnbindVAO();
 
 	// Look at console for any errors loading texture! That or Assert texture.
-	if (strcmp(filename.c_str(), "") == 0)
-		return Model(vaoID, (uint32_t)indices.size());
-	
 	return Model(vaoID, (uint32_t)indices.size(), LoadTexture(filename));
 }
 
@@ -77,9 +74,6 @@ Model Loader::LoadToVAO(const std::vector<float>& positions, const std::vector<f
 	UnbindVAO();
 
 	// Look at console for any errors loading texture! That or Assert texture.
-	if (strcmp(filename.c_str(), "") == 0)
-		return Model(vaoID, (uint32_t)indices.size());
-
 	return Model(vaoID, (uint32_t)indices.size(), LoadTexture(filename));
 }
 

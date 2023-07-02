@@ -151,6 +151,7 @@
     <ClCompile Include="src\Render\MasterRenderer.cpp" />
     <ClCompile Include="src\Render\TerrainRenderer.cpp" />
     <ClCompile Include="src\Shader\TerrainShader.cpp" />
+    <ClCompile Include="src\Toolbox\AStarPathFinding.cpp" />
     <ClCompile Include="src\Toolbox\PerlinNoise2D.cpp" />
     <ClCompile Include="src\Map\TerrainTile.cpp" />
     <ClCompile Include="src\Model\Game.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="src\Render\MasterRenderer.h" />
     <ClInclude Include="src\Render\TerrainRenderer.h" />
     <ClInclude Include="src\Shader\TerrainShader.h" />
+    <ClInclude Include="src\Toolbox\AStarPathFinding.h" />
     <ClInclude Include="src\Toolbox\PerlinNoise2D.h" />
     <ClInclude Include="src\Map\TerrainTile.h" />
     <ClInclude Include="src\Model\Entity.h" />

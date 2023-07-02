@@ -78,6 +78,9 @@
     <ClCompile Include="src\Render\MasterRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Toolbox\AStarPathFinding.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Toolbox\Vector2.h">
@@ -165,6 +168,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Render\MasterRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Toolbox\AStarPathFinding.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
