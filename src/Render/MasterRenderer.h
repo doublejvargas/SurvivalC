@@ -10,8 +10,6 @@ private:
 	EntityShader *m_EntityShader = nullptr;
 	TerrainShader *m_TerrainShader = nullptr;
 
-	glm::mat4 m_OrthoMatrix;
-
 public:
 	MasterRenderer(const std::string& eShaderSrc, const std::string& tShaderSrc);
 	~MasterRenderer();

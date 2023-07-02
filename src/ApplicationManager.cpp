@@ -5,8 +5,6 @@
 #include "ApplicationManager.h"
 #include "Game.h"
 #include "Loader.h"
-// #include "EntityRenderer.h"
-// #include "TerrainRenderer.h"
 #include "MasterRenderer.h"
 #include "Map.h "
 #include "PerlinNoise2D.h"
@@ -23,7 +21,7 @@ ApplicationManager::ApplicationManager()
 
 		//Create Display Manager (don't forget to delete the pointer in destructor)
 		// This dynamic creation of a DisplayManager object creates a context, sets the context current, and creates a window with a title. See DisplayManager constructor.
-		m_DisplayManager = new DisplayManager(1920, 1080, "SURVIVAL");
+		m_DisplayManager = new DisplayManager(WINDOW_WIDTH, WINDOW_HEIGHT, "SURVIVAL");
 
 		//Initialize GLEW after GLFW and window
 		GLenum status = glewInit();
@@ -35,7 +33,7 @@ ApplicationManager::ApplicationManager()
 			//m_DisplayManager->initializeImGui(); // initialize ImGUI after GLFW and GLEW.
 		}
 
-		printf("OpenGL version: %s\n", glGetString(GL_VERSION));	// print opengl version
+		printf("OpenGL version: %s\n", glGetString(GL_VERSION));
 	}
 	else
 	{

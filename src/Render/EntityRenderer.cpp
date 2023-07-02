@@ -1,15 +1,14 @@
 #include "EntityRenderer.h"
 #include "Log.h"
 #include "glm/gtc/matrix_transform.hpp"
+#include "DisplayManager.h"
 
 EntityRenderer::EntityRenderer(EntityShader& shader)
 {
 	// Set clear color
 	GLCall(glClearColor(0.1f, 0.2f, 0.3f, 1.0f));
 
-	//TODO: give this constructor access to windows' width and height. for now, hard-code it.
-	m_OrthoMatrix = glm::ortho(0.0f, 1280.0f, 720.0f, 0.0f, -1.0f, 1.0f);
-
+	m_OrthoMatrix = glm::ortho(0.0f, (float)WINDOW_WIDTH, (float)WINDOW_HEIGHT, 0.0f, -1.0f, 1.0f);
 	shader.Bind();
 	shader.LoadProjectionMatrix(m_OrthoMatrix);
 	shader.Unbind();
@@ -32,7 +31,7 @@ void EntityRenderer::Render(Entity& entity, EntityShader& shader)
 	// Enable the attrib arrays / layout locations
 	GLCall(glEnableVertexAttribArray(0)); // positions
 	GLCall(glEnableVertexAttribArray(1)); // texture coordinates
-	GLCall(glEnableVertexAttribArray(2)); // texture index
+	//GLCall(glEnableVertexAttribArray(2)); // texture index // TODO:May need to reenable this for batch rendering of entities
 
 	// Load transformation matrix for this entity into the shader
 	shader.LoadTransformMatrix(EntityShader::CreateTransformationMatrix(entity.GetPosition(), entity.GetRotation(), entity.GetScale()));
@@ -48,7 +47,7 @@ void EntityRenderer::Render(Entity& entity, EntityShader& shader)
 	// Disable attrib arrays / layout locations
 	GLCall(glDisableVertexAttribArray(0));
 	GLCall(glDisableVertexAttribArray(1));
-	GLCall(glDisableVertexAttribArray(2));
+	//GLCall(glDisableVertexAttribArray(2));
 
 	// Unbind VAO
 	GLCall(glBindVertexArray(0));

@@ -49,7 +49,7 @@ TerrainShader::TerrainShader(const std::string& filename)
 TerrainShader::~TerrainShader()
 {
 	GLCall(glDeleteProgram(m_ProgramID));
-	printf("Deleted shaders\n");
+	printf("Deleted Terrain shaders\n");
 }
 
 void TerrainShader::Bind() const

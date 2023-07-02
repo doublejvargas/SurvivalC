@@ -9,20 +9,6 @@ MasterRenderer::MasterRenderer(const std::string& eShaderSrc, const std::string&
 	m_TerrainShader = new TerrainShader(tShaderSrc);
 	m_EntityRenderer = new EntityRenderer(*m_EntityShader);
 	m_TerrainRenderer = new TerrainRenderer(*m_TerrainShader);
-
-	// Set clear color
-	GLCall(glClearColor(0.1f, 0.2f, 0.3f, 1.0f));
-
-	//TODO: give this constructor access to windows' width and height. for now, hard-code it.
-	m_OrthoMatrix = glm::ortho(0.0f, 1920.0f, 1080.0f, 0.0f, -1.0f, 1.0f);
-
-	m_EntityShader->Bind();
-	m_EntityShader->LoadProjectionMatrix(m_OrthoMatrix);
-	m_EntityShader->Unbind();
-
-	m_TerrainShader->Bind();
-	m_TerrainShader->LoadProjectionMatrix(m_OrthoMatrix);
-	m_TerrainShader->Unbind();
 }
 
 MasterRenderer::~MasterRenderer()

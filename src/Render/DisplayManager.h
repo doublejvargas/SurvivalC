@@ -2,11 +2,14 @@
 #include <string>
 #include <GLFW/glfw3.h>
 
+#define WINDOW_WIDTH 1280
+#define WINDOW_HEIGHT 720
+
 class DisplayManager
 {
 
 public:
-	DisplayManager(int width = 1280, int height = 720, const std::string& title = "SURVIVAL");
+	DisplayManager(int width = WINDOW_WIDTH, int height = WINDOW_HEIGHT, const std::string& title = "SURVIVAL");
 	virtual ~DisplayManager();
 
 	bool IsWindowOpen() const;

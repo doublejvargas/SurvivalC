@@ -43,7 +43,7 @@ EntityShader::EntityShader(const std::string& filename)
 EntityShader::~EntityShader()
 {
 	GLCall(glDeleteProgram(m_ProgramID));
-	printf("Deleted shaders\n");
+	printf("Deleted Entity shaders\n");
 }
 
 void EntityShader::Bind() const

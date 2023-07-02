@@ -1,15 +1,14 @@
 #include "TerrainRenderer.h"
 #include "Log.h"
 #include "glm/gtc/matrix_transform.hpp"
+#include "DisplayManager.h"
 
 TerrainRenderer::TerrainRenderer(TerrainShader& shader)
 {
 	// Set clear color
 	GLCall(glClearColor(0.1f, 0.2f, 0.3f, 1.0f));
 
-	//TODO: give this constructor access to windows' width and height. for now, hard-code it.
-	m_OrthoMatrix = glm::ortho(0.0f, 1280.0f, 720.0f, 0.0f, -1.0f, 1.0f);
-
+	m_OrthoMatrix = glm::ortho(0.0f, (float)WINDOW_WIDTH, (float)WINDOW_HEIGHT, 0.0f, -1.0f, 1.0f);
 	shader.Bind();
 	shader.LoadProjectionMatrix(m_OrthoMatrix);
 	shader.Unbind();
