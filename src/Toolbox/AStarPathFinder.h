@@ -4,14 +4,14 @@
 #include "Vector2.h"
 #include "Game.h"
 
-class AStarPathFinding
+class AStarPathFinder
 {
 private:
 	// Private class that represents a map tile.
 	class Tile
 	{
 	private:
-		AStarPathFinding* aRef = nullptr;
+		AStarPathFinder* aRef = nullptr;
 		Vector2 t_Position;
 		int t_GCost;
 		double t_HCost;
@@ -21,7 +21,7 @@ private:
 		bool t_IsWall = false;
 	public:
 		Tile();
-		Tile(AStarPathFinding* ref, Vector2 pos, bool obs);
+		Tile(AStarPathFinder* ref, Vector2 pos, bool obs);
 		void addNeighbors();
 
 		inline int getGCost() const { return t_GCost; }
@@ -30,7 +30,7 @@ private:
 		inline Vector2 getPosition() const { return t_Position; }
 		inline std::vector<Tile> getNeighbors() const { return t_Neighbors; }
 		inline Tile* getPrevious() const { return t_Previous; }
-		inline AStarPathFinding* getARef() const { return aRef; }
+		inline AStarPathFinder* getARef() const { return aRef; }
 		inline bool isWall() const { return t_IsWall; }
 
 		inline void setPrevious(Tile* t) { t_Previous = t; }
@@ -62,7 +62,7 @@ private:
 	Game* m_Game = nullptr;
 
 public:
-	AStarPathFinding(Game* game, const std::vector<bool>& canWalk);
+	AStarPathFinder(Game* game, const std::vector<bool>& canWalk);
 
 	void setUpGrid(Game* game, const std::vector<bool>& canWalk);
 	bool isObstacle(Game* game, const Vector2& pos, const std::vector<bool>& canWalk);

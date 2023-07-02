@@ -5,12 +5,12 @@
 Vector2::Vector2(float v0, float v1)
 	: m_v0(v0), m_v1(v1) {}
 
-double Vector2::distance(const Vector2& from, const Vector2& target)
+double Vector2::distance(const Vector2& target)
 {
-	return sqrt(pow(target.v0() - from.v0(), 2) + pow(target.v1() - from.v1(), 2));
+	return sqrt(pow(target.v0() - m_v0, 2) + pow(target.v1() - m_v1, 2));
 }
 
-Vector2 Vector2::getDisplacementVector(Vector2 vec, int yBound, int xBound)
+Vector2 Vector2::getDisplacementVector(int yBound, int xBound)
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -32,5 +32,5 @@ Vector2 Vector2::getDisplacementVector(Vector2 vec, int yBound, int xBound)
 		break;
 	}
 
-	return Vector2(vec.v0() + yDisplacement, vec.v1() + xDisplacement);
+	return Vector2(m_v0 + yDisplacement, m_v1 + xDisplacement);
 }

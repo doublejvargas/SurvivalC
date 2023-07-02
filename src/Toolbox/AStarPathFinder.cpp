@@ -1,10 +1,10 @@
-#include "AStarPathFinding.h"
+#include "AStarPathFinder.h"
 #include "StationaryObject.h"
 #include "TerrainTile.h"
 
 #include <cmath>
 
-AStarPathFinding::Tile::Tile()
+AStarPathFinder::Tile::Tile()
 {
 	t_Position = Vector2();
 	t_GCost = 0;
@@ -12,7 +12,7 @@ AStarPathFinding::Tile::Tile()
 	t_FCost = 0.0;
 }
 
-AStarPathFinding::Tile::Tile(AStarPathFinding* ref, Vector2 pos, bool obs)
+AStarPathFinder::Tile::Tile(AStarPathFinder* ref, Vector2 pos, bool obs)
 {
 	aRef = ref;
 	t_Position = pos;
@@ -22,7 +22,7 @@ AStarPathFinding::Tile::Tile(AStarPathFinding* ref, Vector2 pos, bool obs)
 	t_IsWall = obs;
 }
 
-void AStarPathFinding::Tile::addNeighbors()
+void AStarPathFinder::Tile::addNeighbors()
 {
 	size_t i = (int)t_Position.v0();
 	size_t j = (int)t_Position.v1();
@@ -37,14 +37,14 @@ void AStarPathFinding::Tile::addNeighbors()
 		t_Neighbors.push_back(aRef->m_Grid.at(i).at(j - 1));
 }
 
-AStarPathFinding::AStarPathFinding(Game* game, const std::vector<bool>& canWalk)
+AStarPathFinder::AStarPathFinder(Game* game, const std::vector<bool>& canWalk)
 {
 	m_Game = game;
 	m_CanWalk = canWalk;
 	setUpGrid(game, canWalk);
 }
 
-void AStarPathFinding::setUpGrid(Game* game, const std::vector<bool>& canWalk)
+void AStarPathFinder::setUpGrid(Game* game, const std::vector<bool>& canWalk)
 {
 	uint32_t cols = 10; //game.getmap().getterrainmap().size();
 	uint32_t rows = 10; //game.getmap().getterrainmap()[0].size();
@@ -67,7 +67,7 @@ void AStarPathFinding::setUpGrid(Game* game, const std::vector<bool>& canWalk)
 	}
 }
 
-bool AStarPathFinding::isObstacle(Game* game, const Vector2& pos, const std::vector<bool>& canWalk)
+bool AStarPathFinder::isObstacle(Game* game, const Vector2& pos, const std::vector<bool>& canWalk)
 {
 	bool canWalkGrass = canWalk.at(0);
 	bool canWalkDesert = canWalk.at(1);
@@ -121,7 +121,7 @@ bool AStarPathFinding::isObstacle(Game* game, const Vector2& pos, const std::vec
 	return true;
 }
 
-int AStarPathFinding::heuristic(const Tile& a, const Tile& b)
+int AStarPathFinder::heuristic(const Tile& a, const Tile& b)
 {
 	int y1 = (int)a.getPosition().v0();
 	int x1 = (int)a.getPosition().v1();
@@ -131,7 +131,7 @@ int AStarPathFinding::heuristic(const Tile& a, const Tile& b)
 	return std::max(std::abs(y2 - y1), std::abs(x2 - x1));
 }
 
-std::vector<Vector2> AStarPathFinding::findPath(Vector2 start, Vector2 target)
+std::vector<Vector2> AStarPathFinder::findPath(Vector2 start, Vector2 target)
 {
 	std::vector<Vector2> path;
 	std::vector<Tile> openSet;

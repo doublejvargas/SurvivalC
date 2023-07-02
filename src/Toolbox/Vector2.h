@@ -9,8 +9,8 @@ public:
 	inline float v0() const{ return m_v0; }
 	inline float v1() const { return m_v1; }
 
-	static double distance(const Vector2& from, const Vector2& target);
-	static Vector2 getDisplacementVector(Vector2 vec, int yBound, int xBound);
+	double distance(const Vector2& target);
+	Vector2 getDisplacementVector(int yBound, int xBound);
 
 	bool operator==(const Vector2& V)
 	{
