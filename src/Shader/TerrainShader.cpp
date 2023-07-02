@@ -38,6 +38,12 @@ TerrainShader::TerrainShader(const std::string& filename)
 
 	BindAttributes();
 	GetAllUniformLocations();
+	// Load texture sampler for batch rendering
+	Bind();
+	//TODO: maybe automate this based on the size? take in size n as parameter and use a loop to create array [0, n-1]
+	GLint texSampler[3] = {0, 1, 2};
+	LoadTextureSampler(texSampler, 3);
+	Unbind();
 }
 
 TerrainShader::~TerrainShader()

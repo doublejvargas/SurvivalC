@@ -5,8 +5,9 @@
 #include "ApplicationManager.h"
 #include "Game.h"
 #include "Loader.h"
-#include "EntityRenderer.h"
-#include "TerrainRenderer.h"
+// #include "EntityRenderer.h"
+// #include "TerrainRenderer.h"
+#include "MasterRenderer.h"
 #include "Map.h "
 #include "PerlinNoise2D.h"
 #include "glm/glm.hpp"
@@ -56,17 +57,14 @@ void ApplicationManager::Start()
 	Game game;
 	Loader loader;
 	Map map(&game, &loader);
-	EntityShader eShader("res/shaders/Shader2D");
-	TerrainShader tShader("res/shaders/TerrainShader2D");
-	EntityRenderer eRenderer(eShader);
-	TerrainRenderer tRenderer(tShader);
+	MasterRenderer renderer("res/shaders/Shader2D", "res/shaders/TerrainShader2D");
 	Camera camera;
 	
 	std::vector<float> positions = {
 		 0.0f,   0.0f,
-		 300.0f, 0.0f,
-		 300.0f, 300.0,
-		 0.0f,   300.0
+		 70.0f,  0.0f,
+		 70.0f,  70.0,
+		 0.0f,   70.0
 
 // 		 600.0f, 0.0f,
 // 		 900.0f, 0.0f,
@@ -104,19 +102,14 @@ void ApplicationManager::Start()
 	Model mapModel = map.GetTerrainMapModel();
 	Entity mapInstance(mapModel, glm::vec2(0, 0), glm::vec2(0, 0), glm::vec2(1, 1));
 
-	// Texture batching TODO: abstract this into shader class
-	tShader.Bind();
-	int terrain_sampler[3] = { 0, 1, 2 };
-	tShader.LoadTextureSampler(terrain_sampler, 3);
-
 	std::vector<Texture> textures;
 	textures.push_back(loader.LoadTexture("res/textures/water.png"));
 	textures.push_back(loader.LoadTexture("res/textures/grass.png"));
 	textures.push_back(loader.LoadTexture("res/textures/desert.png"));
 
-	printf("Running game loop...\n");
 	printf("Vertex count: %i\n", mapModel.VertexCount());
 
+	printf("Running game loop...\n");
 	double prevTime = glfwGetTime();
 	int frameCount = 0;
 
@@ -124,18 +117,10 @@ void ApplicationManager::Start()
 	while (m_DisplayManager->IsWindowOpen())
 	{
 		/* Render here */
-		tRenderer.Clear();
+		renderer.Clear();
 		camera.Move();
-
-		tShader.Bind();
-		tShader.LoadViewMatrix(camera);
-		tRenderer.Render(mapModel, tShader, glm::vec2(0, 0), textures);
-		tShader.Unbind();
-
-		eShader.Bind();
-		eShader.LoadViewMatrix(camera);
-		eRenderer.Render(squareInstance, eShader);
-		eShader.Unbind();
+		
+		renderer.Render(squareInstance, mapModel, glm::vec2(0, 0), textures, camera);
 
 		m_DisplayManager->UpdateDisplay();
 		m_DisplayManager->ShowFPS(prevTime, frameCount);
