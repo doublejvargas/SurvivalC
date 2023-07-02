@@ -9,6 +9,8 @@
 class Entity
 {
 public:
+	Entity() : m_Position(glm::vec2(0, 0)), m_Rotation(glm::vec2(0, 0)) , m_Scale(glm::vec2(1, 1)) {}
+
 	Entity(Model model, const glm::vec2& position, const glm::vec2& rotation, const glm::vec2& scale)
 		: m_Model(model), m_Position(position), m_Rotation(rotation), m_Scale(scale) {}
 

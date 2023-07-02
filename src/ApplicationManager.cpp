@@ -96,14 +96,25 @@ void ApplicationManager::Start()
 
 	Model squareModel = loader.LoadToVAO(positions, texcoords, indices, "res/textures/yuzu.png");
 	Entity squareInstance(squareModel, glm::vec2(200, 200), glm::vec2(0, 0), glm::vec2(1, 1));
+	Entity sq2(squareModel, glm::vec2(70, 415), glm::vec2(0, 0), glm::vec2(1, 1));
+	Entity sq3(squareModel, glm::vec2(700, 100), glm::vec2(0, 0), glm::vec2(1, 1));
+	Entity sq4(squareModel, glm::vec2(600, 600), glm::vec2(0, 0), glm::vec2(1, 1));
+
 
 	Model mapModel = map.GetTerrainMapModel();
 	Entity mapInstance(mapModel, glm::vec2(0, 0), glm::vec2(0, 0), glm::vec2(1, 1));
 
 	std::vector<Texture> textures;
-	textures.push_back(loader.LoadTexture("res/textures/water.png"));
-	textures.push_back(loader.LoadTexture("res/textures/grass.png"));
-	textures.push_back(loader.LoadTexture("res/textures/desert.png"));
+	textures.push_back(Texture(loader.LoadTexture("res/textures/water.png")));
+	textures.push_back(Texture(loader.LoadTexture("res/textures/grass.png")));
+	textures.push_back(Texture(loader.LoadTexture("res/textures/desert.png")));
+
+	renderer.AddTerrainModel(mapModel);
+	renderer.AddTerrainTextures(textures);
+	renderer.ProcessEntity(squareInstance);
+	renderer.ProcessEntity(sq2);
+	renderer.ProcessEntity(sq3);
+	renderer.ProcessEntity(sq4);
 
 	printf("Vertex count: %i\n", mapModel.VertexCount());
 
@@ -118,7 +129,7 @@ void ApplicationManager::Start()
 		renderer.Clear();
 		camera.Move();
 		
-		renderer.Render(squareInstance, mapModel, glm::vec2(0, 0), textures, camera);
+		renderer.Render(camera);
 
 		m_DisplayManager->UpdateDisplay();
 		m_DisplayManager->ShowFPS(prevTime, frameCount);

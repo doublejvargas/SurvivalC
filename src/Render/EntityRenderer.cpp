@@ -20,11 +20,25 @@ void EntityRenderer::Clear() const
 	GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
 
-void EntityRenderer::Render(Entity& entity, EntityShader& shader)
+void EntityRenderer::Render(const std::unordered_map<Model, std::vector<Entity>>& entities, EntityShader& shader)
 {
-	// Get model (access to texture + VAO)
-	Model model = entity.GetModel();
+	for (const auto& pair : entities)
+	{
+		Model model = pair.first;
+		setOglState(model, shader);
+		auto batch = pair.second;
+		// This isn't batch rendering as there are as many draw calls as there are entities
+		for (const Entity& entity : batch)
+		{
+			prepareInstance(entity, shader);
+			GLCall(glDrawElements(GL_TRIANGLES, model.VertexCount(), GL_UNSIGNED_INT, 0));
+		}
+		resetOglState();
+	}
+}
 
+void EntityRenderer::setOglState(const Model& model, EntityShader& shader)
+{
 	// Bind the model's VAO
 	GLCall(glBindVertexArray(model.VaoID()));
 
@@ -32,23 +46,26 @@ void EntityRenderer::Render(Entity& entity, EntityShader& shader)
 	GLCall(glEnableVertexAttribArray(0)); // positions
 	GLCall(glEnableVertexAttribArray(1)); // texture coordinates
 	//GLCall(glEnableVertexAttribArray(2)); // texture index // TODO:May need to reenable this for batch rendering of entities
-
-	// Load transformation matrix for this entity into the shader
-	shader.LoadTransformMatrix(EntityShader::CreateTransformationMatrix(entity.GetPosition(), entity.GetRotation(), entity.GetScale()));
-
+	
 	// Activate an OpenGL texture and tell it where the texture is
 	Texture texture = model.GetTexture();
 	GLCall(glActiveTexture(GL_TEXTURE0));
 	GLCall(glBindTexture(GL_TEXTURE_2D, texture.TextureID()));
+	
+}
 
-	// Draw the model
-	GLCall(glDrawElements(GL_TRIANGLES, model.VertexCount(), GL_UNSIGNED_INT, 0));
-
+void EntityRenderer::resetOglState()
+{
 	// Disable attrib arrays / layout locations
 	GLCall(glDisableVertexAttribArray(0));
 	GLCall(glDisableVertexAttribArray(1));
 	//GLCall(glDisableVertexAttribArray(2));
-
 	// Unbind VAO
 	GLCall(glBindVertexArray(0));
+}
+
+void EntityRenderer::prepareInstance(const Entity& entity, EntityShader& shader)
+{
+	// Load transformation matrix for this entity into the shader
+	shader.LoadTransformMatrix(EntityShader::CreateTransformationMatrix(entity.GetPosition(), entity.GetRotation(), entity.GetScale()));
 }
