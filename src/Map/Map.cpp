@@ -40,7 +40,7 @@ Model Map::GenerateOglTerrain(Loader* loader)
 	uint32_t numVertices = GRID_SIZE * 4;
 	std::vector<float> positions(numVertices * 2, 0.0f);
 	std::vector<float> texCoords(numVertices * 2, 0.0f);
-	std::vector<unsigned int> indices(6 * GRID_SIZE,  0);
+	std::vector<uint32_t> indices(6 * GRID_SIZE,  0);
 	std::vector<float> texIndices(numVertices, 0.0f);
 
 	// Model positions

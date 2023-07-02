@@ -11,7 +11,7 @@ private:
 	//Pixel size of a terrain tile
 	static const uint32_t m_TILE_SIZE	= 30;
 	//Dimension of terrain grid, to be interpreted as m_N x m_N (square)
-	static const uint32_t m_N			= 30;
+	static const uint32_t m_N			= 20;
 	//2D vector of terrain tile objects. Corresponds to what is drawn by OpenGL.
 	std::vector<std::vector<TerrainTile>> m_TerrainTiles;
 	//OpenGL model for the terrain tiles.

@@ -1,5 +1,7 @@
 #pragma once
 
+typedef unsigned int uint32_t;
+
 class Food
 {
 public:
@@ -7,8 +9,8 @@ public:
 
 private:
 	FoodType m_FoodType;
-	int m_HPValue;
-	int m_Weight;
+	uint32_t m_HPValue;
+	uint32_t m_Weight;
 
 public:
 	Food(FoodType foodType)
@@ -17,9 +19,15 @@ public:
 		setValues();
 	}
 
+	// Default constructor
+	Food()
+		: m_FoodType(FOOD_NULL), m_HPValue(0), m_Weight(0)
+	{
+	}
+
 	inline FoodType getFoodType() const { return m_FoodType; }
-	inline int getHPValue() const { return m_HPValue; }
-	inline int getWeigth() const { return m_Weight; }
+	inline uint32_t getHPValue() const { return m_HPValue; }
+	inline uint32_t getWeigth() const { return m_Weight; }
 
 private:
 	void setValues()
@@ -49,6 +57,10 @@ private:
 		case Crocodile:
 			m_HPValue = 5;
 			m_Weight = 3;
+			break;
+		case FOOD_NULL:
+			m_HPValue = 0;
+			m_Weight = 0;
 			break;
 		default:
 			m_HPValue = 1;

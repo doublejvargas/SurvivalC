@@ -54,7 +54,6 @@ void Renderer::Render(Entity& entity, Shader& shader)
 	GLCall(glBindVertexArray(0));
 }
 
-//Tentative: TODO: remove position paramenter, add boolean to determine wheter to get texture from model or string?
 void Renderer::TerrainRender(Model& model, Shader& shader, const glm::vec2& pos, std::vector<Texture>& textures)
 {
 	// Bind the model's VAO

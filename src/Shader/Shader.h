@@ -11,7 +11,7 @@ class Shader
 {
 private:
 	// Necessary for creating, binding and unbinding
-	unsigned int m_ProgramID;
+	uint32_t m_ProgramID;
 	GLuint m_VertexShaderID;
 	GLuint m_FragmentShaderID;
 	
@@ -38,7 +38,7 @@ public:
 
 	GLuint GetUniformLocation(const std::string& name);
 
-	void BindAttribute(unsigned int layout_location, const std::string& name);
+	void BindAttribute(uint32_t layout_location, const std::string& name);
 
 	void LoadTransformMatrix(const glm::mat4& matrix);
 	void LoadProjectionMatrix(const glm::mat4& matrix);

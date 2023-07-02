@@ -8,7 +8,7 @@ class StationaryObject;
 class Bush : protected StationaryObject
 {
 private:
-	unsigned int m_NumBerries = 0;
+	uint32_t m_NumBerries = 0;
 	bool m_hasBerries = false;
 
 public:

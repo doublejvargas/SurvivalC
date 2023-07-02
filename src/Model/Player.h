@@ -1,6 +1,6 @@
 #pragma once
 #include "MobileObject.h"
-#include "Food.h"
+#include "Inventory.h"
 
 class TerrainTile;
 // Boiler plate for now to be able to define other classes. Todo: implement later.
@@ -25,7 +25,7 @@ private:
 
 	//Player's Items
 	int m_NumSticks;
-	//Inventory m_Inventory;
+	Inventory m_Inventory;
 	ToolType m_Tool;
 
 	//Tentative -- prompts
@@ -75,6 +75,7 @@ public:
 	inline bool isDisplayUpgradesPrompt() const	{ return m_DisplayUpgradePrompt; }
 	inline int getCyclesSinceRest() const		{ return m_CyclesSinceRest; }
 	inline int getMaxWeigth() const				{ return m_MaxWeight; }
+	inline Inventory getInventory() const		{ return m_Inventory; }
 
 	//Setters
 	inline void setStepsToday(int stepsToday)			{ m_StepsToday = stepsToday; }
@@ -83,7 +84,7 @@ public:
 	inline void setResting(bool resting)				{ m_Resting = resting;}
 	inline void setCyclesSinceRest(int cyclesSinceRest) { m_CyclesSinceRest = cyclesSinceRest; }
 	
-	//inline Inventory getInventory() { return inventory; }
+	
 	//inline Game.Direction getFacing() { return facing; }
 	//inline void setFacing(Game.Direction facing) { this.facing = facing; }
 	

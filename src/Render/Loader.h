@@ -13,8 +13,8 @@ public:
 	Loader();
 	~Loader();
 
-	Model LoadToVAO(const std::vector<float>& positions, const std::vector<float>& texCoords, 
-		const std::vector<unsigned int>& indices, const std::vector<float>& texIndices, const std::string& filename = "res/textures/yuzu.png");
+	Model LoadToVAO(const std::vector<float>& positions, const std::vector<float>& texCoords, const std::vector<uint32_t>& indices, 
+		const std::vector<float>& texIndices, const std::string& filename = "");
 
 	GLuint LoadTexture(const std::string& filename);
 	void UnbindVAO() const;
@@ -26,6 +26,6 @@ private:
 	std::vector<GLuint> m_Textures;
 
 	GLuint CreateVAO();
-	void StoreDataInAttributeList(GLuint layoutloc, unsigned int dimension, unsigned int bytesize, GLenum type, const void* data);
-	void BindIndicesBuffer(const unsigned int* indices, unsigned int count);
+	void StoreDataInAttributeList(GLuint layoutloc, uint32_t dimension, uint32_t bytesize, GLenum type, const void* data);
+	void BindIndicesBuffer(const uint32_t* indices, uint32_t count);
 };

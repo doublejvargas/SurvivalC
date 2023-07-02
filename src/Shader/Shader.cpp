@@ -84,7 +84,7 @@ GLuint Shader::GetUniformLocation(const std::string& name)
 	return location;
 }
 
-void Shader::BindAttribute(unsigned int layout_location, const std::string& name)
+void Shader::BindAttribute(uint32_t layout_location, const std::string& name)
 {
 	GLCall(glBindAttribLocation(m_ProgramID, layout_location, name.c_str()));
 }

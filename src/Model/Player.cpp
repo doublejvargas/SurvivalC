@@ -13,7 +13,7 @@ Player::Player(Game * game, const Vector2 & pos, int maxHP)
 	m_Harvesting = false;
 	m_Resting = false;
 	m_CyclesSinceRest = 1;
-	//m_Inventory = Inventory(m_MaxWeight);
+	m_Inventory = Inventory(m_MaxWeight);
 	//setFacing(Game.Direction.DOWN);
 	m_DisplayRestPrompt = false;
 	m_DisplayUpgradePrompt = false;
@@ -21,7 +21,7 @@ Player::Player(Game * game, const Vector2 & pos, int maxHP)
 
 void Player::Eat(Food::FoodType type)
 {
-	Food eaten(Food::FoodType::FOOD_NULL); /*Food eaten = inventory.removeFood(type)*/
+	Food eaten = m_Inventory.RemoveFood(type);
 	if (eaten.getFoodType() != Food::FoodType::FOOD_NULL)
 		Heal(eaten.getHPValue());
 }
