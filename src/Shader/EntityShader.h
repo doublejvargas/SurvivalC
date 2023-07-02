@@ -7,7 +7,7 @@
 #include "Camera.h"
 
 
-class Shader
+class EntityShader
 {
 private:
 	// Necessary for creating, binding and unbinding
@@ -19,14 +19,14 @@ private:
 	GLuint m_TransformMatrixLoc;
 	GLuint m_OrthoMatrixLoc;
 	GLuint m_ViewMatrixLoc;
-	GLuint m_TexturesLoc;
+	GLuint m_TextureLoc;
 
 	// Uniform locations cache
 	std::unordered_map<std::string, int> m_UniformLocationCache;
 
 public:
-	Shader(const std::string& filename);
-	~Shader();
+	EntityShader(const std::string& filename);
+	~EntityShader();
 
 	void Bind() const;
 	void Unbind() const;

@@ -64,6 +64,25 @@ Model Loader::LoadToVAO(const std::vector<float>& positions, const std::vector<f
 	return Model(vaoID, (uint32_t)indices.size(), LoadTexture(filename));
 }
 
+Model Loader::LoadToVAO(const std::vector<float>& positions, const std::vector<float>& texCoords, const std::vector<uint32_t>& indices, const std::string& filename /*= ""*/)
+{
+	// Create a new VAO
+	GLuint vaoID = CreateVAO();
+	BindIndicesBuffer(indices.data(), (uint32_t)indices.size());
+	// positions in layout location/attrib location 0
+	StoreDataInAttributeList(0, 2, (uint32_t)positions.size() * sizeof(float), GL_FLOAT, positions.data());
+	// texture coordinates in layout location/attrib location 1
+	StoreDataInAttributeList(1, 2, (uint32_t)texCoords.size() * sizeof(float), GL_FLOAT, texCoords.data());
+
+	UnbindVAO();
+
+	// Look at console for any errors loading texture! That or Assert texture.
+	if (strcmp(filename.c_str(), "") == 0)
+		return Model(vaoID, (uint32_t)indices.size());
+
+	return Model(vaoID, (uint32_t)indices.size(), LoadTexture(filename));
+}
+
 GLuint Loader::LoadTexture(const std::string& path)
 {
 	GLuint id;
@@ -73,7 +92,7 @@ GLuint Loader::LoadTexture(const std::string& path)
 	if (!databuffer)
 	{
 		std::cerr << "ERROR: texture loading failed for: " << path << std::endl;
-		return -1;
+		return 0;
 	}
 	// Generate and bind a OpenGL texture
 	GLCall(glGenTextures(1, &id));

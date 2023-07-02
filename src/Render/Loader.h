@@ -13,6 +13,10 @@ public:
 	Loader();
 	~Loader();
 
+	Model LoadToVAO(const std::vector<float>& positions, const std::vector<float>& texCoords, 
+		const std::vector<uint32_t>& indices, const std::string& filename = "");
+	
+	// Overloaded for batch rendering
 	Model LoadToVAO(const std::vector<float>& positions, const std::vector<float>& texCoords, const std::vector<uint32_t>& indices, 
 		const std::vector<float>& texIndices, const std::string& filename = "");
 

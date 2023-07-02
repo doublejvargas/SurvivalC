@@ -1,11 +1,11 @@
-#include "Shader.h"
+#include "EntityShader.h"
 #include "Log.h"
 #include "glm/gtc/matrix_transform.hpp"
 
 #include <fstream>
 #include <sstream>
 
-Shader::Shader(const std::string& filename)
+EntityShader::EntityShader(const std::string& filename)
 {
 	// Load shaders from file
 	m_VertexShaderID = LoadShader(filename + ".vert", GL_VERTEX_SHADER);
@@ -40,38 +40,38 @@ Shader::Shader(const std::string& filename)
 	GetAllUniformLocations();
 }
 
-Shader::~Shader()
+EntityShader::~EntityShader()
 {
 	GLCall(glDeleteProgram(m_ProgramID));
 	printf("Deleted shaders\n");
 }
 
-void Shader::Bind() const
+void EntityShader::Bind() const
 {
 	GLCall(glUseProgram(m_ProgramID));
 }
 
-void Shader::Unbind() const
+void EntityShader::Unbind() const
 {
 	GLCall(glUseProgram(0));
 }
 
-void Shader::BindAttributes()
+void EntityShader::BindAttributes()
 {
 	BindAttribute(0, "a_Position");
 	BindAttribute(1, "a_TexCoord");
-	BindAttribute(2, "a_TexIndex");
+	//BindAttribute(2, "a_TexIndex");   //TODO: Might need to reenable this if i need to do further batch rendering
 }
 
-void Shader::GetAllUniformLocations()
+void EntityShader::GetAllUniformLocations()
 {
 	m_TransformMatrixLoc = GetUniformLocation("u_TransformationMatrix");
 	m_OrthoMatrixLoc = GetUniformLocation("u_ProjectionMatrix");
 	m_ViewMatrixLoc = GetUniformLocation("u_ViewMatrix");
-	m_TexturesLoc = GetUniformLocation("u_Textures");
+	m_TextureLoc = GetUniformLocation("u_Texture");
 }
 
-GLuint Shader::GetUniformLocation(const std::string& name)
+GLuint EntityShader::GetUniformLocation(const std::string& name)
 {
 	if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
 		return m_UniformLocationCache[name];
@@ -84,47 +84,47 @@ GLuint Shader::GetUniformLocation(const std::string& name)
 	return location;
 }
 
-void Shader::BindAttribute(uint32_t layout_location, const std::string& name)
+void EntityShader::BindAttribute(uint32_t layout_location, const std::string& name)
 {
 	GLCall(glBindAttribLocation(m_ProgramID, layout_location, name.c_str()));
 }
 
-void Shader::LoadTransformMatrix(const glm::mat4& matrix)
+void EntityShader::LoadTransformMatrix(const glm::mat4& matrix)
 {
 	SetUniformMat4f(m_TransformMatrixLoc, matrix);
 }
 
-void Shader::LoadProjectionMatrix(const glm::mat4& matrix)
+void EntityShader::LoadProjectionMatrix(const glm::mat4& matrix)
 {
 	SetUniformMat4f(m_OrthoMatrixLoc, matrix);
 }
 
-void Shader::LoadViewMatrix(Camera& camera)
+void EntityShader::LoadViewMatrix(Camera& camera)
 {
 	SetUniformMat4f(m_ViewMatrixLoc, CreateOrthoViewMatrix(camera));
 }
 
-void Shader::LoadTextureSampler(const GLint* vec, uint32_t size)
+void EntityShader::LoadTextureSampler(const GLint* vec, uint32_t size)
 {
-	SetUniformVec1iv(m_TexturesLoc, size, vec);
+	SetUniformVec1iv(m_TextureLoc, size, vec);
 }
 
-void Shader::SetUniformVec1iv(GLuint location, uint32_t size, const GLint* vec)
+void EntityShader::SetUniformVec1iv(GLuint location, uint32_t size, const GLint* vec)
 {
 	GLCall(glUniform1iv(location, size, vec));
 }
 
-void Shader::SetUniformVec3f(GLuint location, const glm::vec3& value)
+void EntityShader::SetUniformVec3f(GLuint location, const glm::vec3& value)
 {
 	GLCall(glUniform3f(location, value.x, value.y, value.z));
 }
 
-void Shader::SetUniformMat4f(GLuint location, const glm::mat4& matrix)
+void EntityShader::SetUniformMat4f(GLuint location, const glm::mat4& matrix)
 {
 	GLCall(glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]));
 }
 
-glm::mat4 Shader::CreateTransformationMatrix(const glm::vec2& translation, const glm::vec2& rotation, const glm::vec2& scale)
+glm::mat4 EntityShader::CreateTransformationMatrix(const glm::vec2& translation, const glm::vec2& rotation, const glm::vec2& scale)
 {
 	// create translation matrix
 	glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(translation, 0.0f));
@@ -140,12 +140,12 @@ glm::mat4 Shader::CreateTransformationMatrix(const glm::vec2& translation, const
 	return translationMatrix * rotationMatrix * scaleMatrix;
 }
 
-glm::mat4 Shader::CreateOrthoViewMatrix(Camera& camera)
+glm::mat4 EntityShader::CreateOrthoViewMatrix(Camera& camera)
 {
 	return glm::lookAt(camera.GetPosition(), camera.GetPosition() + glm::vec3(0, 0, -1), glm::vec3(0, 1, 0));
 }
 
-GLuint Shader::LoadShader(const std::string& filename, GLenum type)
+GLuint EntityShader::LoadShader(const std::string& filename, GLenum type)
 {
 	FILE* file;
 	if (fopen_s(&file, filename.c_str(), "r") != 0)
