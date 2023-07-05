@@ -86,6 +86,7 @@ GLuint Loader::LoadTexture(const std::string& path)
 	if (!databuffer)
 	{
 		std::cerr << "ERROR: texture loading failed for: " << path << std::endl;
+		//__debugbreak();
 		return 0;
 	}
 	// Generate and bind a OpenGL texture

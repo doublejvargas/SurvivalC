@@ -5,7 +5,7 @@
 class Game;
 class StationaryObject;
 
-class Bush : protected StationaryObject
+class Bush : public StationaryObject
 {
 private:
 	uint32_t m_NumBerries = 0;

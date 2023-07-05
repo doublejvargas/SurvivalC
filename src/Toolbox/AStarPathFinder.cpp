@@ -41,10 +41,10 @@ AStarPathFinder::AStarPathFinder(Game* game, const std::vector<bool>& canWalk)
 {
 	m_Game = game;
 	m_CanWalk = canWalk;
-	setUpGrid(game, canWalk);
+	setUpGrid(canWalk);
 }
 
-void AStarPathFinder::setUpGrid(Game* game, const std::vector<bool>& canWalk)
+void AStarPathFinder::setUpGrid(const std::vector<bool>& canWalk)
 {
 	uint32_t cols = 10; //game.getmap().getterrainmap().size();
 	uint32_t rows = 10; //game.getmap().getterrainmap()[0].size();
@@ -55,7 +55,7 @@ void AStarPathFinder::setUpGrid(Game* game, const std::vector<bool>& canWalk)
 		for (uint32_t x = 0; x < cols; x++)
 		{
 			Vector2 pos = Vector2((float)y, (float)x);
-			bool isObs = isObstacle(game, pos, canWalk);
+			bool isObs = isObstacle(pos, canWalk);
 			m_Grid.at(y).at(x) = Tile(this, pos, isObs);
 		}
 	}
@@ -67,14 +67,14 @@ void AStarPathFinder::setUpGrid(Game* game, const std::vector<bool>& canWalk)
 	}
 }
 
-bool AStarPathFinder::isObstacle(Game* game, const Vector2& pos, const std::vector<bool>& canWalk)
+bool AStarPathFinder::isObstacle(const Vector2& pos, const std::vector<bool>& canWalk)
 {
 	bool canWalkGrass = canWalk.at(0);
 	bool canWalkDesert = canWalk.at(1);
 	bool canWalkWater = canWalk.at(2);
-	bool hasObj = true; //game.getMap().getTerrainMap()[i][j].getHasStatObj();
-	StationaryObject* statObj = nullptr;  //game.getMap().getTerrainMap()[i][j].getStatObj();
-	TerrainTile::TerrainType terrain = TerrainTile::WATER; //game.getMap().getTerrainMap()[i][j].getTerrainType();
+	bool hasObj = true; //m_Game.getMap().getTerrainMap()[i][j].getHasStatObj(); //todo
+	StationaryObject* statObj = nullptr;  //m_Game.getMap().getTerrainMap()[i][j].getStatObj();
+	TerrainTile::TerrainType terrain = TerrainTile::WATER; //m_Game.getMap().getTerrainMap()[i][j].getTerrainType();
 
 	switch (terrain)
 	{
@@ -206,7 +206,7 @@ std::vector<Vector2> AStarPathFinder::findPath(Vector2 start, Vector2 target)
 	}
 	if (openSet.size() <= 0)
 	{
-		setUpGrid(m_Game, m_CanWalk);
+		setUpGrid(m_CanWalk);
 		path.push_back(start);
 	}
 

@@ -4,7 +4,7 @@
 #include "StationaryObject.h"
 #include <random>
 
-Animal::Animal(Game* game, const Vector2& pos, uint32_t speed, uint32_t maxHP, uint32_t damage, std::vector<bool> canWalk, Texture* gameTex, Texture* combatTex)
+Animal::Animal(Game* game, const Vector2& pos, uint32_t speed, uint32_t maxHP, uint32_t damage, const std::vector<bool>& canWalk, Texture* gameTex, Texture* combatTex)
 	: MobileObject(game, pos, speed, maxHP)
 {
 	m_CanWalkGrass = canWalk[0];
@@ -16,6 +16,8 @@ Animal::Animal(Game* game, const Vector2& pos, uint32_t speed, uint32_t maxHP, u
 	m_PathCompleted = true;
 	m_Remove = false;
 	m_PathFinder = new AStarPathFinder(game, canWalk); // delete in destructor
+	m_PathIndex = 0;
+	m_PathCompleted = true;
 }
 
 Animal::~Animal()
@@ -101,7 +103,7 @@ void Animal::wander()
 
 void Animal::interact(const Player& player)
 {
-	if (m_Game == nullptr) // placeholder, game->getCurrentEncounter() == null
+	if (getGame() == nullptr) // placeholder, game->getCurrentEncounter() == null
 	{
 		// game.setEncounter();
 		// game.setInCombat();

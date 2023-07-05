@@ -2,7 +2,7 @@
 
 #include "StationaryObject.h"
 
-class Rock : protected StationaryObject
+class Rock : public StationaryObject
 {
 public:
 	Rock(Game* game, const Vector2& pos)

@@ -36,7 +36,7 @@ EntityShader::EntityShader(const std::string& filename)
 		delete[] infoLog;
 	}
 
-	BindAttributes();
+	BindAttributes(); // not a necessary step since I specify layout locations in my vertex shader files
 	GetAllUniformLocations();
 }
 

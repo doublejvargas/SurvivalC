@@ -2,7 +2,9 @@
 
 #include <vector>
 #include "Vector2.h"
-#include "Game.h"
+//#include "Game.h"
+
+class Game;
 
 class AStarPathFinder
 {
@@ -64,8 +66,8 @@ private:
 public:
 	AStarPathFinder(Game* game, const std::vector<bool>& canWalk);
 
-	void setUpGrid(Game* game, const std::vector<bool>& canWalk);
-	bool isObstacle(Game* game, const Vector2& pos, const std::vector<bool>& canWalk);
+	void setUpGrid(const std::vector<bool>& canWalk);
+	bool isObstacle(const Vector2& pos, const std::vector<bool>& canWalk);
 	static int heuristic(const Tile& a, const Tile& b);
 	
 	// The actual A* pathfinder algorithm is implemented by findPathfunction.

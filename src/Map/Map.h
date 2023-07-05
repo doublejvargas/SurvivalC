@@ -1,10 +1,11 @@
 #pragma once
-#include "Model.h"
 #include "Loader.h"
 #include "TerrainTile.h"
 #include <vector>
 
-// Todo, have Game get loader and get rid of that parameter.
+//Forward declaration to avoid circular #includes
+class Game;
+
 class Map
 {
 private:
@@ -19,8 +20,11 @@ private:
 
 public:
 	//TODO: have game have a GetLoader method, and eliminate loader parameter.
-	Map(Game* game, Loader* loader);
+	Map(Loader* loader);
 	~Map();
+
+	//Populate terrain tiles with a pointer to the current game. This is done to avoid circular header inclusions between Game.h and Map.h
+	void addGamePtr(Game* game);
 
 	inline std::vector<std::vector<TerrainTile>> GetTerrainTiles() const { return m_TerrainTiles; }
 	inline Model& GetTerrainMapModel() const { return *m_TerrainMapModel; }
@@ -29,7 +33,7 @@ public:
 
 private:
 	// Sets up terrain objects on game logic side
-	void SetUpTerrainMap(Game* game);
+	void SetUpTerrainMap();
 	// Sets up terrain model on OpenGL side.
 	Model GenerateOglTerrain(Loader* loader);
 };

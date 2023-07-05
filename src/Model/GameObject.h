@@ -17,10 +17,11 @@ public:
 	inline Game* getGame() const						{ return m_Game; }
 	inline Vector2 getPosition() const					{ return m_Pos; }
 	inline void setPosition(const Vector2& position)	{ m_Pos = position; }
+	inline void setGamePtr(Game* game)					{ m_Game = game; }
 
-	// Protected as derived classes will need to have access to these member variables
-protected:
-	// All objects in the game hold two important references: their position and a pointer to the game
-	Game* m_Game;
+
+private:
+	// All objects in the game hold two important references: their position and a pointer to the game (???) questionable as i develop this game.
+	Game* m_Game = nullptr;
 	Vector2 m_Pos;
 };

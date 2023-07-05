@@ -52,9 +52,10 @@ ApplicationManager::~ApplicationManager()
 void ApplicationManager::Start()
 {
 	printf("C++ Standard: %i\n", __cplusplus);
-	Game game;
 	Loader loader;
-	Map map(&game, &loader);
+	Game game(&loader);
+	//Map map(game.getLoader());
+	//map.addGamePtr(&game);
 	MasterRenderer renderer("res/shaders/Shader2D", "res/shaders/TerrainShader2D");
 	Camera camera;
 	
@@ -101,7 +102,7 @@ void ApplicationManager::Start()
 	Entity sq4(squareModel, glm::vec2(600, 600), glm::vec2(0, 0), glm::vec2(1, 1));
 
 
-	Model mapModel = map.GetTerrainMapModel();
+	Model mapModel = game.getMap()->GetTerrainMapModel();
 	Entity mapInstance(mapModel, glm::vec2(0, 0), glm::vec2(0, 0), glm::vec2(1, 1));
 
 	std::vector<Texture> textures;

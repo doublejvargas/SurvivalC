@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
-class MobileObject : protected GameObject
+class MobileObject : public GameObject
 {
 private:
 	//KEY CHARACTERISTICS

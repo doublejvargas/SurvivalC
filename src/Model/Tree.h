@@ -5,7 +5,7 @@
 
 #define ENCOUNTER_CHANCE 65
 
-class Tree : protected StationaryObject, public Interfaces::IRestable
+class Tree : public StationaryObject, public Interfaces::IRestable
 {
 private:
 	unsigned int m_numSticks = 0;

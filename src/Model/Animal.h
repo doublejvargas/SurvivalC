@@ -7,7 +7,7 @@
 
 #include <vector>
 
-class Animal : protected MobileObject, public Interfaces::ITakesTurns, public Interfaces::IInteractable
+class Animal : public MobileObject, public Interfaces::ITakesTurns, public Interfaces::IInteractable
 {
 private:
 	bool m_CanWalkGrass;
@@ -21,18 +21,18 @@ private:
 	uint32_t m_PathIndex;
 	bool m_PathCompleted;
 
-	AStarPathFinder* m_PathFinder;
+	AStarPathFinder* m_PathFinder = nullptr;
 
-	Texture* m_GameTexture;
-	Texture* m_CombatTexture;
+	Texture* m_GameTexture = nullptr;
+	Texture* m_CombatTexture = nullptr;
 
 	bool m_Remove;
 
 public:
-	Animal(Game* game, const Vector2& pos, uint32_t speed, uint32_t maxHP, uint32_t damage, std::vector<bool> canWalk, Texture* gameTex, Texture* combatTex);
+	Animal(Game* game, const Vector2& pos, uint32_t speed, uint32_t maxHP, uint32_t damage, const std::vector<bool>& canWalk, Texture* gameTex, Texture* combatTex);
 	~Animal();
 
-protected:
+private:
 	void chooseNewPosition();
 
 public:
