@@ -36,12 +36,12 @@ public:
 	inline int getSpeed() const				{ return m_Speed; }
 	inline int getMaxHP() const				{ return m_MaxHitPoints; }
 	inline int getCurrentHP() const			{ return m_CurrentHitPoints; }
+	inline Vector2 getPriorLoc() const		{ return m_PriorLocation; }
+	inline Map* getMap() const				{ return m_Map; }
 	inline bool isAlive() const				{ return m_Alive; }
 	inline bool isBusy() const				{ return m_Busy; }
 	inline bool isFled() const				{ return m_Fled; }
-	inline bool isTurnOver() const			{ return m_TurnOver; };
-	inline Vector2 getPriorLoc() const		{ return m_PriorLocation; }
-	inline Map* getMap() const				{ return m_Map; }
+	inline bool isTurnOver() const			{ return m_TurnOver; }
 
 	//Setters
 	inline void setCurrentHP(int currentHP)				{ m_CurrentHitPoints = currentHP; }

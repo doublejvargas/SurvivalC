@@ -33,17 +33,17 @@ private:
 	bool m_Remove;
 
 public:
-	Animal(Map* map, const Vector2& pos, uint32_t speed, uint32_t maxHP, uint32_t damage, const std::vector<bool>& canWalk, Texture* gameTex, Texture* combatTex);
+	Animal(Map* map, const Vector2& pos, int speed, uint32_t maxHP, uint32_t damage, const std::vector<bool>& canWalk, Texture* gameTex, Texture* combatTex);
 	~Animal();
 
 private:
-	void chooseNewPosition();
+	virtual void chooseNewPosition(const Player& player);
 
 public:
 	void wander(Game* game);
 
 	void interact(const Player& player) override;
-	bool combatLogic(const MobileObject& target) override;
+	bool combatLogic(MobileObject& target) override;
 	bool Flee() override;
 	bool Attack(MobileObject& target) override;
 
@@ -57,4 +57,6 @@ public:
 	inline void setTargetPos(const Vector2& targetPos) { m_TargetPos = targetPos; }
 	inline void setRemove(bool remove) { m_Remove = remove; }
 
+
+	friend class Carnivore;
 };

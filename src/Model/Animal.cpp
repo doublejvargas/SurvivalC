@@ -6,7 +6,7 @@
 #include "AStarPathFinder.h"
 #include <random>
 
-Animal::Animal(Map* map, const Vector2& pos, uint32_t speed, uint32_t maxHP, uint32_t damage, const std::vector<bool>& canWalk, Texture* gameTex, Texture* combatTex)
+Animal::Animal(Map* map, const Vector2& pos, int speed, uint32_t maxHP, uint32_t damage, const std::vector<bool>& canWalk, Texture* gameTex, Texture* combatTex)
 	: MobileObject(map, pos, speed, maxHP)
 {
 	m_CanWalkGrass = canWalk[0];
@@ -27,7 +27,7 @@ Animal::~Animal()
 	delete m_PathFinder;
 }
 
-void Animal::chooseNewPosition()
+void Animal::chooseNewPosition(const Player& player)
 {
 	std::vector<std::vector<TerrainTile>> tMap = getMap()->GetTerrainTiles();
 	bool pathChosen = false;
@@ -82,7 +82,7 @@ void Animal::wander(Game* game)
 
 	if (m_PathCompleted)
 	{
-		chooseNewPosition();
+		chooseNewPosition(*game->getPlayer());
 		m_CurrentPath = m_PathFinder->findPath(getPosition(), m_TargetPos);
 		m_PathCompleted = false;
 		m_PathIndex = 0;
@@ -111,7 +111,7 @@ void Animal::interact(const Player& player)
 	}
 }
 
-bool Animal::combatLogic(const MobileObject& target)
+bool Animal::combatLogic(MobileObject & target)
 {
 	return true; //TODOplaceholder, this will be implemented by herbivore and carnivore
 }

@@ -22,6 +22,6 @@ namespace Interfaces
 	{
 	public:
 		// Parameter target isn't necessarily used in all combat logic implementations, but it is essential for a subset of them
-		virtual bool combatLogic(const MobileObject& target) = 0;
+		virtual bool combatLogic(MobileObject & target) = 0;
 	};
 }
