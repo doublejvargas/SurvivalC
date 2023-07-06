@@ -5,8 +5,8 @@
 class Rock : public StationaryObject
 {
 public:
-	Rock(Game* game, const Vector2& pos)
-		: StationaryObject(game, pos, true) { }
+	Rock(const Vector2& pos)
+		: StationaryObject(pos, true) { }
 
 	//TODO: finish implementing
 	void interact(const Player& player) override

@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-TerrainTile::TerrainTile(float perlinVal, Game* game, const Vector2& pos)
-	: GameObject(game, pos)
+TerrainTile::TerrainTile(float perlinVal, const Vector2& pos)
+	: GameObject(pos)
 {
 	m_isRevealedOnMiniMap = false;
 

@@ -34,3 +34,9 @@ Vector2 Vector2::getDisplacementVector(int yBound, int xBound)
 
 	return Vector2(m_v0 + yDisplacement, m_v1 + xDisplacement);
 }
+
+bool operator==(const Vector2 v1, const Vector2 v2)
+{
+	return (v1.m_v0 == v2.m_v0 &&
+		v1.m_v1 == v2.m_v1);
+}

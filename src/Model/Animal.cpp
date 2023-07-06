@@ -2,10 +2,12 @@
 #include "TerrainTile.h"
 #include "Player.h"
 #include "StationaryObject.h"
+#include "Game.h"
+#include "AStarPathFinder.h"
 #include <random>
 
-Animal::Animal(Game* game, const Vector2& pos, uint32_t speed, uint32_t maxHP, uint32_t damage, const std::vector<bool>& canWalk, Texture* gameTex, Texture* combatTex)
-	: MobileObject(game, pos, speed, maxHP)
+Animal::Animal(Map* map, const Vector2& pos, uint32_t speed, uint32_t maxHP, uint32_t damage, const std::vector<bool>& canWalk, Texture* gameTex, Texture* combatTex)
+	: MobileObject(map, pos, speed, maxHP)
 {
 	m_CanWalkGrass = canWalk[0];
 	m_CanWalkDesert = canWalk[1];
@@ -15,7 +17,7 @@ Animal::Animal(Game* game, const Vector2& pos, uint32_t speed, uint32_t maxHP, u
 	m_Damage = damage;
 	m_PathCompleted = true;
 	m_Remove = false;
-	m_PathFinder = new AStarPathFinder(game, canWalk); // delete in destructor
+	m_PathFinder = new AStarPathFinder(map, canWalk); // delete in destructor
 	m_PathIndex = 0;
 	m_PathCompleted = true;
 }
@@ -27,8 +29,7 @@ Animal::~Animal()
 
 void Animal::chooseNewPosition()
 {
-	Game* game = getGame();
-	std::vector<std::vector<TerrainTile>> tMap; //game.getMap().getTerrainMap();
+	std::vector<std::vector<TerrainTile>> tMap = getMap()->GetTerrainTiles();
 	bool pathChosen = false;
 	uint32_t attempts = 0;
 
@@ -37,7 +38,7 @@ void Animal::chooseNewPosition()
 		m_TargetPos = getPosition().getDisplacementVector(5, 5);
 		uint32_t targetY = (uint32_t)m_TargetPos.v0();
 		uint32_t targetX = (uint32_t)m_TargetPos.v1();
-		if (targetY < 100 /*game.getWidth()*/ && targetX < 100 /*game.getwidth()*/ && targetY >= 0 && targetX >= 0)
+		if (targetY < getMap()->GridDimensionY() && targetX < getMap()->GridDimensionX() && targetY >= 0 && targetX >= 0)
 		{
 			if (m_CanWalkWater && tMap.at(targetY).at(targetX).getTerrainType() == TerrainTile::TerrainType::WATER)
 				pathChosen = true;
@@ -71,13 +72,13 @@ void Animal::chooseNewPosition()
 	} while (!pathChosen);
 }
 
-void Animal::wander()
+void Animal::wander(Game* game)
 {
 	Vector2 animalPos = getPosition();
-	Vector2 playerPos; //getGame().getPlayer().getPos();
+	Vector2 playerPos = game->getPlayer()->getPosition();
 
 	if (animalPos == playerPos)
-		interact(Player(nullptr, Vector2(), 0)); //placeholder, getGame().getPlayer();
+		interact(*game->getPlayer());
 
 	if (m_PathCompleted)
 	{
@@ -103,7 +104,7 @@ void Animal::wander()
 
 void Animal::interact(const Player& player)
 {
-	if (getGame() == nullptr) // placeholder, game->getCurrentEncounter() == null
+	if (true) //TODO placeholder, game->getCurrentEncounter() == null
 	{
 		// game.setEncounter();
 		// game.setInCombat();
@@ -112,7 +113,7 @@ void Animal::interact(const Player& player)
 
 bool Animal::combatLogic(const MobileObject& target)
 {
-	return true; //placeholder, this will be implemented by herbivore and carnivore
+	return true; //TODOplaceholder, this will be implemented by herbivore and carnivore
 }
 
 bool Animal::Flee()

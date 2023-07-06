@@ -13,18 +13,9 @@ Map::~Map()
 	delete m_TerrainMapModel;
 }
 
-void Map::addGamePtr(Game* game)
-{
-	for (int y = 0; y < m_N; y++)
-	{
-		for (int x = 0; x < m_N; x++)
-			m_TerrainTiles.at(y).at(x).setGamePtr(game);
-	}
-}
-
 void Map::SetUpTerrainMap()
 {
-	m_TerrainTiles = std::vector<std::vector<TerrainTile>>(m_N, std::vector<TerrainTile>(m_N, TerrainTile(0.0f, nullptr, Vector2(0, 0))));
+	m_TerrainTiles = std::vector<std::vector<TerrainTile>>(m_N, std::vector<TerrainTile>(m_N, TerrainTile(0.0f, Vector2(0, 0))));
 
 	PerlinNoise2D noise;
 	noise.init();
@@ -37,7 +28,7 @@ void Map::SetUpTerrainMap()
 			float y1 = y * scale / m_N;
 			//KEY: this position is stored as (y,x) for vector/array purposes. For actual
 			// use of this data, it should be used/read traditionally as (x,y), especially for openGl.
-			m_TerrainTiles[y][x] = TerrainTile(noise.value(x1, y1), nullptr, Vector2((float)y, (float)x));
+			m_TerrainTiles[y][x] = TerrainTile(noise.value(x1, y1), Vector2((float)y, (float)x));
 		}
 	}
 }

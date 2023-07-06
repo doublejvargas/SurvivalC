@@ -58,7 +58,7 @@ void ApplicationManager::Start()
 	//map.addGamePtr(&game);
 	MasterRenderer renderer("res/shaders/Shader2D", "res/shaders/TerrainShader2D");
 	Camera camera;
-	
+
 	std::vector<float> positions = {
 		 0.0f,   0.0f,
 		 70.0f,  0.0f,

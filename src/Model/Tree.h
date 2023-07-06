@@ -11,8 +11,8 @@ private:
 	unsigned int m_numSticks = 0;
 
 public:
-	Tree(Game* game, const Vector2& pos)
-		: StationaryObject(game, pos, true)
+	Tree(const Vector2& pos)
+		: StationaryObject(pos, true)
 	{
 		std::random_device rd;
 		std::mt19937 gen(rd());
@@ -27,6 +27,7 @@ public:
 		//player.gatherSticks(/*implement with lambda function here*/ [](void) {});
 	}
 
+	//TODO
 	void restAt(const Player& player) override
 	{
 		//implement once game, player, carnivorefactory are implemented

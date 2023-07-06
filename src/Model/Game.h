@@ -4,8 +4,6 @@
 #include "Animal.h"
 #include "Map.h"
 
-#include <vector>
-
 typedef unsigned int uint32_t;
 
 class Game

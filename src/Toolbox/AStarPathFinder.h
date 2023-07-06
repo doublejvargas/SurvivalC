@@ -1,11 +1,10 @@
 #pragma once
 
-#include <vector>
 #include "Vector2.h"
-//#include "Game.h"
+#include <vector>
 
-class Game;
-
+//class Game;
+class Map;
 class AStarPathFinder
 {
 private:
@@ -23,7 +22,7 @@ private:
 		bool t_IsWall = false;
 	public:
 		Tile();
-		Tile(AStarPathFinder* ref, Vector2 pos, bool obs);
+		Tile(AStarPathFinder* refrnc, Vector2 pos, bool obs);
 		void addNeighbors();
 
 		inline int getGCost() const { return t_GCost; }
@@ -40,31 +39,34 @@ private:
 		inline void setHCost(double hcost) { t_HCost = hcost; }
 		inline void setFCost(double fcost) { t_FCost = fcost; }
 
-		bool operator==(const Tile& T)
+		friend bool operator==(const Tile& t1, const Tile& t2)
 		{
-			return (T.getPosition() == t_Position);
+			return (t1.getPosition() == t2.getPosition());
 		}
 
-		void operator=(const Tile& T)
+
+		Tile& operator=(const Tile& t)
 		{
-			aRef = T.getARef();
-			t_Position = T.getPosition();
-			t_GCost = T.getGCost();
-			t_HCost = T.getHCost();
-			t_FCost = T.getFCost();
-			t_Neighbors = T.getNeighbors();
-			t_Previous = T.getPrevious();
-			t_IsWall = T.isWall();
+			aRef = t.getARef();
+			t_Position = t.getPosition();
+			t_GCost = t.getGCost();
+			t_HCost = t.getHCost();
+			t_FCost = t.getFCost();
+			t_Neighbors = t.getNeighbors();
+			t_Previous = t.getPrevious();
+			t_IsWall = t.isWall();
+
+			return *this;
 		}
 	};
 
 private:
 	std::vector<std::vector<Tile>> m_Grid;
 	std::vector<bool> m_CanWalk;
-	Game* m_Game = nullptr;
+	Map* m_Map = nullptr;
 
 public:
-	AStarPathFinder(Game* game, const std::vector<bool>& canWalk);
+	AStarPathFinder(Map* map, const std::vector<bool>& canWalk);
 
 	void setUpGrid(const std::vector<bool>& canWalk);
 	bool isObstacle(const Vector2& pos, const std::vector<bool>& canWalk);

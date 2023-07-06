@@ -8,6 +8,7 @@ class Game;
 
 class Map
 {
+	//TODO define const globals for "game width" and "game height"
 private:
 	//Pixel size of a terrain tile
 	static const uint32_t m_TILE_SIZE	= 30;
@@ -22,9 +23,6 @@ public:
 	//TODO: have game have a GetLoader method, and eliminate loader parameter.
 	Map(Loader* loader);
 	~Map();
-
-	//Populate terrain tiles with a pointer to the current game. This is done to avoid circular header inclusions between Game.h and Map.h
-	void addGamePtr(Game* game);
 
 	inline std::vector<std::vector<TerrainTile>> GetTerrainTiles() const { return m_TerrainTiles; }
 	inline Model& GetTerrainMapModel() const { return *m_TerrainMapModel; }

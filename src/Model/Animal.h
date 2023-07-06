@@ -1,11 +1,15 @@
 #pragma once
 
-#include "MobileObject.h"
 #include "Interfaces.h"
-#include "AStarPathFinder.h"
-#include "Texture.h"
-
+#include "MobileObject.h"
 #include <vector>
+
+
+class Game;
+class AStarPathFinder;
+class Texture;
+
+class Game;
 
 class Animal : public MobileObject, public Interfaces::ITakesTurns, public Interfaces::IInteractable
 {
@@ -29,14 +33,14 @@ private:
 	bool m_Remove;
 
 public:
-	Animal(Game* game, const Vector2& pos, uint32_t speed, uint32_t maxHP, uint32_t damage, const std::vector<bool>& canWalk, Texture* gameTex, Texture* combatTex);
+	Animal(Map* map, const Vector2& pos, uint32_t speed, uint32_t maxHP, uint32_t damage, const std::vector<bool>& canWalk, Texture* gameTex, Texture* combatTex);
 	~Animal();
 
 private:
 	void chooseNewPosition();
 
 public:
-	void wander();
+	void wander(Game* game);
 
 	void interact(const Player& player) override;
 	bool combatLogic(const MobileObject& target) override;

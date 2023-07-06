@@ -9,8 +9,8 @@
 class StationaryObject : public GameObject, public Interfaces::IInteractable
 {
 public:
-	StationaryObject(Game* game, Vector2 pos, bool passable)
-		: GameObject(game, pos), m_isPassable(passable) {}
+	StationaryObject(Vector2 pos, bool passable)
+		: GameObject(pos), m_isPassable(passable) {}
 
 	inline bool isPassable() const { return m_isPassable; }
 	inline void setPassable(bool val) { m_isPassable = val; }

@@ -1,9 +1,10 @@
 #include "Player.h"
+#include "Game.h"
 #include <random>
 #include <stdexcept>
 
-Player::Player(Game * game, const Vector2 & pos, int maxHP)
-	:MobileObject(game, pos, 1, maxHP)
+Player::Player(Map* map, const Vector2 & pos, int maxHP)
+	:MobileObject(map, pos, 1, maxHP)
 {
 	m_StepsToday = 0;
 	m_NumSticks = 0;
@@ -14,7 +15,7 @@ Player::Player(Game * game, const Vector2 & pos, int maxHP)
 	m_Resting = false;
 	m_CyclesSinceRest = 1;
 	m_Inventory = Inventory(m_MaxWeight);
-	//setFacing(Game.Direction.DOWN);
+	//setFacing(Game.Direction.DOWN); //TODO
 	m_DisplayRestPrompt = false;
 	m_DisplayUpgradePrompt = false;
 }
@@ -73,7 +74,7 @@ void Player::AttemptMove(TerrainTile* T)
 		return;
 }
 
-void Player::AttemptRest()
+void Player::AttemptRest(Game* game)
 {
 	if (m_CanRest)
 	{
@@ -81,8 +82,8 @@ void Player::AttemptRest()
 		m_DisplayRestPrompt = false;
 		m_DisplayUpgradePrompt = false;
 		m_Resting = true;
-		//getGame().clearAllAnimals();
-		//m_CurrentRestObject.restAt(this);
+		game->clearAllAnimals();
+		//m_CurrentRestObject.restAt(this); //TODO
 	}
 }
 
@@ -125,6 +126,7 @@ void Player::TakeStep()
 	m_StepsToday++;
 }
 
+//TODO
 bool Player::CheckForRestable()
 {
 	int x = (int)getPosition().v1();
@@ -161,6 +163,7 @@ bool Player::CheckForRestable()
 	return false;
 }
 
+//TODO
 bool Player::CheckForBase()
 {
 	int x = (int)getPosition().v1();

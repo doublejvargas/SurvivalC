@@ -3,7 +3,8 @@
 #include "Inventory.h"
 
 class TerrainTile;
-// Boiler plate for now to be able to define other classes. Todo: implement later.
+class Game;
+
 class Player : public MobileObject
 {
 public:
@@ -21,7 +22,7 @@ private:
 	//int Game.Direction facing;
 	int m_StepsToday;
 	int m_CyclesSinceRest;
-	GameObject m_CurrentRestObject;
+	GameObject* m_CurrentRestObject = nullptr;
 
 	//Player's Items
 	int m_NumSticks;
@@ -33,7 +34,7 @@ private:
 	bool m_DisplayUpgradePrompt;
 
 public:
-	Player(Game* game, const Vector2& pos, int maxHP);
+	Player(Map* map, const Vector2& pos, int maxHP);
 
 	//Scans the inventory for a specific type of food, and if it is found in inventory it is removed, and the player
 	//heals by the food's given HP value
@@ -49,7 +50,7 @@ public:
 	bool Attack(MobileObject& target) override;
 	
 	void AttemptMove(TerrainTile* T);
-	void AttemptRest();
+	void AttemptRest(Game* game);
 
 private:
 	//Private internal methods/routines used by class
@@ -88,5 +89,6 @@ public:
 	//inline Game.Direction getFacing() { return facing; }
 	//inline void setFacing(Game.Direction facing) { this.facing = facing; }
 	
-
+	// Class Base will need access to certain private routines of player
+	friend class Base;
 };

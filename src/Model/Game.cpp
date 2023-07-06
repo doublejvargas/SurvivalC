@@ -12,8 +12,6 @@ Game::Game(Loader* loader)
 
 	m_Loader = loader;
 	m_Map = new Map(loader);
-	m_Map->addGamePtr(this); //todo
-	
 	
 	placePlayerAndBase();
 	initMapReveal();
@@ -45,17 +43,17 @@ void Game::checkForEncounter()
 
 void Game::spawnNewHerbivore()
 {
-	// implement when factories are implemented
+	// implement when factories are implemented //TODO
 }
 
 void Game::spawnNewCarnivore()
 {
-	// implement when factories are implemented
+	// implement when factories are implemented //TODO
 }
 
 Vector2 Game::spawnNewAnimalLocation()
 {
-	switch (DOWN/*m_Player->getFacing()*/)
+	switch (DOWN/*m_Player->getFacing()*/) //TODO
 	{
 	case UP:
 		return Vector2(m_Player->getPosition().v0() - 11, m_Player->getPosition().v1() - 11);
@@ -118,7 +116,7 @@ void Game::placePlayerAndBase()
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution<> dis(0, WIDTH <= HEIGHT ? WIDTH : HEIGHT);
 
-	m_Player = new Player(this, Vector2(0, 0), 10);
+	m_Player = new Player(m_Map, Vector2(0, 0), 10);
 	uint32_t y = dis(gen); //random
 	uint32_t x = dis(gen); // random
 	TerrainTile::TerrainType T = m_Map->GetTerrainTiles().at(0).at(0).getTerrainType();
@@ -128,7 +126,7 @@ void Game::placePlayerAndBase()
 		m_Player->setPosition(Vector2((float)y, (float)x));
 		T = m_Map->GetTerrainTiles().at(y).at(x).getTerrainType();
 		hasObj = m_Map->GetTerrainTiles().at(y).at(x).hasStatObj();
-	} while (T != TerrainTile::GRASSLAND || !hasObj);
+	} while (T != TerrainTile::GRASSLAND /*|| !hasObj*/); //TODO reenable that conditional once i produce objects on map
 
 	Vector2 displacementVector;
 	bool basePlaced = false;

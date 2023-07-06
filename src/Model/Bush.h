@@ -13,8 +13,8 @@ private:
 
 public:
 	//Constructor - Bush objects have 1/3 chance of containing a berry
-	Bush(Game* game, const Vector2& pos)
-		: StationaryObject(game, pos, true)
+	Bush(const Vector2& pos)
+		: StationaryObject(pos, true)
 	{
 		std::random_device rd;
 		std::mt19937 gen(rd());

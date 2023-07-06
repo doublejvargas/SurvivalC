@@ -10,7 +10,7 @@ public:
 	enum StatObjType { ROCK, BUSH, TREE, BASE, NONE };
 	enum TerrainType { WATER, GRASSLAND, DESERT };
 
-	TerrainTile(float perlinVal, Game* game, const Vector2& pos);
+	TerrainTile(float perlinVal, const Vector2& pos);
 
 	inline StationaryObject* getStatObj()	const { return m_StatObj; }
 	inline StatObjType getStatObjType()	const { return m_StatObjType; }
