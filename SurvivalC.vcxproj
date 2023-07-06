@@ -178,8 +178,10 @@
     <ClInclude Include="src\Model\Base.h" />
     <ClInclude Include="src\Model\Bush.h" />
     <ClInclude Include="src\Model\Carnivore.h" />
+    <ClInclude Include="src\Model\CarnivoreFactory.h" />
     <ClInclude Include="src\Model\Food.h" />
     <ClInclude Include="src\Model\Herbivore.h" />
+    <ClInclude Include="src\Model\HerbivoreFactory.h" />
     <ClInclude Include="src\Model\Inventory.h" />
     <ClInclude Include="src\Model\Rock.h" />
     <ClInclude Include="src\Model\Tree.h" />
