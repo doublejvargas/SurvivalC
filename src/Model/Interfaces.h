@@ -2,6 +2,7 @@
 
 class Player;
 class MobileObject;
+class Loader;
 
 // This header file contains a namespace that holds all the interfaces that some derived classes will make use of
 namespace Interfaces
@@ -9,13 +10,13 @@ namespace Interfaces
 	class IInteractable
 	{
 	public:
-		virtual void interact(const Player& player) = 0; // should this be a const ref? or is player modified?
+		virtual void interact(Player& player) = 0; // should this be a const ref? or is player modified?
 	};
 
 	class IRestable
 	{
 	public:
-		virtual void restAt(const Player& player) = 0;
+		virtual void restAt(Player& player, Loader* loader = nullptr) = 0;
 	};
 
 	class ITakesTurns

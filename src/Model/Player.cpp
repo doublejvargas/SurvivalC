@@ -3,8 +3,8 @@
 #include <random>
 #include <stdexcept>
 
-Player::Player(Map* map, const Vector2 & pos, int maxHP)
-	:MobileObject(map, pos, 1, maxHP)
+Player::Player(Map* map, const Vector2 & pos, int maxHP, Game* game)
+	: MobileObject(map, pos, 1, maxHP), m_Game(game)
 {
 	m_StepsToday = 0;
 	m_NumSticks = 0;

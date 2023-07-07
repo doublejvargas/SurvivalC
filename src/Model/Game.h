@@ -11,8 +11,8 @@ class Game
 public:
 	// Global Play parameters of game
 	static const uint32_t MAX_ANIMALS = 5;
-	static const uint32_t WIDTH = 5;
-	static const uint32_t HEIGHT = 5;
+	static const uint32_t WIDTH = 5; //TODO: find appropriate value
+	static const uint32_t HEIGHT = 5; //TODO: find appropriate value
 	static const uint32_t STEPS_PER_CYCLE = 5;
 	static const uint32_t DAYS_TO_SURVIVE = 5;
 

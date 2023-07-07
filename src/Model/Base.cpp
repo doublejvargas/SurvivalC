@@ -1,6 +1,9 @@
 #include "Base.h"
 #include "Player.h"
+#include "CarnivoreFactory.h"
+#include "Loader.h"
 #include <random>
+
 
 Base::Base(Vector2 pos)
 	: StationaryObject(pos, false)
@@ -64,7 +67,7 @@ void Base::buyNewToolUpgrade(Player& player)
 	}
 }
 
-void Base::interact(const Player& player)
+void Base::interact(Player& player)
 {
 	// Empty function call.  This is implementation of the Interactable interface.  The reason it is here is that it
 		//conveniently disables the player's ability to move into this space. If an interactable object can be walked
@@ -72,17 +75,33 @@ void Base::interact(const Player& player)
 		//function, it serves to allow bases to exist as impassable terrain to the player.
 }
 
-void Base::restAt(const Player& player)
+void Base::restAt(Player& player, Loader* loader)
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution<> dis(1, 101);
 
 	uint32_t encounterRoll = dis(gen);
+	Carnivore* enemy = nullptr;
 
 	if (encounterRoll < m_CurEncounterChance)
 	{
-		// TODO: complete once factories are implemented
+		int enemyType = dis(gen) % 3;
+		if (enemyType == 1)
+		{
+			enemy = CarnivoreFactory::ProduceCarnivore(player.getMap(), Vector2(0.0f, 0.0f), Carnivore::WOLF, loader); //TODO figure out how to pass loader here
+		}
+		else if (enemyType == 2)
+		{
+			enemy = CarnivoreFactory::ProduceCarnivore(player.getMap(), Vector2(0.0f, 0.0f), Carnivore::LION, loader); //TODO figure out how to pass loader here
+		}
+
+		//game.setcurrentencounter(....)	//TODO
+	}
+	else
+	{
+		player.Heal(player.getMaxHP());
+		player.setCyclesSinceRest(0);
 	}
 }
 

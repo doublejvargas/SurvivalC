@@ -44,3 +44,8 @@ bool Carnivore::canWalk(TerrainTile::TerrainType terrain)
 	}
 }
 
+// Carnivore& Carnivore::operator=(const Carnivore& c)
+// {
+// 	m_Type = c.getType();
+// }
+

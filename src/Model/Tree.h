@@ -22,13 +22,13 @@ public:
 	}
 
 	//TODO: finish implementing
-	void interact(const Player& player) override
+	void interact(Player& player) override
 	{
 		//player.gatherSticks(/*implement with lambda function here*/ [](void) {});
 	}
 
 	//TODO
-	void restAt(const Player& player) override
+	void restAt(Player& player, Loader* loader) override
 	{
 		//implement once game, player, carnivorefactory are implemented
 	}

@@ -116,7 +116,7 @@ void Game::placePlayerAndBase()
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution<> dis(0, WIDTH <= HEIGHT ? WIDTH : HEIGHT);
 
-	m_Player = new Player(m_Map, Vector2(0, 0), 10);
+	m_Player = new Player(m_Map, Vector2(0, 0), 10, this);
 	uint32_t y = dis(gen); //random
 	uint32_t x = dis(gen); // random
 	TerrainTile::TerrainType T = m_Map->GetTerrainTiles().at(0).at(0).getTerrainType();

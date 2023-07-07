@@ -150,6 +150,7 @@
     <ClCompile Include="src\Model\Animal.cpp" />
     <ClCompile Include="src\Model\Base.cpp" />
     <ClCompile Include="src\Model\Carnivore.cpp" />
+    <ClCompile Include="src\Model\CombatEncounter.cpp" />
     <ClCompile Include="src\Model\Herbivore.cpp" />
     <ClCompile Include="src\Model\Inventory.cpp" />
     <ClCompile Include="src\Render\MasterRenderer.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="src\Model\Bush.h" />
     <ClInclude Include="src\Model\Carnivore.h" />
     <ClInclude Include="src\Model\CarnivoreFactory.h" />
+    <ClInclude Include="src\Model\CombatEncounter.h" />
     <ClInclude Include="src\Model\Food.h" />
     <ClInclude Include="src\Model\Herbivore.h" />
     <ClInclude Include="src\Model\HerbivoreFactory.h" />

@@ -26,11 +26,11 @@ public:
 	}
 
 	//TODO: finish implementing
-	void interact(const Player& player) override
+	void interact(Player& player) override
 	{
 		if (m_NumBerries)
 		{
-			//player.getinventory.insertfood(food.foodtype.berries) need to be implemented.
+			//player.getinventory.insertfood(food.foodtype.berries) need to be implemented. //TODO
 		}	
 		m_hasBerries = false;
 		m_NumBerries = 0;

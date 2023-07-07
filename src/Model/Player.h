@@ -19,11 +19,11 @@ private:
 	bool m_Harvesting;
 	bool m_Resting;
 	bool m_CanRest;
-	//int Game.Direction facing;
+	//int Game.Direction facing; //TODO
 	int m_StepsToday;
 	int m_CyclesSinceRest;
-	GameObject* m_CurrentRestObject = nullptr;
-
+	GameObject *m_CurrentRestObject = nullptr;
+	Game* m_Game = nullptr;
 	//Player's Items
 	int m_NumSticks;
 	Inventory m_Inventory;
@@ -34,7 +34,7 @@ private:
 	bool m_DisplayUpgradePrompt;
 
 public:
-	Player(Map* map, const Vector2& pos, int maxHP);
+	Player(Map* map, const Vector2& pos, int maxHP, Game* game);
 
 	//Scans the inventory for a specific type of food, and if it is found in inventory it is removed, and the player
 	//heals by the food's given HP value
@@ -77,6 +77,7 @@ public:
 	inline int getCyclesSinceRest() const		{ return m_CyclesSinceRest; }
 	inline int getMaxWeigth() const				{ return m_MaxWeight; }
 	inline Inventory getInventory() const		{ return m_Inventory; }
+	Game* getGame() const						{ return m_Game; }
 
 	//Setters
 	inline void setStepsToday(int stepsToday)			{ m_StepsToday = stepsToday; }
@@ -84,10 +85,10 @@ public:
 	inline void setHarvesting(bool harvesting)			{ m_Harvesting = harvesting; }
 	inline void setResting(bool resting)				{ m_Resting = resting;}
 	inline void setCyclesSinceRest(int cyclesSinceRest) { m_CyclesSinceRest = cyclesSinceRest; }
+	void setGame(Game* game)							{ m_Game = game; }
 	
-	
-	//inline Game.Direction getFacing() { return facing; }
-	//inline void setFacing(Game.Direction facing) { this.facing = facing; }
+	//inline Game.Direction getFacing() { return facing; } //TODO
+	//inline void setFacing(Game.Direction facing) { this.facing = facing; } //TODO
 	
 	// Class Base will need access to certain private routines of player
 	friend class Base;

@@ -29,8 +29,8 @@ public:
 	void upgradeBase();
 	void buyNewToolUpgrade(Player& player);
 
-	void interact(const Player& player) override;
-	void restAt(const Player& player) override;
+	void interact(Player& player) override;
+	void restAt(Player& player, Loader* loader) override;
 
 	// Getters
 	inline uint32_t getCurToolCost() const { return m_CurToolCost; }

@@ -102,7 +102,7 @@ void Animal::wander(Game* game)
 	}
 }
 
-void Animal::interact(const Player& player)
+void Animal::interact(Player& player)
 {
 	if (true) //TODO placeholder, game->getCurrentEncounter() == null
 	{
@@ -144,4 +144,12 @@ bool Animal::Attack(MobileObject& target)
 	}
 	return false;
 }
+
+// Animal& Animal::operator=(const Animal& a)
+// {
+// 	m_CanWalkDesert = a.canWalkDesert();
+// 	m_CanWalkGrass = a.canWalkGrass();
+// 	m_CanWalkWater = a.canWalkWater();
+// 	m_Damage = a.get
+// }
 

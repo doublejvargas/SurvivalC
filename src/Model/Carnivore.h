@@ -27,6 +27,10 @@ private:
 	bool scanForPlayer(const Player& player, TerrainTile::TerrainType terrain);
 	bool canWalk(TerrainTile::TerrainType terrain);
 
+public:
 	//Getter
 	inline CARNIVORE_TYPE getType() const { return m_Type; }
+
+	//Overloads
+	/*Carnivore& operator=(const Carnivore& c);*/
 };

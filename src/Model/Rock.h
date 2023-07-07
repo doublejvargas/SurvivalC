@@ -9,7 +9,7 @@ public:
 		: StationaryObject(pos, true) { }
 
 	//TODO: finish implementing
-	void interact(const Player& player) override
+	void interact(Player& player) override
 	{
 		//player.sethidden
 		//player.setposition

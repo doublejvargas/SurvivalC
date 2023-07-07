@@ -24,6 +24,7 @@ private:
 public:
 	//CONSTRUCTOR
 	MobileObject(Map* map, const Vector2& pos, int speed, int maxHP);
+	//virtual ~MobileObject();
 
 	//Abstract methods to be implemented by animals and players, necessary for combat.
 	virtual bool Flee() = 0;
