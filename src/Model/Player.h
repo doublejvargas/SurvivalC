@@ -1,10 +1,12 @@
 #pragma once
+#include "Game.h"
 #include "MobileObject.h"
 #include "Inventory.h"
 
 class TerrainTile;
-// Boiler plate for now to be able to define other classes. Todo: implement later.
-class Player : protected MobileObject
+//class Game;
+
+class Player : public MobileObject
 {
 public:
 	enum ToolType { HAND, STAKE, ROCK, SPEAR };
@@ -18,22 +20,25 @@ private:
 	bool m_Harvesting;
 	bool m_Resting;
 	bool m_CanRest;
-	//int Game.Direction facing;
+	Game::Direction m_Facing = Game::NULLDIR;
+	
 	int m_StepsToday;
 	int m_CyclesSinceRest;
-	GameObject m_CurrentRestObject;
-
+	StationaryObject *m_CurrentRestObject = nullptr; //TODO how to identify/declare/cast this as an Irestable? ie. tree or base?
+	Game* m_Game = nullptr;
+	
 	//Player's Items
 	int m_NumSticks;
-	Inventory m_Inventory;
-	ToolType m_Tool;
+	Inventory* m_Inventory = nullptr;
+	ToolType m_Tool = HAND;
 
 	//Tentative -- prompts
 	bool m_DisplayRestPrompt;
 	bool m_DisplayUpgradePrompt;
 
 public:
-	Player(Game* game, const Vector2& pos, int maxHP);
+	Player(Map* map, const Vector2& pos, int maxHP, Game* game);
+	~Player();
 
 	//Scans the inventory for a specific type of food, and if it is found in inventory it is removed, and the player
 	//heals by the food's given HP value
@@ -53,15 +58,15 @@ public:
 
 private:
 	//Private internal methods/routines used by class
-	void UpgradeTool();
-	bool SpendSticks(int toSpend);
-	void GatherSticks(int sticksHarvested);
-	void Heal(int HP);
-	void TakeStep();
+	void upgradeTool();
+	bool spendSticks(int toSpend);
+	void gatherSticks(int sticksHarvested);
+	void heal(int HP);
+	void takeStep();
 	
 	//
-	bool CheckForRestable();
-	bool CheckForBase();
+	bool checkForRestable();
+	bool checkForBase();
 
 public:
 	//Getters
@@ -75,7 +80,9 @@ public:
 	inline bool isDisplayUpgradesPrompt() const	{ return m_DisplayUpgradePrompt; }
 	inline int getCyclesSinceRest() const		{ return m_CyclesSinceRest; }
 	inline int getMaxWeigth() const				{ return m_MaxWeight; }
-	inline Inventory getInventory() const		{ return m_Inventory; }
+	inline Inventory* getInventory() const		{ return m_Inventory; }
+	Game* getGame() const						{ return m_Game; }
+	inline Game::Direction getFacing() const	{ return m_Facing; }
 
 	//Setters
 	inline void setStepsToday(int stepsToday)			{ m_StepsToday = stepsToday; }
@@ -83,10 +90,12 @@ public:
 	inline void setHarvesting(bool harvesting)			{ m_Harvesting = harvesting; }
 	inline void setResting(bool resting)				{ m_Resting = resting;}
 	inline void setCyclesSinceRest(int cyclesSinceRest) { m_CyclesSinceRest = cyclesSinceRest; }
+	void setGame(Game* game)							{ m_Game = game; }
+	inline void setFacing(Game::Direction facing)		{ m_Facing = facing; }
 	
-	
-	//inline Game.Direction getFacing() { return facing; }
-	//inline void setFacing(Game.Direction facing) { this.facing = facing; }
-	
-
+	// Classes that will need access to certain private routines of player
+	friend class Base;
+	friend class RestingCombatEncounter;
+	friend class Tree;
+	friend class Rock;
 };

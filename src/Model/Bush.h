@@ -1,11 +1,13 @@
 #pragma once
 #include "StationaryObject.h"
+#include "Player.h"
+#include "Food.h"
 #include <random>
 
 class Game;
 class StationaryObject;
 
-class Bush : protected StationaryObject
+class Bush : public StationaryObject
 {
 private:
 	uint32_t m_NumBerries = 0;
@@ -13,8 +15,8 @@ private:
 
 public:
 	//Constructor - Bush objects have 1/3 chance of containing a berry
-	Bush(Game* game, const Vector2& pos)
-		: StationaryObject(game, pos, true)
+	Bush(const Vector2& pos)
+		: StationaryObject(pos, true)
 	{
 		std::random_device rd;
 		std::mt19937 gen(rd());
@@ -25,12 +27,11 @@ public:
 			m_hasBerries = true;
 	}
 
-	//TODO: finish implementing
-	void interact(const Player& player) override
+	void interact(Player& player) override
 	{
 		if (m_NumBerries)
 		{
-			//player.getinventory.insertfood(food.foodtype.berries) need to be implemented.
+			player.getInventory()->InsertFood(Food::Berries);
 		}	
 		m_hasBerries = false;
 		m_NumBerries = 0;

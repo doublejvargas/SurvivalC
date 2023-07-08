@@ -1,7 +1,6 @@
 #include "MobileObject.h"
 
-MobileObject::MobileObject(Game* game, const Vector2& pos, int speed, int maxHP)
-	: GameObject(game, pos), m_Speed(speed), m_PriorLocation(Vector2(getPosition().v0(), getPosition().v1()))
+MobileObject::MobileObject(Map* map, const Vector2& pos, int speed, int maxHP) : GameObject(pos), m_Speed(speed), m_PriorLocation(Vector2(getPosition().v0(), getPosition().v1()))
 {
 	m_MaxHitPoints = maxHP;
 	m_CurrentHitPoints = maxHP;
@@ -9,6 +8,7 @@ MobileObject::MobileObject(Game* game, const Vector2& pos, int speed, int maxHP)
 	m_Busy = false;
 	m_TurnOver = false;
 	m_Fled = false;
+	m_Map = map;
 }
 
 void MobileObject::SufferHarm(int harm)

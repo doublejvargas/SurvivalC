@@ -1,18 +1,18 @@
 #pragma once
 
 #include "StationaryObject.h"
+#include "Player.h"
 
-class Rock : protected StationaryObject
+class Rock : public StationaryObject
 {
 public:
-	Rock(Game* game, const Vector2& pos)
-		: StationaryObject(game, pos, true) { }
+	Rock(const Vector2& pos)
+		: StationaryObject(pos, true) { }
 
-	//TODO: finish implementing
-	void interact(const Player& player) override
+	void interact(Player& player) override
 	{
-		//player.sethidden
-		//player.setposition
-		//player.takestep
+		player.setHidden(true);
+		player.setPosition(getPosition());
+		player.takeStep();
 	}
 };

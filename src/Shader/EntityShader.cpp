@@ -36,7 +36,7 @@ EntityShader::EntityShader(const std::string& filename)
 		delete[] infoLog;
 	}
 
-	BindAttributes();
+	BindAttributes(); // not a necessary step since I specify layout locations in my vertex shader files
 	GetAllUniformLocations();
 }
 
@@ -142,7 +142,7 @@ glm::mat4 EntityShader::CreateTransformationMatrix(const glm::vec2& translation,
 
 glm::mat4 EntityShader::CreateOrthoViewMatrix(Camera& camera)
 {
-	return glm::lookAt(camera.GetPosition(), camera.GetPosition() + glm::vec3(0, 0, -1), glm::vec3(0, 1, 0));
+	return glm::lookAt(camera.getPosition(), camera.getPosition() + glm::vec3(0, 0, -1), glm::vec3(0, 1, 0));
 }
 
 GLuint EntityShader::LoadShader(const std::string& filename, GLenum type)

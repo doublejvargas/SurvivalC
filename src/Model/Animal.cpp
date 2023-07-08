@@ -2,10 +2,13 @@
 #include "TerrainTile.h"
 #include "Player.h"
 #include "StationaryObject.h"
+#include "Game.h"
+#include "AStarPathFinder.h"
+#include "CombatEncounter.h"
 #include <random>
 
-Animal::Animal(Game* game, const Vector2& pos, uint32_t speed, uint32_t maxHP, uint32_t damage, std::vector<bool> canWalk, Texture* gameTex, Texture* combatTex)
-	: MobileObject(game, pos, speed, maxHP)
+Animal::Animal(Map* map, const Vector2& pos, int speed, uint32_t maxHP, uint32_t damage, const std::vector<bool>& canWalk, Texture* gameTex, Texture* combatTex)
+	: MobileObject(map, pos, speed, maxHP)
 {
 	m_CanWalkGrass = canWalk[0];
 	m_CanWalkDesert = canWalk[1];
@@ -15,7 +18,9 @@ Animal::Animal(Game* game, const Vector2& pos, uint32_t speed, uint32_t maxHP, u
 	m_Damage = damage;
 	m_PathCompleted = true;
 	m_Remove = false;
-	m_PathFinder = new AStarPathFinder(game, canWalk); // delete in destructor
+	m_PathFinder = new AStarPathFinder(map, canWalk); // delete in destructor
+	m_PathIndex = 0;
+	m_PathCompleted = true;
 }
 
 Animal::~Animal()
@@ -23,10 +28,9 @@ Animal::~Animal()
 	delete m_PathFinder;
 }
 
-void Animal::chooseNewPosition()
+void Animal::chooseNewPosition(const Player& player)
 {
-	Game* game = getGame();
-	std::vector<std::vector<TerrainTile>> tMap; //game.getMap().getTerrainMap();
+	std::vector<std::vector<TerrainTile>> tMap = getMap()->getTerrainTiles();
 	bool pathChosen = false;
 	uint32_t attempts = 0;
 
@@ -35,7 +39,7 @@ void Animal::chooseNewPosition()
 		m_TargetPos = getPosition().getDisplacementVector(5, 5);
 		uint32_t targetY = (uint32_t)m_TargetPos.v0();
 		uint32_t targetX = (uint32_t)m_TargetPos.v1();
-		if (targetY < 100 /*game.getWidth()*/ && targetX < 100 /*game.getwidth()*/ && targetY >= 0 && targetX >= 0)
+		if (targetY < getMap()->GridDimensionY() && targetX < getMap()->GridDimensionX() && targetY >= 0 && targetX >= 0)
 		{
 			if (m_CanWalkWater && tMap.at(targetY).at(targetX).getTerrainType() == TerrainTile::TerrainType::WATER)
 				pathChosen = true;
@@ -69,17 +73,17 @@ void Animal::chooseNewPosition()
 	} while (!pathChosen);
 }
 
-void Animal::wander()
+void Animal::wander(Game* game)
 {
 	Vector2 animalPos = getPosition();
-	Vector2 playerPos; //getGame().getPlayer().getPos();
+	Vector2 playerPos = game->getPlayer()->getPosition();
 
 	if (animalPos == playerPos)
-		interact(Player(nullptr, Vector2(), 0)); //placeholder, getGame().getPlayer();
+		interact(*game->getPlayer());
 
 	if (m_PathCompleted)
 	{
-		chooseNewPosition();
+		chooseNewPosition(*game->getPlayer());
 		m_CurrentPath = m_PathFinder->findPath(getPosition(), m_TargetPos);
 		m_PathCompleted = false;
 		m_PathIndex = 0;
@@ -99,18 +103,18 @@ void Animal::wander()
 	}
 }
 
-void Animal::interact(const Player& player)
+void Animal::interact(Player& player)
 {
-	if (m_Game == nullptr) // placeholder, game->getCurrentEncounter() == null
+	if (player.getGame()->getCurrentEncounter() == nullptr)
 	{
-		// game.setEncounter();
-		// game.setInCombat();
+		player.getGame()->setCurrentEncounter(new CombatEncounter(&player, this));
+		player.getGame()->setInCombat(true);
 	}
 }
 
-bool Animal::combatLogic(const MobileObject& target)
+bool Animal::combatLogic(MobileObject & target)
 {
-	return true; //placeholder, this will be implemented by herbivore and carnivore
+	return true; //TODOplaceholder, this will be implemented by herbivore and carnivore
 }
 
 bool Animal::Flee()
@@ -141,4 +145,12 @@ bool Animal::Attack(MobileObject& target)
 	}
 	return false;
 }
+
+// Animal& Animal::operator=(const Animal& a)
+// {
+// 	m_CanWalkDesert = a.canWalkDesert();
+// 	m_CanWalkGrass = a.canWalkGrass();
+// 	m_CanWalkWater = a.canWalkWater();
+// 	m_Damage = a.get
+// }
 

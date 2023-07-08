@@ -34,3 +34,19 @@ Vector2 Vector2::getDisplacementVector(int yBound, int xBound)
 
 	return Vector2(m_v0 + yDisplacement, m_v1 + xDisplacement);
 }
+
+glm::vec2 Vector2::to_glm_vec2(const Vector2 v)
+{
+	return glm::vec2(v.v0(), v.v1());
+}
+
+glm::vec3 Vector2::to_glm_vec3(const Vector2 v)
+{
+	return glm::vec3(v.v0(), v.v1(), 0);
+}
+
+bool operator==(const Vector2 v1, const Vector2 v2)
+{
+	return (v1.m_v0 == v2.m_v0 &&
+		v1.m_v1 == v2.m_v1);
+}
