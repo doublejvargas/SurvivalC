@@ -16,7 +16,6 @@ CombatEncounter::CombatEncounter(Player* player, Animal* animal)
 {
 	m_Player = player;
 	m_Animal = animal;
-	/*m_Game = m_Player->getGame();*/
 	m_Player->getGame()->setAnimalTaggedForRemoval(true);
 	m_Animal->setRemove(true);
 	m_PlayerTurn = false;

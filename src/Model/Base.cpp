@@ -1,6 +1,7 @@
 #include "Base.h"
 #include "Player.h"
 #include "CarnivoreFactory.h"
+#include "RestingCombatEncounter.h"
 #include "Loader.h"
 #include <random>
 
@@ -19,7 +20,7 @@ void Base::buyNewBaseUpgrade(Player& player)
 {
 	if (m_BaseStatus < BaseStatus::HOUSE)
 	{
-		if (player.SpendSticks(m_CurBaseCost)) //access to private routine SpendSticks allowed because Base is a friend class.
+		if (player.spendSticks(m_CurBaseCost)) //access to private routine SpendSticks allowed because Base is a friend class.
 			upgradeBase();
 	}
 }
@@ -57,9 +58,9 @@ void Base::buyNewToolUpgrade(Player& player)
 {
 	if (player.getTool() < 3) //TODO ensure this comparison works
 	{
-		if (player.SpendSticks(m_CurToolCost))
+		if (player.spendSticks(m_CurToolCost))
 		{
-			player.UpgradeTool();
+			player.upgradeTool();
 			uint32_t arrSize = sizeof(COST_UPGRADE_TOOL) / sizeof(*COST_UPGRADE_TOOL);
 			if ((uint32_t)player.getTool() < arrSize) //TODO ensure this comparison works
 				m_CurToolCost = COST_UPGRADE_TOOL[(uint32_t)player.getTool()];
@@ -89,18 +90,18 @@ void Base::restAt(Player& player, Loader* loader)
 		int enemyType = dis(gen) % 3;
 		if (enemyType == 1)
 		{
-			enemy = CarnivoreFactory::ProduceCarnivore(player.getMap(), Vector2(0.0f, 0.0f), Carnivore::WOLF, loader); //TODO figure out how to pass loader here
+			enemy = CarnivoreFactory::ProduceCarnivore(player.getMap(), Vector2(0.0f, 0.0f), Carnivore::WOLF, loader);
 		}
 		else if (enemyType == 2)
 		{
-			enemy = CarnivoreFactory::ProduceCarnivore(player.getMap(), Vector2(0.0f, 0.0f), Carnivore::LION, loader); //TODO figure out how to pass loader here
+			enemy = CarnivoreFactory::ProduceCarnivore(player.getMap(), Vector2(0.0f, 0.0f), Carnivore::LION, loader);
 		}
 
-		//game.setcurrentencounter(....)	//TODO
+		player.getGame()->setCurrentEncounter(new RestingCombatEncounter(&player, enemy)); //todo delete this somewhere? potential memory leak
 	}
 	else
 	{
-		player.Heal(player.getMaxHP());
+		player.heal(player.getMaxHP());
 		player.setCyclesSinceRest(0);
 	}
 }

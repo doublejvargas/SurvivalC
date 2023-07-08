@@ -1,4 +1,5 @@
 #pragma once
+#include "glm/glm.hpp"
 
 class Vector2
 {
@@ -7,12 +8,15 @@ public:
 	Vector2(float v0, float v1);
 	Vector2(const Vector2& v)
 		: m_v0(v.v0()), m_v1(v.v1()) {}
-	
-	inline float v0() const	{ return m_v0; }
-	inline float v1() const { return m_v1; }
 
 	double distance(const Vector2& target);
 	Vector2 getDisplacementVector(int yBound, int xBound);
+
+	inline float v0() const { return m_v0; }
+	inline float v1() const { return m_v1; }
+
+	static glm::vec2 to_glm_vec2(const Vector2 v);
+	static glm::vec3 to_glm_vec3(const Vector2 v);
 
 	friend bool operator==(const Vector2 V1, const Vector2 V2);
 

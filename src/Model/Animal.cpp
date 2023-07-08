@@ -4,6 +4,7 @@
 #include "StationaryObject.h"
 #include "Game.h"
 #include "AStarPathFinder.h"
+#include "CombatEncounter.h"
 #include <random>
 
 Animal::Animal(Map* map, const Vector2& pos, int speed, uint32_t maxHP, uint32_t damage, const std::vector<bool>& canWalk, Texture* gameTex, Texture* combatTex)
@@ -104,10 +105,10 @@ void Animal::wander(Game* game)
 
 void Animal::interact(Player& player)
 {
-	if (true) //TODO placeholder, game->getCurrentEncounter() == null
+	if (player.getGame()->getCurrentEncounter() == nullptr)
 	{
-		// game.setEncounter();
-		// game.setInCombat();
+		player.getGame()->setCurrentEncounter(new CombatEncounter(&player, this));
+		player.getGame()->setInCombat(true);
 	}
 }
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "StationaryObject.h"
 
 class StationaryObject;
 // NOTE: this object's position is stored as (y, x), but should be used/read traditionally in this program as (x,y), especially for OpenGl.
@@ -11,6 +12,7 @@ public:
 	enum TerrainType { WATER, GRASSLAND, DESERT };
 
 	TerrainTile(float perlinVal, const Vector2& pos);
+	//~TerrainTile();
 
 	inline StationaryObject* getStatObj()	const { return m_StatObj; }
 	inline StatObjType getStatObjType()	const { return m_StatObjType; }
@@ -23,6 +25,7 @@ public:
 		m_hasStatObj = val;
 		if (!val)
 		{
+			delete m_StatObj; // todo experimental
 			m_StatObj = nullptr;
 			m_StatObjType = StatObjType::NONE;
 		}
@@ -30,7 +33,6 @@ public:
 	}
 	inline void setStatObjType(StatObjType type)	{ m_StatObjType = type; }
 	inline void setStatObj(StationaryObject* obj)	{ m_StatObj = obj; }
-	//inline void nullStatObj()						{ m_StatObj = nullptr; m_hasStatObj = false; }
 	inline void setIsRevealedOnMiniMap(bool flag)	{ m_isRevealedOnMiniMap = flag; }
 
 

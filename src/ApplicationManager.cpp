@@ -4,6 +4,7 @@
 #include <ctime>
 #include "ApplicationManager.h"
 #include "Game.h"
+#include "Player.h"
 #include "Loader.h"
 #include "MasterRenderer.h"
 #include "Map.h "
@@ -54,16 +55,15 @@ void ApplicationManager::Start()
 	printf("C++ Standard: %i\n", __cplusplus);
 	Loader loader;
 	Game game(&loader);
-	//Map map(game.getLoader());
-	//map.addGamePtr(&game);
 	MasterRenderer renderer("res/shaders/Shader2D", "res/shaders/TerrainShader2D");
 	Camera camera;
 
-	std::vector<float> positions = {
+	// TODO: positions have to be consistent with tile size in Map.h
+	std::vector<float> squarePositions = {
 		 0.0f,   0.0f,
-		 70.0f,  0.0f,
-		 70.0f,  70.0,
-		 0.0f,   70.0
+		 30.0f,  0.0f,
+		 30.0f,  30.0,
+		 0.0f,   30.0
 
 // 		 600.0f, 0.0f,
 // 		 900.0f, 0.0f,
@@ -72,7 +72,7 @@ void ApplicationManager::Start()
 	};
 
 	// clock wise ordering of vertices
-	std::vector<float> texcoords= {
+	std::vector<float> texCoords= {
 		0.0f, 0.0f,
 		1.0f, 0.0f,
 		1.0f, 1.0f,
@@ -95,12 +95,17 @@ void ApplicationManager::Start()
 		2, 2, 2, 2
 	};
 
-	Model squareModel = loader.LoadToVAO(positions, texcoords, indices, "res/textures/yuzu.png");
-	Entity squareInstance(squareModel, glm::vec2(200, 200), glm::vec2(0, 0), glm::vec2(1, 1));
-	Entity sq2(squareModel, glm::vec2(70, 415), glm::vec2(0, 0), glm::vec2(1, 1));
-	Entity sq3(squareModel, glm::vec2(700, 100), glm::vec2(0, 0), glm::vec2(1, 1));
-	Entity sq4(squareModel, glm::vec2(600, 600), glm::vec2(0, 0), glm::vec2(1, 1));
+// 	Model squareModel = loader.LoadToVAO(positions, texcoords, indices, "res/textures/yuzu.png");
+// 	Entity squareInstance(squareModel, glm::vec2(200, 200), glm::vec2(0, 0), glm::vec2(1, 1));
+// 	Entity sq2(squareModel, glm::vec2(70, 415), glm::vec2(0, 0), glm::vec2(1, 1));
+// 	Entity sq3(squareModel, glm::vec2(700, 100), glm::vec2(0, 0), glm::vec2(1, 1));
+// 	Entity sq4(squareModel, glm::vec2(600, 600), glm::vec2(0, 0), glm::vec2(1, 1));
+	Model playerModel = loader.LoadToVAO(squarePositions, texCoords, indices, "res/textures/player.png");
+	glm::vec2 playerPos = (float)game.getMap()->getTileSize() *  Vector2::to_glm_vec2(game.getPlayer()->getPosition());
+	Entity playerInstance(playerModel, playerPos, glm::vec2(0, 0), glm::vec2(1, 1));
+	renderer.ProcessEntity(playerInstance);
 
+	camera.setPosition(glm::vec3(playerPos, -1));
 
 	Model mapModel = game.getMap()->getTerrainMapModel();
 	Entity mapInstance(mapModel, glm::vec2(0, 0), glm::vec2(0, 0), glm::vec2(1, 1));
@@ -112,10 +117,10 @@ void ApplicationManager::Start()
 
 	renderer.AddTerrainModel(mapModel);
 	renderer.AddTerrainTextures(textures);
-	renderer.ProcessEntity(squareInstance);
+	/*renderer.ProcessEntity(squareInstance);
 	renderer.ProcessEntity(sq2);
 	renderer.ProcessEntity(sq3);
-	renderer.ProcessEntity(sq4);
+	renderer.ProcessEntity(sq4);*/
 
 	printf("Vertex count: %i\n", mapModel.VertexCount());
 

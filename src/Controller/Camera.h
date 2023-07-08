@@ -9,7 +9,9 @@ public:
 	Camera();
 	void Move();
 
-	inline glm::vec3 GetPosition() { return m_Position; }
+	inline glm::vec3 getPosition() const{ return m_Position; }
+	inline void setPosition(const glm::vec3 pos) { m_Position = pos; }
+
 private:
 	glm::vec3 m_Position;
 

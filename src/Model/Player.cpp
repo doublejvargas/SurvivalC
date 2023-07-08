@@ -32,7 +32,7 @@ void Player::Eat(Food::FoodType type)
 {
 	Food eaten = m_Inventory->RemoveFood(type);
 	if (eaten.getFoodType() != Food::FOOD_NULL)
-		Heal(eaten.getHPValue());
+		heal(eaten.getHPValue());
 }
 
 bool Player::Flee()
@@ -118,13 +118,13 @@ void Player::AttemptMove(TerrainTile* T)
 			else
 			{
 				setPosition(T->getPosition());
-				TakeStep();
+				takeStep();
 				m_Hidden = false;
 			}
 			// checkForBase checks to see if the player is adjacent to their base
-			m_DisplayUpgradePrompt = CheckForBase();
+			m_DisplayUpgradePrompt = checkForBase();
 			//If the player is near a rest-able object, and they haven't rested in at least 1 full cycle they can rest. also sets "canRest"
-			m_DisplayRestPrompt = CheckForRestable();
+			m_DisplayRestPrompt = checkForRestable();
 		}
 	}
 
@@ -147,7 +147,7 @@ void Player::AttemptRest()
 	}
 }
 
-void Player::UpgradeTool()
+void Player::upgradeTool()
 {
 	switch (m_Tool)
 	{
@@ -160,7 +160,7 @@ void Player::UpgradeTool()
 	}
 }
 
-bool Player::SpendSticks(int toSpend)
+bool Player::spendSticks(int toSpend)
 {
 	if (getSticks() - toSpend >= 0)
 	{
@@ -170,24 +170,24 @@ bool Player::SpendSticks(int toSpend)
 	return false;
 }
 
-void Player::GatherSticks(int sticksHarvested)
+void Player::gatherSticks(int sticksHarvested)
 {
 	m_NumSticks += sticksHarvested;
 }
 
-void Player::Heal(int HP)
+void Player::heal(int HP)
 {
 	int currentHP = getCurrentHP() + HP;
 	setCurrentHP(currentHP > getMaxHP() ? getMaxHP() : currentHP);
 }
 
-void Player::TakeStep()
+void Player::takeStep()
 {
 	m_StepsToday++;
 }
 
 //TODO
-bool Player::CheckForRestable()
+bool Player::checkForRestable()
 {
 	uint32_t x = (uint32_t)getPosition().v1();
 	uint32_t y = (uint32_t)getPosition().v0();
@@ -224,7 +224,7 @@ bool Player::CheckForRestable()
 }
 
 //TODO
-bool Player::CheckForBase()
+bool Player::checkForBase()
 {
 	uint32_t x = (uint32_t)getPosition().v1();
 	uint32_t y = (uint32_t)getPosition().v0();

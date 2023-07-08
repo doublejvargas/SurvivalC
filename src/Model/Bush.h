@@ -1,5 +1,7 @@
 #pragma once
 #include "StationaryObject.h"
+#include "Player.h"
+#include "Food.h"
 #include <random>
 
 class Game;
@@ -25,12 +27,11 @@ public:
 			m_hasBerries = true;
 	}
 
-	//TODO: finish implementing
 	void interact(Player& player) override
 	{
 		if (m_NumBerries)
 		{
-			//player.getinventory.insertfood(food.foodtype.berries) need to be implemented. //TODO
+			player.getInventory()->InsertFood(Food::Berries);
 		}	
 		m_hasBerries = false;
 		m_NumBerries = 0;

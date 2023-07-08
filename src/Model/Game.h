@@ -17,10 +17,10 @@ class Game
 public:
 	// Global Play parameters of game
 	static const uint32_t MAX_ANIMALS = 5;
-	static const uint32_t WIDTH = 5; //TODO: find appropriate value
-	static const uint32_t HEIGHT = 5; //TODO: find appropriate value
-	static const uint32_t STEPS_PER_CYCLE = 5;
-	static const uint32_t DAYS_TO_SURVIVE = 5;
+	static const uint32_t WIDTH = 50; //TODO: find appropriate value
+	static const uint32_t HEIGHT = 50; //TODO: find appropriate value
+	static const uint32_t STEPS_PER_CYCLE = 100;
+	static const uint32_t DAYS_TO_SURVIVE = 7;
 
 	enum Direction { RIGHT, LEFT, UP, DOWN, NULLDIR };
 
@@ -57,6 +57,7 @@ public:
 	// Default constructor for the game. Sets up game state variables, creates a new map, places the player and
 	// the base, and reveals the tiles the player can currently see on the miniMap
 	Game(Loader* loader);
+	~Game();
 
 	void checkForEncounter();
 	void spawnNewHerbivore();

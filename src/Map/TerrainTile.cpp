@@ -1,6 +1,10 @@
 #include "TerrainTile.h"
+#include "Bush.h"
+#include "Tree.h"
+#include "Rock.h"
 #include <stdlib.h>
 #include <time.h>
+#include <random>
 
 TerrainTile::TerrainTile(float perlinVal, const Vector2& pos)
 	: GameObject(pos)
@@ -25,30 +29,39 @@ TerrainTile::TerrainTile(float perlinVal, const Vector2& pos)
 	}
 }
 
+//TerrainTile::~TerrainTile()
+//{
+//	printf("calling terraintile destructor!\n");
+//	if (m_StatObj)
+//		delete m_StatObj;
+//}
+
 // These two functions use random numbers to probabilistically define the landscape, populating it with tree, rock, bush and cactus objects
 void TerrainTile::grasslandSetup()
 {
-	srand((unsigned int) time(0));
-	int val = rand() % 20;
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> dis(0, 20);
+
 	setHasStatObj(false);
 
-	switch (val)
+	switch (dis(gen))
 	{
 	case 0:
 	case 1:
 		m_StatObjType = BUSH;
-		m_StatObj = nullptr; //TODO get constructor from BUSH class
+		m_StatObj = new Bush(getPosition()); //delete in destructor
 		setHasStatObj(true);
 		break;
 	case 3:
 	case 4:
 		m_StatObjType = TREE;
-		m_StatObj = nullptr; //TODO get constructor from TREE class
+		m_StatObj = new Tree(getPosition()); //delete in destructor
 		setHasStatObj(true);
 		break;
 	case 5:
 		m_StatObjType = ROCK;
-		m_StatObj = nullptr; //TODO get constructor from ROCK class
+		m_StatObj = new Rock(getPosition()); //delete in destructor
 		setHasStatObj(true);
 		break;
 	default:
@@ -58,21 +71,22 @@ void TerrainTile::grasslandSetup()
 
 void TerrainTile::desertSetup()
 {
-	srand((unsigned int) time(0));
-	int val = rand() % 20;
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> dis(0, 30);
 	setHasStatObj(false);
 
-	switch (val)
+	switch (dis(gen))
 	{
 	case 0:
 		m_StatObjType = BUSH;
-		m_StatObj = nullptr; //TODO get constructor from BUSH class
+		m_StatObj = new Bush(getPosition()); //delete in destructor
 		setHasStatObj(true);
 		break;
 	case 1:
 	case 2:
 		m_StatObjType = ROCK;
-		m_StatObj = nullptr; //TODO get constructor from ROCK class
+		m_StatObj = new Rock(getPosition()); //delete in destructor
 		setHasStatObj(true);
 		break;
 	default:

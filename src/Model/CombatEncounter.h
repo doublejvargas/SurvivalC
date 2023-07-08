@@ -12,7 +12,6 @@ class CombatEncounter
 private:
 	Player* m_Player = nullptr;
 	Animal* m_Animal = nullptr;
-	//Game* m_Game = nullptr;  // TODO: ? player might have a pointer to game //edit fixed in implementation file
 
 	bool m_EncounterOver;
 	bool m_PlayerTurn;

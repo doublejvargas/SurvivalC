@@ -13,7 +13,7 @@ void RestingCombatEncounter::combatTurn()
 	{
 		if (m_Player->isAlive() && !m_Player->isFled())
 		{
-			m_Player->Heal(m_Player->getMaxHP());
+			m_Player->heal(m_Player->getMaxHP());
 			m_Player->setCyclesSinceRest(0);
 			m_Player->setStepsToday(Game::STEPS_PER_CYCLE + 1);
 			m_Player->getGame()->checkDayCycle();

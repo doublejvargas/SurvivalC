@@ -58,15 +58,15 @@ public:
 
 private:
 	//Private internal methods/routines used by class
-	void UpgradeTool();
-	bool SpendSticks(int toSpend);
-	void GatherSticks(int sticksHarvested);
-	void Heal(int HP);
-	void TakeStep();
+	void upgradeTool();
+	bool spendSticks(int toSpend);
+	void gatherSticks(int sticksHarvested);
+	void heal(int HP);
+	void takeStep();
 	
 	//
-	bool CheckForRestable();
-	bool CheckForBase();
+	bool checkForRestable();
+	bool checkForBase();
 
 public:
 	//Getters
@@ -91,9 +91,11 @@ public:
 	inline void setResting(bool resting)				{ m_Resting = resting;}
 	inline void setCyclesSinceRest(int cyclesSinceRest) { m_CyclesSinceRest = cyclesSinceRest; }
 	void setGame(Game* game)							{ m_Game = game; }
-	inline void setFacing(Game::Direction facing) { m_Facing = facing; } //TODO
+	inline void setFacing(Game::Direction facing)		{ m_Facing = facing; }
 	
 	// Classes that will need access to certain private routines of player
 	friend class Base;
 	friend class RestingCombatEncounter;
+	friend class Tree;
+	friend class Rock;
 };

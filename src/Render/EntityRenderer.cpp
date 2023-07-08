@@ -7,6 +7,9 @@ EntityRenderer::EntityRenderer(EntityShader& shader)
 {
 	// Set clear color
 	GLCall(glClearColor(0.1f, 0.2f, 0.3f, 1.0f));
+	// enable blending for transparency
+	GLCall(glEnable(GL_BLEND));
+	GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
 	m_OrthoMatrix = glm::ortho(0.0f, (float)WINDOW_WIDTH, (float)WINDOW_HEIGHT, 0.0f, -1.0f, 1.0f);
 	shader.Bind();

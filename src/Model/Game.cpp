@@ -16,11 +16,18 @@ Game::Game(Loader* loader)
 	m_Day = 1;
 
 	m_Loader = loader;
-	m_Map = new Map(loader);
+	m_Map = new Map(loader); //delete in destructor!
 	
 	// These two functions cause some errors that seem to be out of bound reference or dereferencing uninitialized values
-	//placePlayerAndBase();
-	//initMapReveal();
+	placePlayerAndBase(); //initializes m_Base and m_Player
+	initMapReveal();
+}
+
+Game::~Game()
+{
+	delete m_Map;
+	delete m_Base;
+	delete m_Player;
 }
 
 void Game::checkForEncounter()
@@ -108,7 +115,7 @@ void Game::spawnNewCarnivore()
 
 Vector2 Game::spawnNewAnimalLocation()
 {
-	switch (m_Player->getFacing()) //TODO
+	switch (m_Player->getFacing())
 	{
 	case UP:
 		return Vector2(m_Player->getPosition().v0() - 11, m_Player->getPosition().v1() - 11);
@@ -169,23 +176,32 @@ void Game::placePlayerAndBase()
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> dis(0, WIDTH <= HEIGHT ? WIDTH : HEIGHT);
-
-	m_Player = new Player(m_Map, Vector2(0, 0), 10, this);
-	uint32_t y = dis(gen); //random
-	uint32_t x = dis(gen); // random
-	TerrainTile::TerrainType T = m_Map->getTerrainTiles().at(0).at(0).getTerrainType();
+	std::uniform_int_distribution<> dis(0, WIDTH <= HEIGHT ? WIDTH : HEIGHT); //bound to the lesser value
+	uint32_t y = 0; //random
+	uint32_t x = 0; // random
+	m_Player = new Player(m_Map, Vector2(0, 0), 10, this); //delete in destructor!
+ 
+	TerrainTile::TerrainType terrain = m_Map->getTerrainTiles().at(0).at(0).getTerrainType();
 	bool hasObj = false;
 	do 
 	{
-		m_Player->setPosition(Vector2((float)y, (float)x));
-		T = m_Map->getTerrainTiles().at(y).at(x).getTerrainType();
-		hasObj = m_Map->getTerrainTiles().at(y).at(x).hasStatObj();
-	} while (T != TerrainTile::GRASSLAND /*|| !hasObj*/); //TODO reenable that conditional once i produce objects on map
-
+		try 
+		{
+			y = dis(gen); //random
+			x = dis(gen); //random
+			m_Player->setPosition(Vector2((float)y, (float)x));
+			terrain = m_Map->getTerrainTiles().at(y).at(x).getTerrainType();
+			hasObj = m_Map->getTerrainTiles().at(y).at(x).hasStatObj();
+		}
+		catch (const std::out_of_range& e)
+		{
+			fprintf(stderr, "placing player exception, not sure what this err is. pos: (%d, %d). err: %s\n", y, x, e.what());
+		}
+		
+	} while (terrain != TerrainTile::GRASSLAND || hasObj); //repeat while terrain type is not grassland OR it has an object. ie. stop when either it is grass or doesn't have obj
+	
 	Vector2 displacementVector;
 	bool basePlaced = false;
-
 	do 
 	{
 		displacementVector = m_Player->getPosition().getDisplacementVector(2, 2);
@@ -197,7 +213,8 @@ void Game::placePlayerAndBase()
 				m_Map->getTerrainTiles().at((size_t)displacementVector.v0()).at((size_t)displacementVector.v1()).setHasStatObj(true);
 				m_Map->getTerrainTiles().at((size_t)displacementVector.v0()).at((size_t)displacementVector.v1()).setStatObjType(TerrainTile::BASE);
 				// initialize base here
-				m_Map->getTerrainTiles().at((size_t)displacementVector.v0()).at((size_t)displacementVector.v1()).setStatObj((StationaryObject* )m_Base); //TODO verify this isn't an issue
+				m_Base = new Base(displacementVector); //DELETE in destructor!
+				m_Map->getTerrainTiles().at((size_t)displacementVector.v0()).at((size_t)displacementVector.v1()).setStatObj(/*(StationaryObject* )*/m_Base); //TODO verify this isn't an issue
 				basePlaced = true;
 			}
 		}
@@ -214,8 +231,8 @@ void Game::placePlayerAndBase()
 
 void Game::clearBrush()
 {
-	uint32_t y = (uint32_t)m_Base->getPosition().v0(); //todo
-	uint32_t x = (uint32_t)m_Base->getPosition().v1(); //todo
+	uint32_t y = (uint32_t)m_Base->getPosition().v0();
+	uint32_t x = (uint32_t)m_Base->getPosition().v1();
 
 	for (uint32_t j = y - 2; j < y + 3; j++)
 	{
@@ -240,7 +257,7 @@ void Game::clearBrush()
 
 void Game::initMapReveal()
 {
-	uint32_t y = (uint32_t)m_Player->getPosition().v0();
+	/*uint32_t y = (uint32_t)m_Player->getPosition().v0();*/
 	for (uint32_t y = (uint32_t)m_Player->getPosition().v0() - 10; y <= m_Player->getPosition().v0() + 10; y++)
 	{
 		for (uint32_t x = (uint32_t)m_Player->getPosition().v1() - 10; x <= m_Player->getPosition().v1() + 10; x++)
