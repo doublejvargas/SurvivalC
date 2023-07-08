@@ -5,6 +5,8 @@ class Vector2
 public:
 	Vector2() : m_v0(0), m_v1(0) {}
 	Vector2(float v0, float v1);
+	Vector2(const Vector2& v)
+		: m_v0(v.v0()), m_v1(v.v1()) {}
 	
 	inline float v0() const	{ return m_v0; }
 	inline float v1() const { return m_v1; }

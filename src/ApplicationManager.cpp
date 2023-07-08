@@ -102,7 +102,7 @@ void ApplicationManager::Start()
 	Entity sq4(squareModel, glm::vec2(600, 600), glm::vec2(0, 0), glm::vec2(1, 1));
 
 
-	Model mapModel = game.getMap()->GetTerrainMapModel();
+	Model mapModel = game.getMap()->getTerrainMapModel();
 	Entity mapInstance(mapModel, glm::vec2(0, 0), glm::vec2(0, 0), glm::vec2(1, 1));
 
 	std::vector<Texture> textures;

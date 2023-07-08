@@ -24,7 +24,7 @@ private:
 public:
 	CombatEncounter(Player* player, Animal* animal);
 
-	void combatTurn();
+	virtual void combatTurn();
 
 private:
 	//Private routines for the class
@@ -52,5 +52,5 @@ public:
 	//inline void setGame(Game* val)			{ m_Game = val; }
 	//inline void setEncounterOver(bool val) { m_EncounterOver = val; }
 	
-	
+	friend class RestingCombatEncounter;
 };

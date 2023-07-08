@@ -5,6 +5,7 @@
 
 class HerbivoreFactory
 {
+public:
 	//TODO figure out where to delete this pointer?
 	static Herbivore* ProduceHerbivore(Map* map, const Vector2& pos, Herbivore::HERBIVORE_TYPE type, Loader* loader)
 	{

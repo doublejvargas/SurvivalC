@@ -46,8 +46,8 @@ AStarPathFinder::AStarPathFinder(Map* map, const std::vector<bool>& canWalk)
 
 void AStarPathFinder::setUpGrid(const std::vector<bool>& canWalk)
 {
-	size_t cols = m_Map->GetTerrainTiles().size();
-	size_t rows = m_Map->GetTerrainTiles().at(0).size();
+	size_t cols = m_Map->getTerrainTiles().size();
+	size_t rows = m_Map->getTerrainTiles().at(0).size();
 
 	m_Grid = std::vector<std::vector<Tile>>(cols, std::vector<Tile>(rows, Tile()));
 	for (uint32_t y = 0; y < cols; y++)
@@ -72,9 +72,9 @@ bool AStarPathFinder::isObstacle(const Vector2& pos, const std::vector<bool>& ca
 	bool canWalkGrass = canWalk.at(0);
 	bool canWalkDesert = canWalk.at(1);
 	bool canWalkWater = canWalk.at(2);
-	bool hasObj = m_Map->GetTerrainTiles().at((uint32_t)pos.v0()).at((uint32_t)pos.v1()).hasStatObj();
-	StationaryObject* statObj = m_Map->GetTerrainTiles().at((uint32_t)pos.v0()).at((uint32_t)pos.v1()).getStatObj();
-	TerrainTile::TerrainType terrain = m_Map->GetTerrainTiles().at((uint32_t)pos.v0()).at((uint32_t)pos.v1()).getTerrainType();
+	bool hasObj = m_Map->getTerrainTiles().at((uint32_t)pos.v0()).at((uint32_t)pos.v1()).hasStatObj();
+	StationaryObject* statObj = m_Map->getTerrainTiles().at((uint32_t)pos.v0()).at((uint32_t)pos.v1()).getStatObj();
+	TerrainTile::TerrainType terrain = m_Map->getTerrainTiles().at((uint32_t)pos.v0()).at((uint32_t)pos.v1()).getTerrainType();
 
 	switch (terrain)
 	{

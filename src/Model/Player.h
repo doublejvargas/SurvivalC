@@ -1,9 +1,10 @@
 #pragma once
+#include "Game.h"
 #include "MobileObject.h"
 #include "Inventory.h"
 
 class TerrainTile;
-class Game;
+//class Game;
 
 class Player : public MobileObject
 {
@@ -19,15 +20,17 @@ private:
 	bool m_Harvesting;
 	bool m_Resting;
 	bool m_CanRest;
-	//int Game.Direction facing; //TODO
+	Game::Direction m_Facing = Game::NULLDIR;
+	
 	int m_StepsToday;
 	int m_CyclesSinceRest;
-	GameObject *m_CurrentRestObject = nullptr;
+	StationaryObject *m_CurrentRestObject = nullptr; //TODO how to identify/declare/cast this as an Irestable? ie. tree or base?
 	Game* m_Game = nullptr;
+	
 	//Player's Items
 	int m_NumSticks;
-	Inventory m_Inventory;
-	ToolType m_Tool;
+	Inventory* m_Inventory = nullptr;
+	ToolType m_Tool = HAND;
 
 	//Tentative -- prompts
 	bool m_DisplayRestPrompt;
@@ -35,6 +38,7 @@ private:
 
 public:
 	Player(Map* map, const Vector2& pos, int maxHP, Game* game);
+	~Player();
 
 	//Scans the inventory for a specific type of food, and if it is found in inventory it is removed, and the player
 	//heals by the food's given HP value
@@ -50,7 +54,7 @@ public:
 	bool Attack(MobileObject& target) override;
 	
 	void AttemptMove(TerrainTile* T);
-	void AttemptRest(Game* game);
+	void AttemptRest();
 
 private:
 	//Private internal methods/routines used by class
@@ -76,8 +80,9 @@ public:
 	inline bool isDisplayUpgradesPrompt() const	{ return m_DisplayUpgradePrompt; }
 	inline int getCyclesSinceRest() const		{ return m_CyclesSinceRest; }
 	inline int getMaxWeigth() const				{ return m_MaxWeight; }
-	inline Inventory getInventory() const		{ return m_Inventory; }
+	inline Inventory* getInventory() const		{ return m_Inventory; }
 	Game* getGame() const						{ return m_Game; }
+	inline Game::Direction getFacing() const	{ return m_Facing; }
 
 	//Setters
 	inline void setStepsToday(int stepsToday)			{ m_StepsToday = stepsToday; }
@@ -86,10 +91,9 @@ public:
 	inline void setResting(bool resting)				{ m_Resting = resting;}
 	inline void setCyclesSinceRest(int cyclesSinceRest) { m_CyclesSinceRest = cyclesSinceRest; }
 	void setGame(Game* game)							{ m_Game = game; }
+	inline void setFacing(Game::Direction facing) { m_Facing = facing; } //TODO
 	
-	//inline Game.Direction getFacing() { return facing; } //TODO
-	//inline void setFacing(Game.Direction facing) { this.facing = facing; } //TODO
-	
-	// Class Base will need access to certain private routines of player
+	// Classes that will need access to certain private routines of player
 	friend class Base;
+	friend class RestingCombatEncounter;
 };

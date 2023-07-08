@@ -1,10 +1,16 @@
 #pragma once
 
-#include "Player.h"
+//#include "Player.h"
 #include "Animal.h"
 #include "Map.h"
 
 typedef unsigned int uint32_t;
+
+class Player;
+class Base;
+class CarnivoreFactory;
+class HerbivoreFactory;
+class CombatEncounter;
 
 class Game
 {
@@ -16,7 +22,7 @@ public:
 	static const uint32_t STEPS_PER_CYCLE = 5;
 	static const uint32_t DAYS_TO_SURVIVE = 5;
 
-	enum Direction { RIGHT, LEFT, UP, DOWN };
+	enum Direction { RIGHT, LEFT, UP, DOWN, NULLDIR };
 
 private:
 	// Game states
@@ -32,17 +38,17 @@ private:
 	std::vector<Animal*> m_Animals;
 	
 	// Stationary game objects
-	//Base m_Base;
+	Base* m_Base;
 	
 	// Referenced when game is in combat mode 
-	//CombatEncounter m_CombatEncounter;
+	CombatEncounter* m_CombatEncounter;
 
 	// Defines placement of TerrainTiles and StationaryObjects
 	Map* m_Map = nullptr;
 
 	// "Factories" for instantiation of new animals
-	//HerbivoreFactory m_HerbFact;
-	//CarnivoreFactory m_CarnFact;
+	/*HerbivoreFactory* m_HerbFact;
+	CarnivoreFactory* m_CarnFact;*/
 
 	// Needed for opengl stuff
 	Loader* m_Loader = nullptr;
@@ -78,8 +84,8 @@ public:
 	inline std::vector<Animal*> getAnimals() const	{ return m_Animals; }
 	inline Map* getMap() const						{ return m_Map; }
 	inline Loader* getLoader() const				{ return m_Loader; }
-	//inline Base getBase() { return base; }
-	//inline CombatEncounter getCurrentEncounter() { return m_CurrentEncounter; }
+	inline Base* getBase() { return m_Base; }
+	inline CombatEncounter* getCurrentEncounter() { return m_CombatEncounter; }
 
 
 	// Setters
@@ -87,7 +93,7 @@ public:
 	inline void setGameWon(bool gameWon) { m_GameWon = gameWon; }
 	inline void setInCombat(bool inCombat) { inCombat = m_InCombat; }
 	inline void setAnimalTaggedForRemoval(bool tag ) { m_AnimalTaggedForRemoval = tag; }
-	//inline void setCurrentEncounter(CombatEncounter currentEncounter) { this.currentEncounter = currentEncounter; }
+	inline void setCurrentEncounter(CombatEncounter* currentEncounter) { m_CombatEncounter = currentEncounter; }
 
 	
 

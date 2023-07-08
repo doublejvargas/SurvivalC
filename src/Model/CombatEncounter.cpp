@@ -81,8 +81,8 @@ void CombatEncounter::combatTurn()
 					m_Player->setPosition(Vector2((float)dis(gen), (float)dis(gen)));
 					y = (size_t)m_Player->getPosition().v0();
 					x = (size_t)m_Player->getPosition().v1();
-				} while (map->GetTerrainTiles().at(y).at(x).getTerrainType() != TerrainTile::GRASSLAND ||
-							map->GetTerrainTiles().at(y).at(x).hasStatObj());//TODO: verify this works properly
+				} while (map->getTerrainTiles().at(y).at(x).getTerrainType() != TerrainTile::GRASSLAND ||
+							map->getTerrainTiles().at(y).at(x).hasStatObj());//TODO: verify this works properly
 
 				m_Message = "You flee into the wilderness!";
 			}
@@ -132,13 +132,13 @@ void CombatEncounter::decodeMeats()
 		switch (carn->getType())
 		{
 		case Carnivore::LION:
-			m_Player->getInventory().InsertFood(Food::Lion);
+			m_Player->getInventory()->InsertFood(Food::Lion);
 			break;
 		case Carnivore::WOLF:
-			m_Player->getInventory().InsertFood(Food::Wolf);
+			m_Player->getInventory()->InsertFood(Food::Wolf);
 			break;
 		case Carnivore::CROCODILE:
-			m_Player->getInventory().InsertFood(Food::Crocodile);
+			m_Player->getInventory()->InsertFood(Food::Crocodile);
 			break;
 		}
 	}
@@ -147,13 +147,13 @@ void CombatEncounter::decodeMeats()
 		switch (herb->getType())
 		{
 		case Herbivore::RABBIT:
-			m_Player->getInventory().InsertFood(Food::Rabbit);
+			m_Player->getInventory()->InsertFood(Food::Rabbit);
 			break;
 		case Herbivore::DEER:
-			m_Player->getInventory().InsertFood(Food::Deer);
+			m_Player->getInventory()->InsertFood(Food::Deer);
 			break;
 		case Herbivore::FISH:
-			m_Player->getInventory().InsertFood(Food::Fish);
+			m_Player->getInventory()->InsertFood(Food::Fish);
 			break;
 		}
 	}

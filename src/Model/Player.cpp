@@ -1,5 +1,8 @@
 #include "Player.h"
 #include "Game.h"
+#include "Base.h"
+#include "Tree.h"
+
 #include <random>
 #include <stdexcept>
 
@@ -14,16 +17,21 @@ Player::Player(Map* map, const Vector2 & pos, int maxHP, Game* game)
 	m_Harvesting = false;
 	m_Resting = false;
 	m_CyclesSinceRest = 1;
-	m_Inventory = Inventory(m_MaxWeight);
-	//setFacing(Game.Direction.DOWN); //TODO
+	m_Inventory = new Inventory(m_MaxWeight);
+	setFacing(Game::DOWN);
 	m_DisplayRestPrompt = false;
 	m_DisplayUpgradePrompt = false;
 }
 
+Player::~Player()
+{
+	delete m_Inventory;
+}
+
 void Player::Eat(Food::FoodType type)
 {
-	Food eaten = m_Inventory.RemoveFood(type);
-	if (eaten.getFoodType() != Food::FoodType::FOOD_NULL)
+	Food eaten = m_Inventory->RemoveFood(type);
+	if (eaten.getFoodType() != Food::FOOD_NULL)
 		Heal(eaten.getHPValue());
 }
 
@@ -72,9 +80,57 @@ void Player::AttemptMove(TerrainTile* T)
 {
 	if (T == nullptr)
 		return;
+
+	//Checks to see if there is an animal in the space the player is attempting to move into.  If so, interact is called on that animal.
+	for (Animal* a : m_Game->getAnimals())
+	{
+		Vector2 tPos = T->getPosition();
+		Vector2 aPos = a->getPosition();
+		Vector2 aPriorPos = a->getPriorLoc();
+		if (tPos == aPos || tPos == aPriorPos)
+		{
+			m_DisplayUpgradePrompt = false;
+			m_DisplayRestPrompt = false;
+			//In the case of all animals, interact will set the game.currentCombatEncounter
+			a->interact(*this);
+			break;
+		}
+	}
+
+	//Equivalent statement to "if animal not encountered" or if animal interacts outside of combat (does not occur)
+	if (m_Game->getCurrentEncounter() == nullptr)
+	{
+		//set prior location to current location before changing current location
+		setPriorLoc(Vector2(getPosition()));
+		if (T->hasStatObj())
+		{
+			//since all stationaryObjects implement interact-able, interact can and should be called.
+			T->getStatObj()->interact(*this);
+			if (T->getStatObjType() == TerrainTile::TREE || T->getStatObjType() == TerrainTile::BUSH)
+			{
+				m_Harvesting = true;
+				T->setHasStatObj(false); //note: this also nulls the statobj pointer and changes enum type to null
+			}
+			//If no stationaryObject is present on TerrainTile t, the player moves into that tile, their steps increase,
+			// and they are considered unhidden (had their been a rock in the space the player would automatically) be
+			// set hidden when calling interact on the rock.  Setting hidden false here guarantees that when a player
+			// leaves a grid square in which they are hidden they are revealed by default.
+			else
+			{
+				setPosition(T->getPosition());
+				TakeStep();
+				m_Hidden = false;
+			}
+			// checkForBase checks to see if the player is adjacent to their base
+			m_DisplayUpgradePrompt = CheckForBase();
+			//If the player is near a rest-able object, and they haven't rested in at least 1 full cycle they can rest. also sets "canRest"
+			m_DisplayRestPrompt = CheckForRestable();
+		}
+	}
+
 }
 
-void Player::AttemptRest(Game* game)
+void Player::AttemptRest()
 {
 	if (m_CanRest)
 	{
@@ -82,8 +138,12 @@ void Player::AttemptRest(Game* game)
 		m_DisplayRestPrompt = false;
 		m_DisplayUpgradePrompt = false;
 		m_Resting = true;
-		game->clearAllAnimals();
-		//m_CurrentRestObject.restAt(this); //TODO
+		m_Game->clearAllAnimals();
+
+		if (Base* base = dynamic_cast<Base*>(m_CurrentRestObject)) //TODO verify this works correctly
+			base->restAt(*this, m_Game->getLoader());
+		else if (Tree* tree = dynamic_cast<Tree*>(m_CurrentRestObject)) //TODO verify this works correctly
+			tree->restAt(*this, m_Game->getLoader());
 	}
 }
 
@@ -129,36 +189,36 @@ void Player::TakeStep()
 //TODO
 bool Player::CheckForRestable()
 {
-	int x = (int)getPosition().v1();
-	int y = (int)getPosition().v0();
-	//auto tMap = getGame().getMap().getTerrainMap();
+	uint32_t x = (uint32_t)getPosition().v1();
+	uint32_t y = (uint32_t)getPosition().v0();
+	auto tMap = getMap()->getTerrainTiles();
 
-	//for (uint32_t j = y - 1; j < y + 2; j++)
-	//{
-	//	for (uint32_t i = x - 1; i < x + 2; i++)
-	//	{
-	//		try
-	//		{
-	//			TerrainTile t = tMap[j][i];
-	//			//In this game, only trees and bases are IRestable objects.
-	//			bool isRestable = (t.getStatObjType() == TerrainTile::StatObjType::BASE || t.getStatObjType() == TerrainTile::StatObjType::TREE);
-	//			if (t.hasStatObj() && isRestable)
-	//			{
-	//				GameObject* so = (GameObject*)t.getStatObj();
-	//				m_CurrentRestObject = *so;
-	//				if (m_CyclesSinceRest >= 2)
-	//				{
-	//					m_CanRest = true;
-	//					return true;
-	//				}
-	//			}
-	//		}
-	//		catch (const std::out_of_range& oor)
-	//		{
-	//			fprintf(stderr, "%s", "Tile range is out of the map! Obvs not a base! ;)\n");
-	//		}
-	//	}
-	//}
+	for (uint32_t j = y - 1; j < y + 2; j++)
+	{
+		for (uint32_t i = x - 1; i < x + 2; i++)
+		{
+			try
+			{
+				TerrainTile t = tMap.at(j).at(i);
+				//In this game, only trees and bases are IRestable objects.
+				bool isRestable = (t.getStatObjType() == TerrainTile::StatObjType::BASE || t.getStatObjType() == TerrainTile::StatObjType::TREE);
+				if (t.hasStatObj() && isRestable)
+				{
+					StationaryObject* so = t.getStatObj(); //TODO verify this works correctly
+					m_CurrentRestObject = so;
+					if (m_CyclesSinceRest >= 2)
+					{
+						m_CanRest = true;
+						return true;
+					}
+				}
+			}
+			catch (const std::out_of_range& oor)
+			{
+				fprintf(stderr, "%s" " Tile range is out of the map! Obvs not a base! ;)\n", oor.what());
+			}
+		}
+	}
 
 	return false;
 }
@@ -166,26 +226,26 @@ bool Player::CheckForRestable()
 //TODO
 bool Player::CheckForBase()
 {
-	int x = (int)getPosition().v1();
-	int y = (int)getPosition().v0();
-	//auto tMap = getGame().getMap().getTerrainMap();
+	uint32_t x = (uint32_t)getPosition().v1();
+	uint32_t y = (uint32_t)getPosition().v0();
+	auto tMap = getMap()->getTerrainTiles();
 
-	/*for (uint32_t j = y - 1; j < y + 2; j++)
+	for (uint32_t j = y - 1; j < y + 2; j++)
 	{
 		for (uint32_t i = x - 1; i < x + 2; i++)
 		{
 			try
 			{
-				TerrainTile t = tMap[j][i];
+				TerrainTile t = tMap.at(j).at(i);
 				if (t.hasStatObj() && t.getStatObjType() == TerrainTile::StatObjType::BASE)
 					return true;
 			}
 			catch (const std::out_of_range& oor)
 			{
-				fprintf(stderr, "%s", "Tile range is out of the map! Obvs not a base! ;)\n");
+				fprintf(stderr, "%s" " Tile range is out of the map! Obvs not a base! ;)\n", oor.what());
 			}
 		}
-	}*/
+	}
 
 	return false;
 }

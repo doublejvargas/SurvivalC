@@ -17,7 +17,7 @@ void Carnivore::chooseNewPosition(const Player& player)
 {
 
 	Vector2 playerPos = player.getPosition();
-	TerrainTile::TerrainType terrain = getMap()->GetTerrainTiles().at((size_t)playerPos.v0()).at((size_t)playerPos.v1()).getTerrainType();
+	TerrainTile::TerrainType terrain = getMap()->getTerrainTiles().at((size_t)playerPos.v0()).at((size_t)playerPos.v1()).getTerrainType();
 	if (scanForPlayer(player, terrain))
 		setTargetPos(playerPos);
 	else

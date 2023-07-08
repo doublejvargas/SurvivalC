@@ -153,6 +153,7 @@
     <ClCompile Include="src\Model\CombatEncounter.cpp" />
     <ClCompile Include="src\Model\Herbivore.cpp" />
     <ClCompile Include="src\Model\Inventory.cpp" />
+    <ClCompile Include="src\Model\RestingCombatEncounter.cpp" />
     <ClCompile Include="src\Render\MasterRenderer.cpp" />
     <ClCompile Include="src\Render\TerrainRenderer.cpp" />
     <ClCompile Include="src\Shader\TerrainShader.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="src\Model\Herbivore.h" />
     <ClInclude Include="src\Model\HerbivoreFactory.h" />
     <ClInclude Include="src\Model\Inventory.h" />
+    <ClInclude Include="src\Model\RestingCombatEncounter.h" />
     <ClInclude Include="src\Model\Rock.h" />
     <ClInclude Include="src\Model\Tree.h" />
     <ClInclude Include="src\Render\MasterRenderer.h" />

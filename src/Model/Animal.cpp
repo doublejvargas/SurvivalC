@@ -29,7 +29,7 @@ Animal::~Animal()
 
 void Animal::chooseNewPosition(const Player& player)
 {
-	std::vector<std::vector<TerrainTile>> tMap = getMap()->GetTerrainTiles();
+	std::vector<std::vector<TerrainTile>> tMap = getMap()->getTerrainTiles();
 	bool pathChosen = false;
 	uint32_t attempts = 0;
 

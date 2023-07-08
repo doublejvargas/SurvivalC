@@ -1,4 +1,9 @@
 #include "Game.h"
+#include "Player.h"
+#include "Base.h"
+#include "CarnivoreFactory.h"
+#include "HerbivoreFactory.h"
+#include "CombatEncounter.h"
 #include <random>
 
 Game::Game(Loader* loader) 
@@ -13,8 +18,9 @@ Game::Game(Loader* loader)
 	m_Loader = loader;
 	m_Map = new Map(loader);
 	
-	placePlayerAndBase();
-	initMapReveal();
+	// These two functions cause some errors that seem to be out of bound reference or dereferencing uninitialized values
+	//placePlayerAndBase();
+	//initMapReveal();
 }
 
 void Game::checkForEncounter()
@@ -43,17 +49,66 @@ void Game::checkForEncounter()
 
 void Game::spawnNewHerbivore()
 {
-	// implement when factories are implemented //TODO
+	try
+	{
+		Vector2 newPos = spawnNewAnimalLocation();
+		uint32_t y = (uint32_t)newPos.v0();
+		uint32_t x = (uint32_t)newPos.v1();
+		if (m_Map->getTerrainTiles().at(y).at(x).getTerrainType() != TerrainTile::WATER)
+		{
+			if (m_Map->getTerrainTiles().at(y).at(x).getTerrainType() != TerrainTile::DESERT)
+			{
+				std::random_device rd;
+				std::mt19937 gen(rd());
+				std::uniform_int_distribution<> dis(0, 2);
+				bool rabbit = dis(gen); //0 or 1
+				if (rabbit)
+					m_Animals.push_back(HerbivoreFactory::ProduceHerbivore(m_Map, newPos, Herbivore::RABBIT, m_Loader));
+				else
+					m_Animals.push_back(HerbivoreFactory::ProduceHerbivore(m_Map, newPos, Herbivore::DEER, m_Loader));
+			}
+			else
+				m_Animals.push_back(HerbivoreFactory::ProduceHerbivore(m_Map, newPos, Herbivore::RABBIT, m_Loader));
+		}
+		else
+			m_Animals.push_back(HerbivoreFactory::ProduceHerbivore(m_Map, newPos, Herbivore::FISH, m_Loader));
+	}
+	catch (const std::out_of_range& oor)
+	{
+		fprintf(stderr, "%s" " New position is out of bounds! cannot spawn herbivore there.\n", oor.what());
+	}
 }
 
 void Game::spawnNewCarnivore()
 {
-	// implement when factories are implemented //TODO
+	try
+	{
+		Vector2 newPos = spawnNewAnimalLocation();
+		uint32_t y = (uint32_t)newPos.v0();
+		uint32_t x = (uint32_t)newPos.v1();
+		if (m_Map->getTerrainTiles().at(y).at(x).getTerrainType() != TerrainTile::WATER)
+		{
+			std::random_device rd;
+			std::mt19937 gen(rd());
+			std::uniform_int_distribution<> dis(0, 2);
+			bool wolf = dis(gen); //0 or 1
+			if (wolf)
+				m_Animals.push_back(CarnivoreFactory::ProduceCarnivore(m_Map, newPos, Carnivore::WOLF, m_Loader));
+			else
+				m_Animals.push_back(CarnivoreFactory::ProduceCarnivore(m_Map, newPos, Carnivore::LION, m_Loader));		
+		}
+		else
+			m_Animals.push_back(CarnivoreFactory::ProduceCarnivore(m_Map, newPos, Carnivore::CROCODILE, m_Loader));
+	}
+	catch (const std::out_of_range& oor)
+	{
+		fprintf(stderr, "%s" " New position is out of bounds! cannot spawn carnivore there.\n", oor.what());
+	}
 }
 
 Vector2 Game::spawnNewAnimalLocation()
 {
-	switch (DOWN/*m_Player->getFacing()*/) //TODO
+	switch (m_Player->getFacing()) //TODO
 	{
 	case UP:
 		return Vector2(m_Player->getPosition().v0() - 11, m_Player->getPosition().v1() - 11);
@@ -119,13 +174,13 @@ void Game::placePlayerAndBase()
 	m_Player = new Player(m_Map, Vector2(0, 0), 10, this);
 	uint32_t y = dis(gen); //random
 	uint32_t x = dis(gen); // random
-	TerrainTile::TerrainType T = m_Map->GetTerrainTiles().at(0).at(0).getTerrainType();
+	TerrainTile::TerrainType T = m_Map->getTerrainTiles().at(0).at(0).getTerrainType();
 	bool hasObj = false;
 	do 
 	{
 		m_Player->setPosition(Vector2((float)y, (float)x));
-		T = m_Map->GetTerrainTiles().at(y).at(x).getTerrainType();
-		hasObj = m_Map->GetTerrainTiles().at(y).at(x).hasStatObj();
+		T = m_Map->getTerrainTiles().at(y).at(x).getTerrainType();
+		hasObj = m_Map->getTerrainTiles().at(y).at(x).hasStatObj();
 	} while (T != TerrainTile::GRASSLAND /*|| !hasObj*/); //TODO reenable that conditional once i produce objects on map
 
 	Vector2 displacementVector;
@@ -136,13 +191,13 @@ void Game::placePlayerAndBase()
 		displacementVector = m_Player->getPosition().getDisplacementVector(2, 2);
 		try
 		{
-			if (m_Map->GetTerrainTiles().at((size_t)displacementVector.v0()).at((size_t)displacementVector.v1()).getTerrainType() != TerrainTile::WATER)
+			if (m_Map->getTerrainTiles().at((size_t)displacementVector.v0()).at((size_t)displacementVector.v1()).getTerrainType() != TerrainTile::WATER)
 			{
-				m_Map->GetTerrainTiles().at((size_t)displacementVector.v0()).at((size_t)displacementVector.v1()).setHasStatObj(false);
-				m_Map->GetTerrainTiles().at((size_t)displacementVector.v0()).at((size_t)displacementVector.v1()).setHasStatObj(true);
-				m_Map->GetTerrainTiles().at((size_t)displacementVector.v0()).at((size_t)displacementVector.v1()).setStatObjType(TerrainTile::BASE);
+				m_Map->getTerrainTiles().at((size_t)displacementVector.v0()).at((size_t)displacementVector.v1()).setHasStatObj(false);
+				m_Map->getTerrainTiles().at((size_t)displacementVector.v0()).at((size_t)displacementVector.v1()).setHasStatObj(true);
+				m_Map->getTerrainTiles().at((size_t)displacementVector.v0()).at((size_t)displacementVector.v1()).setStatObjType(TerrainTile::BASE);
 				// initialize base here
-				m_Map->GetTerrainTiles().at((size_t)displacementVector.v0()).at((size_t)displacementVector.v1()).setStatObj(nullptr /*base*/);
+				m_Map->getTerrainTiles().at((size_t)displacementVector.v0()).at((size_t)displacementVector.v1()).setStatObj((StationaryObject* )m_Base); //TODO verify this isn't an issue
 				basePlaced = true;
 			}
 		}
@@ -159,8 +214,8 @@ void Game::placePlayerAndBase()
 
 void Game::clearBrush()
 {
-	uint32_t y = 0; /*(uint32_t)m_Base.getPosition().v0()*/; //todo
-	uint32_t x = 0; /*(uint32_t)m_Base.getPosition().v1()*/; //todo
+	uint32_t y = (uint32_t)m_Base->getPosition().v0(); //todo
+	uint32_t x = (uint32_t)m_Base->getPosition().v1(); //todo
 
 	for (uint32_t j = y - 2; j < y + 3; j++)
 	{
@@ -171,7 +226,7 @@ void Game::clearBrush()
 				try
 				{
 					//set Tile's Stationary Object to null. Set Tile's hasStatObj flag to false
-					m_Map->GetTerrainTiles().at(j).at(i).setHasStatObj(false);
+					m_Map->getTerrainTiles().at(j).at(i).setHasStatObj(false);
 				}
 				catch (const std::out_of_range& e)
 				{
@@ -192,7 +247,7 @@ void Game::initMapReveal()
 		{
 			try
 			{
-				m_Map->GetTerrainTiles().at(y).at(x).setIsRevealedOnMiniMap(true);
+				m_Map->getTerrainTiles().at(y).at(x).setIsRevealedOnMiniMap(true);
 			}
 			catch (const std::out_of_range& e)
 			{
