@@ -35,6 +35,11 @@ Vector2 Vector2::getDisplacementVector(int yBound, int xBound)
 	return Vector2(m_v0 + yDisplacement, m_v1 + xDisplacement);
 }
 
+Vector2 Vector2::reverse()
+{
+	return (Vector2(m_v1, m_v0));
+}
+
 glm::vec2 Vector2::to_glm_vec2(const Vector2 v)
 {
 	return glm::vec2(v.v0(), v.v1());

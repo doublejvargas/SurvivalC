@@ -16,17 +16,17 @@ Map::~Map()
 void Map::SetUpTerrainMap()
 {
 	//m_TerrainTiles.reserve(m_N);
-	m_TerrainTiles = std::vector<std::vector<TerrainTile>>(m_N, std::vector<TerrainTile>(m_N, TerrainTile(0.0f, Vector2())));
+	m_TerrainTiles = std::vector<std::vector<TerrainTile>>(N_TILES, std::vector<TerrainTile>(N_TILES, TerrainTile(0.0f, Vector2())));
 
 	PerlinNoise2D noise;
 	noise.init();
 	float scale = 2.5f; //todo changeback to 2.0f
-	for (int y = 0; y < m_N; y++)
+	for (int y = 0; y < N_TILES; y++)
 	{
-		for (int x = 0; x < m_N; x++)
+		for (int x = 0; x < N_TILES; x++)
 		{
-			float x1 = x * scale / m_N;
-			float y1 = y * scale / m_N;
+			float x1 = x * scale / N_TILES;
+			float y1 = y * scale / N_TILES;
 			//KEY: this position is stored as (y,x) for vector/array purposes. For actual
 			// use of this data, it should be used/read traditionally as (x,y), especially for openGl.
 			m_TerrainTiles.at(y).at(x) = TerrainTile(noise.value(x1, y1), Vector2((float)y, (float)x));
@@ -37,7 +37,7 @@ void Map::SetUpTerrainMap()
 Model Map::GenerateOglTerrain(Loader* loader)
 {
 	
-	uint32_t GRID_SIZE = m_N * m_N;
+	uint32_t GRID_SIZE = N_TILES * N_TILES;
 	uint32_t numVertices = GRID_SIZE * 4;
 	std::vector<float> positions(numVertices * 2, 0.0f);
 	std::vector<float> texCoords(numVertices * 2, 0.0f);
@@ -46,26 +46,26 @@ Model Map::GenerateOglTerrain(Loader* loader)
 
 	// Model positions
 	uint32_t idx = 0;
-	for (uint32_t y = 0; y < m_N; y++)
+	for (uint32_t y = 0; y < N_TILES; y++)
 	{
-		for (uint32_t x = 0; x < m_N; x++)
+		for (uint32_t x = 0; x < N_TILES; x++)
 		{
 			//Top left vertex x
-			positions[idx + 0] = (float)x * m_TILE_SIZE;
+			positions[idx + 0] = (float)x * TILE_SIZE;
 			// Top left vertex y
-			positions[idx + 1] = (float)y * m_TILE_SIZE;
+			positions[idx + 1] = (float)y * TILE_SIZE;
 			// Top right vertex x
-			positions[idx + 2] = (float)(x + 1) * m_TILE_SIZE;
+			positions[idx + 2] = (float)(x + 1) * TILE_SIZE;
 			// Top right vertex y
-			positions[idx + 3] = (float)y * m_TILE_SIZE;
+			positions[idx + 3] = (float)y * TILE_SIZE;
 			// Bottom right vertex x
-			positions[idx + 4] = (float)(x + 1) * m_TILE_SIZE;
+			positions[idx + 4] = (float)(x + 1) * TILE_SIZE;
 			// Bottom right vertex y
-			positions[idx + 5] = (float)(y + 1) * m_TILE_SIZE;
+			positions[idx + 5] = (float)(y + 1) * TILE_SIZE;
 			// Bottom left vertex x
-			positions[idx + 6] = (float)x * m_TILE_SIZE;
+			positions[idx + 6] = (float)x * TILE_SIZE;
 			// Bottom left vertex y
-			positions[idx + 7] = (float)(y + 1) * m_TILE_SIZE;
+			positions[idx + 7] = (float)(y + 1) * TILE_SIZE;
 			idx += 8;
 		}
 	}
@@ -96,9 +96,9 @@ Model Map::GenerateOglTerrain(Loader* loader)
 
 	// Model texture indices
 	idx = 0;
-	for (int y = 0; y < m_N; y++)
+	for (int y = 0; y < N_TILES; y++)
 	{
-		for (int x = 0; x < m_N; x++)
+		for (int x = 0; x < N_TILES; x++)
 		{
 			TerrainTile t = m_TerrainTiles.at(y).at(x);
 			if (t.getTerrainType() == TerrainTile::WATER)

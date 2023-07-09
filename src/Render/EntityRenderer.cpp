@@ -34,7 +34,7 @@ void EntityRenderer::Render(const std::unordered_map<Model, std::vector<Entity>>
 		for (const Entity& entity : batch)
 		{
 			prepareInstance(entity, shader);
-			GLCall(glDrawElements(GL_TRIANGLES, model.VertexCount(), GL_UNSIGNED_INT, 0));
+			GLCall(glDrawElements(GL_TRIANGLES, model.vertexCount(), GL_UNSIGNED_INT, 0));
 		}
 		resetOglState();
 	}
@@ -51,7 +51,7 @@ void EntityRenderer::setOglState(const Model& model, EntityShader& shader)
 	//GLCall(glEnableVertexAttribArray(2)); // texture index // TODO:May need to reenable this for batch rendering of entities
 	
 	// Activate an OpenGL texture and tell it where the texture is
-	Texture texture = model.GetTexture();
+	Texture texture = model.getTexture();
 	GLCall(glActiveTexture(GL_TEXTURE0));
 	GLCall(glBindTexture(GL_TEXTURE_2D, texture.TextureID()));
 	

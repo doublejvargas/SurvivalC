@@ -11,6 +11,7 @@
 #include "PerlinNoise2D.h"
 #include "glm/glm.hpp"
 #include "Log.h"
+#include "TerrainTileProcessor.h"
 
 ApplicationManager::ApplicationManager()
 {
@@ -58,51 +59,16 @@ void ApplicationManager::Start()
 	MasterRenderer renderer("res/shaders/Shader2D", "res/shaders/TerrainShader2D");
 	Camera camera;
 
-	// TODO: positions have to be consistent with tile size in Map.h
-	std::vector<float> squarePositions = {
-		 0.0f,   0.0f,
-		 30.0f,  0.0f,
-		 30.0f,  30.0,
-		 0.0f,   30.0
+	std::vector<Entity> entities = TerrainTileProcessor::ProcessTerrainTiles(game.getMap()->getTerrainTiles(), &loader);
 
-// 		 600.0f, 0.0f,
-// 		 900.0f, 0.0f,
-// 		 900.0f, 300.0f,
-// 		 600.0f, 300.0f
-	};
+	for (Entity e : entities)
+		renderer.ProcessEntity(e);
 
-	// clock wise ordering of vertices
-	std::vector<float> texCoords= {
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f
-
-// 		0.0f, 0.0f,
-// 		1.0f, 0.0f,
-// 		1.0f, 1.0f,
-// 		0.0f, 1.0f
-	};
-
-
-	std::vector<uint32_t> indices = {
-		0, 1, 2, 2, 3, 0
-/*		4, 5, 6, 6, 7, 4*/
-	};
-
-	std::vector<float> texindices = {
-		0, 0, 0, 0,
-		2, 2, 2, 2
-	};
-
-// 	Model squareModel = loader.LoadToVAO(positions, texcoords, indices, "res/textures/yuzu.png");
-// 	Entity squareInstance(squareModel, glm::vec2(200, 200), glm::vec2(0, 0), glm::vec2(1, 1));
-// 	Entity sq2(squareModel, glm::vec2(70, 415), glm::vec2(0, 0), glm::vec2(1, 1));
-// 	Entity sq3(squareModel, glm::vec2(700, 100), glm::vec2(0, 0), glm::vec2(1, 1));
-// 	Entity sq4(squareModel, glm::vec2(600, 600), glm::vec2(0, 0), glm::vec2(1, 1));
-	Model playerModel = loader.LoadToVAO(squarePositions, texCoords, indices, "res/textures/player.png");
-	glm::vec2 playerPos = (float)game.getMap()->getTileSize() *  Vector2::to_glm_vec2(game.getPlayer()->getPosition());
-	Entity playerInstance(playerModel, playerPos, glm::vec2(0, 0), glm::vec2(1, 1));
+	Model playerModel = loader.LoadToVAO(TerrainTileProcessor::GENERIC_SQUARE_POS, TerrainTileProcessor::GENERIC_SQUARE_UV, 
+		TerrainTileProcessor::GENERIC_SQUARE_INDICES, "res/textures/player.png");
+	glm::vec2 playerPos = (float)Map::TILE_SIZE * Vector2::to_glm_vec2(game.getPlayer()->getPosition());
+	Entity playerInstance(playerModel, playerPos);
+	
 	renderer.ProcessEntity(playerInstance);
 
 	camera.setPosition(glm::vec3(playerPos, -1));
@@ -117,12 +83,8 @@ void ApplicationManager::Start()
 
 	renderer.AddTerrainModel(mapModel);
 	renderer.AddTerrainTextures(textures);
-	/*renderer.ProcessEntity(squareInstance);
-	renderer.ProcessEntity(sq2);
-	renderer.ProcessEntity(sq3);
-	renderer.ProcessEntity(sq4);*/
 
-	printf("Vertex count: %i\n", mapModel.VertexCount());
+	printf("Vertex count: %i\n", mapModel.vertexCount());
 
 	printf("Running game loop...\n");
 	double prevTime = glfwGetTime();

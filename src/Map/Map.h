@@ -8,11 +8,13 @@ class Game;
 
 class Map
 {
-private:
+public:
 	//Pixel size of a terrain tile
-	static const int m_TILE_SIZE	= 30;
+	static const int TILE_SIZE = 30;
 	//Dimension of terrain grid, to be interpreted as m_N x m_N (square)
-	static const uint32_t m_N			= 50;
+	static const uint32_t N_TILES = 50;
+private:
+
 	//2D vector of terrain tile objects. Corresponds to what is drawn by OpenGL.
 	std::vector<std::vector<TerrainTile>> m_TerrainTiles;
 	//OpenGL model for the terrain tiles.
@@ -24,9 +26,9 @@ public:
 
 	inline std::vector<std::vector<TerrainTile>> getTerrainTiles() const	{ return m_TerrainTiles; }
 	inline Model& getTerrainMapModel() const								{ return *m_TerrainMapModel; }
-	inline uint32_t GridDimensionX() const									{ return m_N; }
-	inline uint32_t GridDimensionY() const									{ return m_N; }
-	inline int getTileSize() const											{ return m_TILE_SIZE; }
+	inline uint32_t GridDimensionX() const									{ return N_TILES; }
+	inline uint32_t GridDimensionY() const									{ return N_TILES; }
+	inline int getTileSize() const											{ return TILE_SIZE; }
 
 private:
 	// Sets up terrain objects on game logic side

@@ -42,7 +42,7 @@ void TerrainRenderer::Render(Model& model, TerrainShader& shader, const glm::vec
 	GLCall(glBindTextureUnit(2, textures[2].TextureID()));
 
 	// Draw the model
-	GLCall(glDrawElements(GL_TRIANGLES, model.VertexCount(), GL_UNSIGNED_INT, 0));
+	GLCall(glDrawElements(GL_TRIANGLES, model.vertexCount(), GL_UNSIGNED_INT, 0));
 
 	// Disable attrib arrays / layout locations
 	GLCall(glDisableVertexAttribArray(0));

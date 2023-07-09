@@ -99,6 +99,9 @@
     <ClCompile Include="src\Model\RestingCombatEncounter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Toolbox\TerrainTileProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Toolbox\Vector2.h">
@@ -213,6 +216,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Model\RestingCombatEncounter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Toolbox\TerrainTileProcessor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

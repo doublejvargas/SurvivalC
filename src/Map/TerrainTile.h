@@ -38,10 +38,10 @@ public:
 
 private:
 	TerrainType m_TerrainType;
-	StatObjType m_StatObjType;
+	StatObjType m_StatObjType = NONE;
 	StationaryObject* m_StatObj = nullptr;
-	bool m_hasStatObj;
-	bool m_isRevealedOnMiniMap;
+	bool m_hasStatObj = false;
+	bool m_isRevealedOnMiniMap = false;
 
 	void grasslandSetup();
 	void desertSetup();

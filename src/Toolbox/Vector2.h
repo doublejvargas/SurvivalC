@@ -11,6 +11,8 @@ public:
 
 	double distance(const Vector2& target);
 	Vector2 getDisplacementVector(int yBound, int xBound);
+	//useful for turning in game coordinates (y, x) into opengl coordinates (x, y)
+	Vector2 reverse();
 
 	inline float v0() const { return m_v0; }
 	inline float v1() const { return m_v1; }
