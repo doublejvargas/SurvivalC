@@ -121,7 +121,7 @@ bool Animal::Flee()
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> dis(0, 100);
+	std::uniform_int_distribution<> dis(0, 99);
 	int fleeing = dis(gen) % 4;
 	if (fleeing == 1)
 	{
@@ -135,7 +135,7 @@ bool Animal::Attack(MobileObject& target)
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> dis(0, 100);
+	std::uniform_int_distribution<> dis(0, 99);
 	int successful = dis(gen) % 2;
 	
 	if (successful)

@@ -40,7 +40,7 @@ void Game::checkForEncounter()
 		{
 			std::random_device rd;
 			std::mt19937 gen(rd());
-			std::uniform_int_distribution<> dis(0, 40);
+			std::uniform_int_distribution<> dis(0, 39);
 			uint32_t encounter = dis(gen);
 			
 			switch (encounter)
@@ -67,7 +67,7 @@ void Game::spawnNewHerbivore()
 			{
 				std::random_device rd;
 				std::mt19937 gen(rd());
-				std::uniform_int_distribution<> dis(0, 2);
+				std::uniform_int_distribution<> dis(0, 1);
 				bool rabbit = dis(gen); //0 or 1
 				if (rabbit)
 					m_Animals.push_back(HerbivoreFactory::ProduceHerbivore(m_Map, newPos, Herbivore::RABBIT, m_Loader));
@@ -97,7 +97,7 @@ void Game::spawnNewCarnivore()
 		{
 			std::random_device rd;
 			std::mt19937 gen(rd());
-			std::uniform_int_distribution<> dis(0, 2);
+			std::uniform_int_distribution<> dis(0, 1);
 			bool wolf = dis(gen); //0 or 1
 			if (wolf)
 				m_Animals.push_back(CarnivoreFactory::ProduceCarnivore(m_Map, newPos, Carnivore::WOLF, m_Loader));
@@ -176,9 +176,9 @@ void Game::placePlayerAndBase()
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> dis(0, WIDTH <= HEIGHT ? WIDTH : HEIGHT); //bound to the lesser value
-	uint32_t y = 0; //random
-	uint32_t x = 0; // random
+	std::uniform_int_distribution<> dis(0, WIDTH <= HEIGHT ? (WIDTH-1) : (HEIGHT-1)); //bound to the lesser value
+	uint32_t y = 0;
+	uint32_t x = 0;
 	m_Player = new Player(m_Map, Vector2(0, 0), 10, this); //delete in destructor!
  
 	TerrainTile::TerrainType terrain = m_Map->getTerrainTiles().at(0).at(0).getTerrainType();
@@ -187,15 +187,15 @@ void Game::placePlayerAndBase()
 	{
 		try 
 		{
-			y = dis(gen); //random
-			x = dis(gen); //random
+			y = dis(gen); //random [0, min(width, height)]
+			x = dis(gen); //random [0, min(width, height)]
 			m_Player->setPosition(Vector2((float)y, (float)x));
 			terrain = m_Map->getTerrainTiles().at(y).at(x).getTerrainType();
 			hasObj = m_Map->getTerrainTiles().at(y).at(x).hasStatObj();
 		}
 		catch (const std::out_of_range& e)
 		{
-			fprintf(stderr, "placing player exception, not sure what this err is. pos: (%d, %d). err: %s\n", y, x, e.what());
+			fprintf(stderr, "placing player exception, trying to place player out of bounds! pos: (%d, %d). err: %s\n", y, x, e.what());
 		}
 		
 	} while (terrain != TerrainTile::GRASSLAND || hasObj); //repeat while terrain type is not grassland OR it has an object. ie. stop when either it is grass or doesn't have obj
@@ -204,17 +204,19 @@ void Game::placePlayerAndBase()
 	bool basePlaced = false;
 	do 
 	{
-		displacementVector = m_Player->getPosition().getDisplacementVector(2, 2);
+		displacementVector = m_Player->getPosition().getDisplacementVector(2, 2); //random disp vector every iteration (see implementation)
+		y = (uint32_t)displacementVector.v0();
+		x = (uint32_t)displacementVector.v1();
 		try
 		{
-			if (m_Map->getTerrainTiles().at((size_t)displacementVector.v0()).at((size_t)displacementVector.v1()).getTerrainType() != TerrainTile::WATER)
+			if (m_Map->getTerrainTiles().at(y).at(x).getTerrainType() != TerrainTile::WATER)
 			{
-				m_Map->getTerrainTiles().at((size_t)displacementVector.v0()).at((size_t)displacementVector.v1()).setHasStatObj(false);
-				m_Map->getTerrainTiles().at((size_t)displacementVector.v0()).at((size_t)displacementVector.v1()).setHasStatObj(true);
-				m_Map->getTerrainTiles().at((size_t)displacementVector.v0()).at((size_t)displacementVector.v1()).setStatObjType(TerrainTile::BASE);
+				m_Map->getTerrainTiles().at(y).at(x).setHasStatObj(false);
+				m_Map->getTerrainTiles().at(y).at(x).setStatObjType(TerrainTile::BASE);
 				// initialize base here
 				m_Base = new Base(displacementVector); //DELETE in destructor!
-				m_Map->getTerrainTiles().at((size_t)displacementVector.v0()).at((size_t)displacementVector.v1()).setStatObj(/*(StationaryObject* )*/m_Base); //TODO verify this isn't an issue
+				m_Map->getTerrainTiles().at(y).at(x).setStatObj(m_Base); //TODO verify this isn't an issue
+				m_Map->getTerrainTiles().at(y).at(x).setHasStatObj(true);
 				basePlaced = true;
 			}
 		}

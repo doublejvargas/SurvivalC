@@ -24,7 +24,7 @@ public:
 	Map(Loader* loader);
 	~Map();
 
-	inline std::vector<std::vector<TerrainTile>> getTerrainTiles() const	{ return m_TerrainTiles; }
+	inline std::vector<std::vector<TerrainTile>>& getTerrainTiles()			{ return m_TerrainTiles; }
 	inline Model& getTerrainMapModel() const								{ return *m_TerrainMapModel; }
 	inline uint32_t GridDimensionX() const									{ return N_TILES; }
 	inline uint32_t GridDimensionY() const									{ return N_TILES; }

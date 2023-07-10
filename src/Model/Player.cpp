@@ -39,7 +39,7 @@ bool Player::Flee()
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> dis(0, 100);
+	std::uniform_int_distribution<> dis(0, 99);
 	//range[0, 1]
 	if (int success = dis(gen) % 2)
 	{
@@ -53,7 +53,7 @@ bool Player::Attack(MobileObject& target)
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> dis(0, 100);
+	std::uniform_int_distribution<> dis(0, 99);
 	//range[0, 1]
 	if (int success = dis(gen) % 2)
 	{

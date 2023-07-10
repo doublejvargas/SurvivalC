@@ -14,9 +14,9 @@ Vector2 Vector2::getDisplacementVector(int yBound, int xBound)
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> dis(0, 100);
-	int yDisplacement = (dis(gen) % (yBound - 1)) + 1;
-	int xDisplacement = (dis(gen) % (xBound - 1)) + 1;
+	std::uniform_int_distribution<> dis(1, yBound > xBound? (yBound-1) : (xBound-1));
+	int yDisplacement = dis(gen);
+	int xDisplacement = dis(gen);
 
 	switch ((dis(gen) % 3) + 1)
 	{

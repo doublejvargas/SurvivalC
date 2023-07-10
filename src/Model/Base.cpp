@@ -80,7 +80,7 @@ void Base::restAt(Player& player, Loader* loader)
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> dis(1, 101);
+	std::uniform_int_distribution<> dis(1, 100);
 
 	uint32_t encounterRoll = dis(gen);
 	Carnivore* enemy = nullptr;

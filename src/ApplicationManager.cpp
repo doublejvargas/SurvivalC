@@ -61,17 +61,17 @@ void ApplicationManager::Start()
 
 	std::vector<Entity> entities = TerrainTileProcessor::ProcessTerrainTiles(game.getMap()->getTerrainTiles(), &loader);
 
-	for (Entity e : entities)
+	for (const Entity& e : entities)
 		renderer.ProcessEntity(e);
 
 	Model playerModel = loader.LoadToVAO(TerrainTileProcessor::GENERIC_SQUARE_POS, TerrainTileProcessor::GENERIC_SQUARE_UV, 
 		TerrainTileProcessor::GENERIC_SQUARE_INDICES, "res/textures/player.png");
-	glm::vec2 playerPos = (float)Map::TILE_SIZE * Vector2::to_glm_vec2(game.getPlayer()->getPosition());
+	glm::vec2 playerPos = (float)Map::TILE_SIZE * Vector2::to_glm_vec2(game.getPlayer()->getPosition().reverse());
 	Entity playerInstance(playerModel, playerPos);
 	
 	renderer.ProcessEntity(playerInstance);
 
-	camera.setPosition(glm::vec3(playerPos, -1));
+	camera.centerOn(glm::vec3(playerPos, -1));
 
 	Model mapModel = game.getMap()->getTerrainMapModel();
 	Entity mapInstance(mapModel, glm::vec2(0, 0), glm::vec2(0, 0), glm::vec2(1, 1));

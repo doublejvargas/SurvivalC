@@ -41,7 +41,7 @@ void TerrainTile::grasslandSetup()
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> dis(0, 40);
+	std::uniform_int_distribution<> dis(0, 39);
 
 	setHasStatObj(false);
 
@@ -75,7 +75,7 @@ void TerrainTile::desertSetup()
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> dis(0, 50);
+	std::uniform_int_distribution<> dis(0, 49);
 	setHasStatObj(false);
 
 	switch (dis(gen))

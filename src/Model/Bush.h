@@ -20,7 +20,7 @@ public:
 	{
 		std::random_device rd;
 		std::mt19937 gen(rd());
-		std::uniform_int_distribution<> dis(0, 3);
+		std::uniform_int_distribution<> dis(0, 2);
 		//range[-1, 2]
 		m_NumBerries = dis(gen) - 1;
 		if (m_NumBerries > 0)

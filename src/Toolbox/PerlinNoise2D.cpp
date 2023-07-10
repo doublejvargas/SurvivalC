@@ -15,7 +15,7 @@ void PerlinNoise2D::init()
 	m_Gradients = std::vector<Vector2>(WRAP_SIZE * WRAP_SIZE, Vector2(0, 0));
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> dis(0, 100);
+	std::uniform_int_distribution<> dis(0, 99);
 	for (uint32_t i = 0; i < WRAP_SIZE * WRAP_SIZE; i++)
 	{
 		m_Gradients[i] = grad[dis(gen) % 4];

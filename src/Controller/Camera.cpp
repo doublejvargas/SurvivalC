@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "DisplayManager.h"
 #include <GLFW/glfw3.h>
 
 Camera::Camera(const glm::vec3& position)
@@ -30,5 +31,10 @@ void Camera::Move()
 
 	if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_R) == GLFW_PRESS)
 		m_Position = glm::vec3(0, 0, -1);
+}
+
+void Camera::centerOn(const glm::vec3 pos)
+{
+	m_Position = glm::vec3(pos.x - WINDOW_WIDTH / 2, pos.y - WINDOW_HEIGHT / 2, pos.z);
 }
 

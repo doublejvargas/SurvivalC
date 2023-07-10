@@ -71,7 +71,7 @@ void CombatEncounter::combatTurn()
 			{
 				std::random_device rd;
 				std::mt19937 gen(rd());
-				std::uniform_int_distribution<> dis(0, Game::HEIGHT > Game::WIDTH ? Game::HEIGHT : Game::WIDTH);
+				std::uniform_int_distribution<> dis(0, Game::HEIGHT > Game::WIDTH ? (Game::HEIGHT-1) : (Game::WIDTH-1));
 				Map* map = m_Player->getMap();
 				size_t y = 0;
 				size_t x = 0;
