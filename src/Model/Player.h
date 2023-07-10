@@ -98,4 +98,5 @@ public:
 	friend class RestingCombatEncounter;
 	friend class Tree;
 	friend class Rock;
+	friend class Control;
 };

@@ -16,11 +16,11 @@ Base::Base(Vector2 pos)
 	m_CurToolCost = COST_UPGRADE_TOOL[0];
 }
 
-void Base::buyNewBaseUpgrade(Player& player)
+void Base::buyNewBaseUpgrade(Player * player)
 {
 	if (m_BaseStatus < BaseStatus::HOUSE)
 	{
-		if (player.spendSticks(m_CurBaseCost)) //access to private routine SpendSticks allowed because Base is a friend class.
+		if (player->spendSticks(m_CurBaseCost)) //access to private routine SpendSticks allowed because Base is a friend class.
 			upgradeBase();
 	}
 }
@@ -54,16 +54,16 @@ void Base::upgradeBase()
 	m_BeenUpgraded = true;
 }
 
-void Base::buyNewToolUpgrade(Player& player)
+void Base::buyNewToolUpgrade(Player * player)
 {
-	if (player.getTool() < 3) //TODO ensure this comparison works
+	if (player->getTool() < 3) //TODO ensure this comparison works
 	{
-		if (player.spendSticks(m_CurToolCost))
+		if (player->spendSticks(m_CurToolCost))
 		{
-			player.upgradeTool();
+			player->upgradeTool();
 			uint32_t arrSize = sizeof(COST_UPGRADE_TOOL) / sizeof(*COST_UPGRADE_TOOL);
-			if ((uint32_t)player.getTool() < arrSize) //TODO ensure this comparison works
-				m_CurToolCost = COST_UPGRADE_TOOL[(uint32_t)player.getTool()];
+			if ((uint32_t)player->getTool() < arrSize) //TODO ensure this comparison works
+				m_CurToolCost = COST_UPGRADE_TOOL[(uint32_t)player->getTool()];
 		}
 	}
 }

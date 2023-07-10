@@ -25,9 +25,9 @@ private:
 public:
 	Base(Vector2 pos);
 
-	void buyNewBaseUpgrade(Player& player);
+	void buyNewBaseUpgrade(Player * player);
 	void upgradeBase();
-	void buyNewToolUpgrade(Player& player);
+	void buyNewToolUpgrade(Player * player);
 
 	void interact(Player& player) override;
 	void restAt(Player& player, Loader* loader) override;

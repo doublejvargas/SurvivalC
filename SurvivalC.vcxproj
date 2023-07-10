@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Controller\Camera.cpp" />
+    <ClCompile Include="src\Controller\Control.cpp" />
     <ClCompile Include="src\Log.cpp" />
     <ClCompile Include="src\Map\Map.cpp" />
     <ClCompile Include="src\Model\Animal.cpp" />
@@ -175,6 +176,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Controller\Camera.h" />
+    <ClInclude Include="src\Controller\Control.h" />
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\Map\Map.h" />
     <ClInclude Include="src\Model\Animal.h" />
