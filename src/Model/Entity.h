@@ -14,8 +14,8 @@ public:
 	Entity(Model model, const glm::vec2& position, const glm::vec2& rotation = glm::vec2(0, 0), const glm::vec2& scale = glm::vec2(1, 1))
 		: m_Model(model), m_Position(position), m_Rotation(rotation), m_Scale(scale) {}
 
-	/*Entity(const Entity& e)
-		: m_Model(e.GetModel()), m_Position(e.GetPosition()), m_Rotation(e.GetRotation()), m_Scale(e.GetScale()) {}*/
+	Entity(const Entity& e)
+		: m_Model(e.GetModel()), m_Position(e.GetPosition()), m_Rotation(e.GetRotation()), m_Scale(e.GetScale()) {}
 
 	inline void ChangePosition(const glm::vec2& position) { m_Position += position; }
 	inline void ChangeRotation(const glm::vec2& rotation) { m_Rotation += rotation; }

@@ -16,7 +16,7 @@ public:
 		{
 			canWalk = { true, true, false };
 			gameTex = loader->LoadTexture("res/textures/wolf.png");
-			combatTex = loader->LoadTexture("res/textures/wolf-pixelized.png");
+			combatTex = loader->LoadTexture("res/textures/wolf_pixelized.png");
 			return new Carnivore(map, pos, 2, 2, 3, canWalk, &gameTex, &combatTex, Carnivore::WOLF);
 		}
 
@@ -24,7 +24,7 @@ public:
 		{
 			canWalk = { true, true, false };
 			gameTex = loader->LoadTexture("res/textures/lion.png");
-			combatTex = loader->LoadTexture("res/textures/lion-pixelized.png");
+			combatTex = loader->LoadTexture("res/textures/lion_pixelized.png");
 			return new Carnivore(map, pos, 2, 8, 4, canWalk, &gameTex, &combatTex, Carnivore::LION);
 		}
 
@@ -32,7 +32,7 @@ public:
 		{
 			canWalk = { false, false, false };
 			gameTex = loader->LoadTexture("res/textures/lion.png");
-			combatTex = loader->LoadTexture("res/textures/lion-pixelized.png");
+			combatTex = loader->LoadTexture("res/textures/lion_pixelized.png");
 			return new Carnivore(map, pos, 2, 5, 3, canWalk, &gameTex, &combatTex, Carnivore::CROCODILE);
 		}
 

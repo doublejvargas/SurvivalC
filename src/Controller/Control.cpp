@@ -15,6 +15,7 @@ Control::Control(Player* player)
 
 void Control::onUpdate() // might rename to OnUpdate or OnRender
 {
+	setUpListeners(); //experimental
 	if (m_ResetListeners)
 	{
 		m_Player->getGame()->mapRevealAfterFlee();
@@ -43,28 +44,28 @@ void Control::update()
 			m_Player->setFacing(Game::UP);
 			m_Player->AttemptMove(targetPos());
 			revealMiniMap(m_Player->getFacing());
-			m_Player->getGame()->checkForEncounter();
+			//m_Player->getGame()->checkForEncounter();
 		}
 		else if (m_downKeyDown)
 		{
 			m_Player->setFacing(Game::DOWN);
 			m_Player->AttemptMove(targetPos());
 			revealMiniMap(m_Player->getFacing());
-			m_Player->getGame()->checkForEncounter();
+			//m_Player->getGame()->checkForEncounter();
 		}
 		else if (m_rightKeyDown)
 		{
 			m_Player->setFacing(Game::RIGHT);
 			m_Player->AttemptMove(targetPos());
 			revealMiniMap(m_Player->getFacing());
-			m_Player->getGame()->checkForEncounter();
+			//m_Player->getGame()->checkForEncounter();
 		}
 		else if (m_leftKeyDown)
 		{
 			m_Player->setFacing(Game::LEFT);
 			m_Player->AttemptMove(targetPos());
 			revealMiniMap(m_Player->getFacing());
-			m_Player->getGame()->checkForEncounter();
+			//m_Player->getGame()->checkForEncounter();
 		}
 
 		m_Player->getGame()->despawnDistantAnimals();
@@ -112,7 +113,7 @@ TerrainTile* Control::targetPos()
 		case Game::LEFT:
 			return &m_Player->getGame()->getMap()->getTerrainTiles().at(y).at(x - 1);
 		case Game::RIGHT:
-			return &m_Player->getGame()->getMap()->getTerrainTiles().at(y - 1).at(x + 1);
+			return &m_Player->getGame()->getMap()->getTerrainTiles().at(y).at(x + 1);
 		default:
 			return &m_Player->getGame()->getMap()->getTerrainTiles().at(y).at(x);
 
@@ -190,7 +191,11 @@ void Control::setUpListeners()
 {
 	//key pressed
 	if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_UP) == GLFW_PRESS)
+	{
+		printf("pressed up!\n");
 		setUpKeyDown(true);
+	}
+		
 
 	if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_DOWN) == GLFW_PRESS)
 		setDownKeyDown(true);

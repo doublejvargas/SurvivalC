@@ -111,23 +111,22 @@ void Player::AttemptMove(TerrainTile* T)
 				m_Harvesting = true;
 				T->setHasStatObj(false); //note: this also nulls the statobj pointer and changes enum type to null
 			}
-			//If no stationaryObject is present on TerrainTile t, the player moves into that tile, their steps increase,
-			// and they are considered unhidden (had their been a rock in the space the player would automatically) be
-			// set hidden when calling interact on the rock.  Setting hidden false here guarantees that when a player
-			// leaves a grid square in which they are hidden they are revealed by default.
-			else
-			{
-				setPosition(T->getPosition());
-				takeStep();
-				m_Hidden = false;
-			}
-			// checkForBase checks to see if the player is adjacent to their base
-			m_DisplayUpgradePrompt = checkForBase();
-			//If the player is near a rest-able object, and they haven't rested in at least 1 full cycle they can rest. also sets "canRest"
-			m_DisplayRestPrompt = checkForRestable();
 		}
+		//If no stationaryObject is present on TerrainTile t, the player moves into that tile, their steps increase,
+		// and they are considered unhidden (had their been a rock in the space the player would automatically) be
+		// set hidden when calling interact on the rock.  Setting hidden false here guarantees that when a player
+		// leaves a grid square in which they are hidden they are revealed by default.
+		else
+		{
+			setPosition(T->getPosition());
+			takeStep();
+			m_Hidden = false;
+		}
+		// checkForBase checks to see if the player is adjacent to their base
+		m_DisplayUpgradePrompt = checkForBase();
+		//If the player is near a rest-able object, and they haven't rested in at least 1 full cycle they can rest. also sets "canRest"
+		m_DisplayRestPrompt = checkForRestable();
 	}
-
 }
 
 void Player::AttemptRest()

@@ -23,7 +23,7 @@ void EntityRenderer::Clear() const
 	GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
 
-void EntityRenderer::Render(const std::unordered_map<Model, std::vector<Entity>>& entities, EntityShader& shader)
+void EntityRenderer::Render(const std::unordered_map<Model, std::vector<Entity*>>& entities, EntityShader& shader)
 {
 	for (const auto& pair : entities)
 	{
@@ -31,7 +31,7 @@ void EntityRenderer::Render(const std::unordered_map<Model, std::vector<Entity>>
 		setOglState(model, shader);
 		auto batch = pair.second;
 		// This isn't batch rendering as there are as many draw calls as there are entities
-		for (const Entity& entity : batch)
+		for (Entity* entity : batch)
 		{
 			prepareInstance(entity, shader);
 			GLCall(glDrawElements(GL_TRIANGLES, model.vertexCount(), GL_UNSIGNED_INT, 0));
@@ -67,8 +67,8 @@ void EntityRenderer::resetOglState()
 	GLCall(glBindVertexArray(0));
 }
 
-void EntityRenderer::prepareInstance(const Entity& entity, EntityShader& shader)
+void EntityRenderer::prepareInstance(Entity* entity, EntityShader& shader)
 {
 	// Load transformation matrix for this entity into the shader
-	shader.LoadTransformMatrix(EntityShader::CreateTransformationMatrix(entity.GetPosition(), entity.GetRotation(), entity.GetScale()));
+	shader.LoadTransformMatrix(EntityShader::CreateTransformationMatrix(entity->GetPosition(), entity->GetRotation(), entity->GetScale()));
 }

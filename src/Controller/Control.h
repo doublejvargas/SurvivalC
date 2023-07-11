@@ -17,9 +17,9 @@ private:
 
 public:
 	Control(Player* player);
+	void onUpdate();
 
 private:
-	void onUpdate();
 	void update();
 	TerrainTile* targetPos();
 	void revealMiniMap(Game::Direction facing);

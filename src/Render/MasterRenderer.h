@@ -10,7 +10,7 @@ private:
 	EntityShader *m_EntityShader = nullptr;
 	TerrainShader *m_TerrainShader = nullptr;
 
-	std::unordered_map<Model, std::vector<Entity>> m_Entities;
+	std::unordered_map<Model, std::vector<Entity*>> m_Entities;
 	Model m_TerrainModel;
 	std::vector<Texture> m_BatchedTextures;
 
@@ -20,7 +20,7 @@ public:
 
 	void Clear() const;
 	void Render(Camera& camera);
-	void ProcessEntity(const Entity& entity);
+	void ProcessEntity(Entity* entity);
 	inline void AddTerrainModel(const Model& terrainModel) { m_TerrainModel = terrainModel; }
 	inline void AddTerrainTextures(const std::vector<Texture>& batchedTextures) { m_BatchedTextures = batchedTextures; }
 };

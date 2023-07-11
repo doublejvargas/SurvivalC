@@ -12,6 +12,7 @@
 #include "glm/glm.hpp"
 #include "Log.h"
 #include "TerrainTileProcessor.h"
+#include "Control.h"
 
 ApplicationManager::ApplicationManager()
 {
@@ -58,18 +59,19 @@ void ApplicationManager::Start()
 	Game game(&loader);
 	MasterRenderer renderer("res/shaders/Shader2D", "res/shaders/TerrainShader2D");
 	Camera camera;
+	Control controller(game.getPlayer());
 
 	std::vector<Entity> entities = TerrainTileProcessor::ProcessTerrainTiles(game.getMap()->getTerrainTiles(), &loader);
 
-	for (const Entity& e : entities)
-		renderer.ProcessEntity(e);
+	for (Entity& e : entities)
+		renderer.ProcessEntity(&e);
 
 	Model playerModel = loader.LoadToVAO(TerrainTileProcessor::GENERIC_SQUARE_POS, TerrainTileProcessor::GENERIC_SQUARE_UV, 
 		TerrainTileProcessor::GENERIC_SQUARE_INDICES, "res/textures/player.png");
 	glm::vec2 playerPos = (float)Map::TILE_SIZE * Vector2::to_glm_vec2(game.getPlayer()->getPosition().reverse());
 	Entity playerInstance(playerModel, playerPos);
 	
-	renderer.ProcessEntity(playerInstance);
+	renderer.ProcessEntity(&playerInstance);
 
 	camera.centerOn(glm::vec3(playerPos, -1));
 
@@ -96,6 +98,11 @@ void ApplicationManager::Start()
 		/* Render here */
 		renderer.Clear();
 		camera.Move();
+
+		controller.onUpdate();
+		playerPos = (float)Map::TILE_SIZE * Vector2::to_glm_vec2(game.getPlayer()->getPosition().reverse());
+		playerInstance.SetPosition(playerPos);
+		camera.centerOn(glm::vec3(playerPos, -1));
 		
 		renderer.Render(camera);
 

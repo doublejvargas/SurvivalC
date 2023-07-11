@@ -49,14 +49,14 @@ void MasterRenderer::Render(Camera& camera)
 	//m_Entities.clear();
 }
 
-void MasterRenderer::ProcessEntity(const Entity& entity)
+void MasterRenderer::ProcessEntity(Entity* entity)
 {
-	Model model = entity.GetModel();
+	Model model = entity->GetModel();
 	
 	// if key "model" is NOT found in hash map, create a new batch and add a pair of (model, vector<entity>) to the Hash map.
 	if (m_Entities.find(model) == m_Entities.end())
 	{
-		std::vector<Entity> newBatch;
+		std::vector<Entity*> newBatch;
 		newBatch.push_back(entity);
 		m_Entities.insert(std::make_pair(model, newBatch));
 	}

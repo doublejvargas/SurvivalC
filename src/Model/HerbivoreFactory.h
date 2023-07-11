@@ -16,7 +16,7 @@ public:
 		{
 			canWalk = { true, true, false };
 			gameTex = loader->LoadTexture("res/textures/rabbit.png");
-			combatTex = loader->LoadTexture("res/textures/rabbit-pixelized.png");
+			combatTex = loader->LoadTexture("res/textures/rabbit_pixelized.png");
 			return new Herbivore(map, pos, 1, 1, 0, canWalk, &gameTex, &combatTex, Herbivore::RABBIT);
 		}
 
@@ -24,7 +24,7 @@ public:
 		{
 			canWalk = { true, false, false };
 			gameTex = loader->LoadTexture("res/textures/deer.png");
-			combatTex = loader->LoadTexture("res/textures/deer-pixelized.png");
+			combatTex = loader->LoadTexture("res/textures/deer_pixelized.png");
 			return new Herbivore(map, pos, 1, 3, 0, canWalk, &gameTex, &combatTex, Herbivore::DEER);
 		}
 
@@ -32,7 +32,7 @@ public:
 		{
 			canWalk = { false, false, true };
 			gameTex = loader->LoadTexture("res/textures/fish.png");
-			combatTex = loader->LoadTexture("res/textures/fish-pixelized.png");
+			combatTex = loader->LoadTexture("res/textures/fish_pixelized.png");
 			return new Herbivore(map, pos, 1, 1, 0, canWalk, &gameTex, &combatTex, Herbivore::FISH);
 		}
 
