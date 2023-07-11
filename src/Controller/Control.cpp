@@ -44,7 +44,7 @@ void Control::update()
 			m_Player->setFacing(Game::UP);
 			m_Player->AttemptMove(targetPos());
 			revealMiniMap(m_Player->getFacing());
-			//m_Player->getGame()->checkForEncounter();
+			//m_Player->getGame()->checkForEncounter(); //causes break
 		}
 		else if (m_downKeyDown)
 		{
@@ -220,7 +220,7 @@ void Control::setUpListeners()
 		setLeftKeyDown(false);
 
 	if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_R) == GLFW_RELEASE)
-		m_Player->AttemptRest();
+		//m_Player->AttemptRest(); //causes break
 
 	if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_B) == GLFW_RELEASE)
 	{

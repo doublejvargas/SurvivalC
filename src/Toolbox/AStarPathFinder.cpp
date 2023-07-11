@@ -3,6 +3,7 @@
 #include "Map.h"
 
 #include <cmath>
+#include <stdexcept>
 
 AStarPathFinder::Tile::Tile()
 {
@@ -24,17 +25,25 @@ AStarPathFinder::Tile::Tile(AStarPathFinder* refrnc, Vector2 pos, bool obs)
 
 void AStarPathFinder::Tile::addNeighbors()
 {
-	size_t i = (int)t_Position.v0();
-	size_t j = (int)t_Position.v1();
+	int j = (int)t_Position.v0();
+	int i = (int)t_Position.v1();
 
-	if (i < aRef->m_Grid.size() - 1)
-		t_Neighbors.push_back(aRef->m_Grid.at(i + 1).at(j));
-	if (i > 0)
-		t_Neighbors.push_back(aRef->m_Grid.at(i - 1).at(j));
-	if (j < aRef->m_Grid[0].size() - 1)
-		t_Neighbors.push_back(aRef->m_Grid.at(i).at(j + 1));
-	if (j > 0)
-		t_Neighbors.push_back(aRef->m_Grid.at(i).at(j - 1));
+	try
+	{
+		if (j < aRef->m_Grid.size() - 1)
+			t_Neighbors.push_back(aRef->m_Grid.at(j + 1).at(i));
+		if (j > 0)
+			t_Neighbors.push_back(aRef->m_Grid.at(j - 1).at(i));
+		if (i < aRef->m_Grid[0].size() - 1)
+			t_Neighbors.push_back(aRef->m_Grid.at(j).at(i + 1));
+		if (i > 0)
+			t_Neighbors.push_back(aRef->m_Grid.at(j).at(i - 1));
+	}
+	catch (std::out_of_range& e)
+	{
+		fprintf(stderr, "pathfinder addNeighbors exception. pos(%d, %d). err: %s\n", j, i, e.what());
+	}
+
 }
 
 AStarPathFinder::AStarPathFinder(Map* map, const std::vector<bool>& canWalk)
@@ -52,7 +61,7 @@ void AStarPathFinder::setUpGrid(const std::vector<bool>& canWalk)
 	m_Grid = std::vector<std::vector<Tile>>(cols, std::vector<Tile>(rows, Tile()));
 	for (uint32_t y = 0; y < cols; y++)
 	{
-		for (uint32_t x = 0; x < cols; x++)
+		for (uint32_t x = 0; x < rows; x++)
 		{
 			Vector2 pos = Vector2((float)y, (float)x);
 			bool isObs = isObstacle(pos, canWalk);
@@ -60,10 +69,18 @@ void AStarPathFinder::setUpGrid(const std::vector<bool>& canWalk)
 		}
 	}
 
-	for (auto& col : m_Grid)
+	/*for (std::vector<Tile>& col : m_Grid)
 	{
 		for (Tile& T : col)
 			T.addNeighbors();
+	}*/
+
+	for (uint32_t y = 0; y < cols; y++)
+	{
+		for (uint32_t x = 0; x < rows; x++)
+		{
+			m_Grid.at(y).at(x).addNeighbors();
+		}
 	}
 }
 

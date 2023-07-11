@@ -82,7 +82,7 @@ void Game::spawnNewHerbivore()
 	}
 	catch (const std::out_of_range& oor)
 	{
-		fprintf(stderr, "%s" " New position is out of bounds! cannot spawn herbivore there.\n", oor.what());
+		fprintf(stderr, "New position is out of bounds! cannot spawn herbivore there.\n");
 	}
 }
 
@@ -109,7 +109,7 @@ void Game::spawnNewCarnivore()
 	}
 	catch (const std::out_of_range& oor)
 	{
-		fprintf(stderr, "%s" " New position is out of bounds! cannot spawn carnivore there.\n", oor.what());
+		fprintf(stderr, "New position is out of bounds!cannot spawn carnivore there.\n");
 	}
 }
 
